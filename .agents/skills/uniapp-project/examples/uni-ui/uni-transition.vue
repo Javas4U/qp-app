@@ -13,36 +13,52 @@
 
     <uni-section title="基础用法" type="line" padding>
       <view class="example-body">
-        <button @click="toggle1">切换显示</button>
+        <button @click="toggle1">
+          切换显示
+        </button>
         <uni-transition mode-class="fade" :show="show1">
-          <view class="transition-box">淡入淡出</view>
+          <view class="transition-box">
+            淡入淡出
+          </view>
         </uni-transition>
       </view>
     </uni-section>
 
     <uni-section title="不同动画" type="line" padding>
       <view class="example-body">
-        <button @click="toggle2">切换显示</button>
+        <button @click="toggle2">
+          切换显示
+        </button>
         <uni-transition mode-class="slide-top" :show="show2">
-          <view class="transition-box">从上滑入</view>
+          <view class="transition-box">
+            从上滑入
+          </view>
         </uni-transition>
       </view>
     </uni-section>
 
     <uni-section title="缩放动画" type="line" padding>
       <view class="example-body">
-        <button @click="toggle3">切换显示</button>
+        <button @click="toggle3">
+          切换显示
+        </button>
         <uni-transition mode-class="zoom-in" :show="show3">
-          <view class="transition-box">缩放进入</view>
+          <view class="transition-box">
+            缩放进入
+          </view>
         </uni-transition>
       </view>
     </uni-section>
 
     <uni-section title="自定义动画" type="line" padding>
       <view class="example-body">
-        <button @click="toggle4">切换显示</button>
+        <button @click="toggle4">
+          切换显示
+        </button>
         <uni-transition :custom-class="customClass" :show="show4">
-          <view class="transition-box">自定义动画</view>
+          <view class="transition-box">
+            自定义动画
+          </view>
         </uni-transition>
       </view>
     </uni-section>
@@ -57,7 +73,7 @@ export default {
       show2: false,
       show3: false,
       show4: false,
-      customClass: 'custom-transition'
+      customClass: 'custom-transition',
     }
   },
   methods: {
@@ -72,8 +88,8 @@ export default {
     },
     toggle4() {
       this.show4 = !this.show4
-    }
-  }
+    },
+  },
 }
 </script>
 

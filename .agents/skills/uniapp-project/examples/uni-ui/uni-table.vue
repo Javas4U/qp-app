@@ -13,7 +13,7 @@
 
     <uni-section title="基础用法" type="line" padding>
       <view class="example-body">
-        <uni-table border stripe>
+        <uni-table stripe border>
           <uni-tr>
             <uni-th>姓名</uni-th>
             <uni-th>年龄</uni-th>
@@ -49,14 +49,26 @@
       <view class="example-body">
         <uni-table border>
           <uni-tr>
-            <uni-th align="left">左对齐</uni-th>
-            <uni-th align="center">居中</uni-th>
-            <uni-th align="right">右对齐</uni-th>
+            <uni-th align="left">
+              左对齐
+            </uni-th>
+            <uni-th align="center">
+              居中
+            </uni-th>
+            <uni-th align="right">
+              右对齐
+            </uni-th>
           </uni-tr>
           <uni-tr v-for="(item, index) in tableData3" :key="index">
-            <uni-td align="left">{{ item.name }}</uni-td>
-            <uni-td align="center">{{ item.age }}</uni-td>
-            <uni-td align="right">{{ item.address }}</uni-td>
+            <uni-td align="left">
+              {{ item.name }}
+            </uni-td>
+            <uni-td align="center">
+              {{ item.age }}
+            </uni-td>
+            <uni-td align="right">
+              {{ item.address }}
+            </uni-td>
           </uni-tr>
         </uni-table>
       </view>
@@ -71,19 +83,19 @@ export default {
       tableData1: [
         { name: '张三', age: 20, address: '北京市' },
         { name: '李四', age: 25, address: '上海市' },
-        { name: '王五', age: 30, address: '广州市' }
+        { name: '王五', age: 30, address: '广州市' },
       ],
       tableData2: [
         { name: '张三', age: 20, address: '北京市' },
-        { name: '李四', age: 25, address: '上海市' }
+        { name: '李四', age: 25, address: '上海市' },
       ],
       tableData3: [
         { name: '张三', age: 20, address: '北京市' },
-        { name: '李四', age: 25, address: '上海市' }
-      ]
+        { name: '李四', age: 25, address: '上海市' },
+      ],
     }
   },
-  methods: {}
+  methods: {},
 }
 </script>
 

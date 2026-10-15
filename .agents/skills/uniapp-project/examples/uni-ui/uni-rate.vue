@@ -70,7 +70,7 @@ export default {
       rate4: 4,
       rate5: 3,
       rate6: 3.5,
-      rate7: 0
+      rate7: 0,
     }
   },
   methods: {
@@ -78,10 +78,10 @@ export default {
       console.log('评分改变：', e)
       uni.showToast({
         title: `评分：${e.value}`,
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

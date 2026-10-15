@@ -67,8 +67,8 @@ export default {
       breadcrumbList2: [
         { text: '首页', path: '/' },
         { text: '分类', path: '/category' },
-        { text: '详情', path: '/detail' }
-      ]
+        { text: '详情', path: '/detail' },
+      ],
     }
   },
   methods: {
@@ -76,10 +76,10 @@ export default {
       console.log('点击面包屑：', item, index)
       uni.showToast({
         title: `点击了${item.text}`,
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

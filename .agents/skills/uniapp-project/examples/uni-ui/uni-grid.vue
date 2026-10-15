@@ -64,24 +64,24 @@ export default {
         { text: '功能3', url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/unicloudlogo.png' },
         { text: '功能4', url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/unicloudlogo.png' },
         { text: '功能5', url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/unicloudlogo.png' },
-        { text: '功能6', url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/unicloudlogo.png' }
+        { text: '功能6', url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/unicloudlogo.png' },
       ],
       gridList2: [
         { text: '选项1' },
         { text: '选项2' },
         { text: '选项3' },
-        { text: '选项4' }
+        { text: '选项4' },
       ],
       gridList3: [
         { text: '选项1' },
         { text: '选项2' },
-        { text: '选项3' }
+        { text: '选项3' },
       ],
       gridList4: [
         { text: '选项1' },
         { text: '选项2' },
-        { text: '选项3' }
-      ]
+        { text: '选项3' },
+      ],
     }
   },
   methods: {
@@ -89,10 +89,10 @@ export default {
       console.log('点击宫格项', e)
       uni.showToast({
         title: '点击了宫格项',
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

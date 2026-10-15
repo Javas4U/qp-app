@@ -19,19 +19,19 @@
 
     <uni-section title="左侧按钮" type="line" padding>
       <view class="example-body">
-        <uni-nav-bar title="导航栏" left-icon="left" @clickLeft="onClickLeft" />
+        <uni-nav-bar title="导航栏" left-icon="left" @click-left="onClickLeft" />
       </view>
     </uni-section>
 
     <uni-section title="右侧按钮" type="line" padding>
       <view class="example-body">
-        <uni-nav-bar title="导航栏" right-text="更多" @clickRight="onClickRight" />
+        <uni-nav-bar title="导航栏" right-text="更多" @click-right="onClickRight" />
       </view>
     </uni-section>
 
     <uni-section title="左右都有按钮" type="line" padding>
       <view class="example-body">
-        <uni-nav-bar title="导航栏" left-icon="left" right-text="更多" @clickLeft="onClickLeft" @clickRight="onClickRight" />
+        <uni-nav-bar title="导航栏" left-icon="left" right-text="更多" @click-left="onClickLeft" @click-right="onClickRight" />
       </view>
     </uni-section>
 
@@ -50,14 +50,18 @@
     <uni-section title="自定义插槽" type="line" padding>
       <view class="example-body">
         <uni-nav-bar>
-          <template v-slot:left>
-            <view class="custom-left">自定义左侧</view>
+          <template #left>
+            <view class="custom-left">
+              自定义左侧
+            </view>
           </template>
-          <template v-slot:default>
+          <template #default>
             <text class="custom-title">自定义标题</text>
           </template>
-          <template v-slot:right>
-            <view class="custom-right">自定义右侧</view>
+          <template #right>
+            <view class="custom-right">
+              自定义右侧
+            </view>
           </template>
         </uni-nav-bar>
       </view>
@@ -70,23 +74,23 @@ export default {
   data() {
     return {
       navColor: '#333',
-      navBgColor: '#fff'
+      navBgColor: '#fff',
     }
   },
   methods: {
     onClickLeft() {
       uni.showToast({
         title: '点击左侧按钮',
-        icon: 'none'
+        icon: 'none',
       })
     },
     onClickRight() {
       uni.showToast({
         title: '点击右侧按钮',
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

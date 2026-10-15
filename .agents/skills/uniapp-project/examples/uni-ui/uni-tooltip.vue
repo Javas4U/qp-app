@@ -40,7 +40,7 @@
 
     <uni-section title="自定义样式" type="line" padding>
       <view class="example-body">
-        <uni-tooltip content="自定义样式提示" backgroundColor="#ff6b6b" color="#fff">
+        <uni-tooltip content="自定义样式提示" background-color="#ff6b6b" color="#fff">
           <button>自定义样式</button>
         </uni-tooltip>
       </view>
@@ -53,7 +53,7 @@ export default {
   data() {
     return {}
   },
-  methods: {}
+  methods: {},
 }
 </script>
 

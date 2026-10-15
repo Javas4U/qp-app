@@ -51,14 +51,14 @@ export default {
       localdata1: [
         { text: '选项1', value: 0 },
         { text: '选项2', value: 1 },
-        { text: '选项3', value: 2 }
+        { text: '选项3', value: 2 },
       ],
       localdata2: [
         { text: '北京', value: 'beijing' },
         { text: '上海', value: 'shanghai' },
         { text: '广州', value: 'guangzhou' },
-        { text: '深圳', value: 'shenzhen' }
-      ]
+        { text: '深圳', value: 'shenzhen' },
+      ],
     }
   },
   methods: {
@@ -66,10 +66,10 @@ export default {
       console.log('选择改变：', e)
       uni.showToast({
         title: '选择已改变',
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

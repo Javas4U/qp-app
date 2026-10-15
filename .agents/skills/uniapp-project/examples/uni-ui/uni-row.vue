@@ -14,10 +14,14 @@
     <uni-section title="基础用法" type="line" padding>
       <uni-row>
         <uni-col :span="12">
-          <view class="demo-box">12</view>
+          <view class="demo-box">
+            12
+          </view>
         </uni-col>
         <uni-col :span="12">
-          <view class="demo-box">12</view>
+          <view class="demo-box">
+            12
+          </view>
         </uni-col>
       </uni-row>
     </uni-section>
@@ -25,13 +29,19 @@
     <uni-section title="不同列宽" type="line" padding>
       <uni-row>
         <uni-col :span="8">
-          <view class="demo-box">8</view>
+          <view class="demo-box">
+            8
+          </view>
         </uni-col>
         <uni-col :span="8">
-          <view class="demo-box">8</view>
+          <view class="demo-box">
+            8
+          </view>
         </uni-col>
         <uni-col :span="8">
-          <view class="demo-box">8</view>
+          <view class="demo-box">
+            8
+          </view>
         </uni-col>
       </uni-row>
     </uni-section>
@@ -39,7 +49,9 @@
     <uni-section title="偏移" type="line" padding>
       <uni-row>
         <uni-col :span="8" :offset="4">
-          <view class="demo-box">8 offset 4</view>
+          <view class="demo-box">
+            8 offset 4
+          </view>
         </uni-col>
       </uni-row>
     </uni-section>
@@ -47,13 +59,19 @@
     <uni-section title="间距" type="line" padding>
       <uni-row :gutter="20">
         <uni-col :span="8">
-          <view class="demo-box">8</view>
+          <view class="demo-box">
+            8
+          </view>
         </uni-col>
         <uni-col :span="8">
-          <view class="demo-box">8</view>
+          <view class="demo-box">
+            8
+          </view>
         </uni-col>
         <uni-col :span="8">
-          <view class="demo-box">8</view>
+          <view class="demo-box">
+            8
+          </view>
         </uni-col>
       </uni-row>
     </uni-section>
@@ -61,12 +79,16 @@
     <uni-section title="对齐方式" type="line" padding>
       <uni-row justify="center">
         <uni-col :span="8">
-          <view class="demo-box">居中</view>
+          <view class="demo-box">
+            居中
+          </view>
         </uni-col>
       </uni-row>
       <uni-row justify="end">
         <uni-col :span="8">
-          <view class="demo-box">右对齐</view>
+          <view class="demo-box">
+            右对齐
+          </view>
         </uni-col>
       </uni-row>
     </uni-section>
@@ -78,7 +100,7 @@ export default {
   data() {
     return {}
   },
-  methods: {}
+  methods: {},
 }
 </script>
 

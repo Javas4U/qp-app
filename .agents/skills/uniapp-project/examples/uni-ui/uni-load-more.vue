@@ -19,9 +19,9 @@
 
     <uni-section title="不同状态" type="line" padding>
       <view class="example-body">
-        <uni-load-more :status="'more'" :content-text="contentText1" />
-        <uni-load-more :status="'loading'" />
-        <uni-load-more :status="'noMore'" />
+        <uni-load-more status="more" :content-text="contentText1" />
+        <uni-load-more status="loading" />
+        <uni-load-more status="noMore" />
       </view>
     </uni-section>
 
@@ -33,7 +33,7 @@
 
     <uni-section title="自定义颜色" type="line" padding>
       <view class="example-body">
-        <uni-load-more :status="status3" :color="'#ff6b6b'" />
+        <uni-load-more :status="status3" color="#ff6b6b" />
       </view>
     </uni-section>
   </view>
@@ -49,16 +49,16 @@ export default {
       contentText1: {
         contentdown: '上拉加载更多',
         contentrefresh: '正在加载...',
-        contentnomore: '没有更多数据了'
+        contentnomore: '没有更多数据了',
       },
       contentText2: {
         contentdown: '下拉刷新',
         contentrefresh: '加载中...',
-        contentnomore: '已全部加载'
-      }
+        contentnomore: '已全部加载',
+      },
     }
   },
-  methods: {}
+  methods: {},
 }
 </script>
 

@@ -57,40 +57,40 @@ export default {
         {
           text: '删除',
           style: {
-            backgroundColor: '#dd524d'
-          }
-        }
+            backgroundColor: '#dd524d',
+          },
+        },
       ],
       options2: [
         {
           text: '收藏',
           style: {
-            backgroundColor: '#007aff'
-          }
-        }
+            backgroundColor: '#007aff',
+          },
+        },
       ],
       options3: [
         {
           text: '删除',
           style: {
-            backgroundColor: '#dd524d'
-          }
-        }
+            backgroundColor: '#dd524d',
+          },
+        },
       ],
       options4: [
         {
           text: '收藏',
           style: {
-            backgroundColor: '#007aff'
-          }
+            backgroundColor: '#007aff',
+          },
         },
         {
           text: '删除',
           style: {
-            backgroundColor: '#dd524d'
-          }
-        }
-      ]
+            backgroundColor: '#dd524d',
+          },
+        },
+      ],
     }
   },
   methods: {
@@ -98,10 +98,10 @@ export default {
       console.log('点击操作：', e)
       uni.showToast({
         title: `点击了${e.content.text}`,
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

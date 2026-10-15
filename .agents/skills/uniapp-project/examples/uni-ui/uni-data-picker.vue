@@ -51,7 +51,7 @@ export default {
       localdata1: [
         { text: '选项1', value: 0 },
         { text: '选项2', value: 1 },
-        { text: '选项3', value: 2 }
+        { text: '选项3', value: 2 },
       ],
       localdata2: [
         {
@@ -59,18 +59,18 @@ export default {
           value: 0,
           children: [
             { text: '二级1-1', value: 0 },
-            { text: '二级1-2', value: 1 }
-          ]
+            { text: '二级1-2', value: 1 },
+          ],
         },
         {
           text: '一级2',
           value: 1,
           children: [
             { text: '二级2-1', value: 0 },
-            { text: '二级2-2', value: 1 }
-          ]
-        }
-      ]
+            { text: '二级2-2', value: 1 },
+          ],
+        },
+      ],
     }
   },
   methods: {
@@ -78,10 +78,10 @@ export default {
       console.log('选择改变：', e)
       uni.showToast({
         title: '选择已改变',
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

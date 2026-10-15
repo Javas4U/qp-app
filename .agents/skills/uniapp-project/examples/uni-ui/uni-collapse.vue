@@ -89,7 +89,7 @@
 export default {
   data() {
     return {
-      activeNames: []
+      activeNames: [],
     }
   },
   methods: {
@@ -98,10 +98,10 @@ export default {
       this.activeNames = e
       uni.showToast({
         title: `展开项：${e.join(', ')}`,
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

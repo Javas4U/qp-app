@@ -13,28 +13,28 @@
 
     <uni-section title="基础用法" type="line" padding>
       <view class="example-body">
-        <uni-segmented-control :current="current1" :values="values1" @clickItem="onClickItem1" />
+        <uni-segmented-control :current="current1" :values="values1" @click-item="onClickItem1" />
         <text class="result-text">当前选中：{{ values1[current1] }}</text>
       </view>
     </uni-section>
 
     <uni-section title="不同样式" type="line" padding>
       <view class="example-body">
-        <uni-segmented-control :current="current2" :values="values2" styleType="button" @clickItem="onClickItem2" />
+        <uni-segmented-control :current="current2" :values="values2" style-type="button" @click-item="onClickItem2" />
         <text class="result-text">当前选中：{{ values2[current2] }}</text>
       </view>
     </uni-section>
 
     <uni-section title="自定义颜色" type="line" padding>
       <view class="example-body">
-        <uni-segmented-control :current="current3" :values="values3" :activeColor="'#ff6b6b'" @clickItem="onClickItem3" />
+        <uni-segmented-control :current="current3" :values="values3" active-color="#ff6b6b" @click-item="onClickItem3" />
         <text class="result-text">当前选中：{{ values3[current3] }}</text>
       </view>
     </uni-section>
 
     <uni-section title="事件监听" type="line" padding>
       <view class="example-body">
-        <uni-segmented-control :current="current4" :values="values4" @clickItem="onClickItem4" />
+        <uni-segmented-control :current="current4" :values="values4" @click-item="onClickItem4" />
         <text class="result-text">当前选中：{{ values4[current4] }}</text>
       </view>
     </uni-section>
@@ -52,7 +52,7 @@ export default {
       values1: ['选项1', '选项2', '选项3'],
       values2: ['按钮1', '按钮2'],
       values3: ['选项A', '选项B', '选项C'],
-      values4: ['全部', '进行中', '已完成']
+      values4: ['全部', '进行中', '已完成'],
     }
   },
   methods: {
@@ -70,10 +70,10 @@ export default {
       this.current4 = e.currentIndex
       uni.showToast({
         title: `选择了${this.values4[e.currentIndex]}`,
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

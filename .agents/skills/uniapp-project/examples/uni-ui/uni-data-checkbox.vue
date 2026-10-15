@@ -59,14 +59,14 @@ export default {
       localdata1: [
         { text: '选项1', value: 0 },
         { text: '选项2', value: 1 },
-        { text: '选项3', value: 2 }
+        { text: '选项3', value: 2 },
       ],
       localdata2: [
         { text: '游泳', value: 0 },
         { text: '跑步', value: 1 },
         { text: '健身', value: 2 },
-        { text: '阅读', value: 3 }
-      ]
+        { text: '阅读', value: 3 },
+      ],
     }
   },
   methods: {
@@ -74,10 +74,10 @@ export default {
       console.log('选择改变：', e)
       uni.showToast({
         title: `选择了${e.length}项`,
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

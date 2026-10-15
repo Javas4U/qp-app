@@ -13,14 +13,18 @@
 
     <uni-section title="基础用法" type="line" padding>
       <view class="example-body">
-        <button type="primary" @click="openCalendar('single')">单选日期</button>
+        <button type="primary" @click="openCalendar('single')">
+          单选日期
+        </button>
         <uni-calendar ref="singleCalendar" :insert="false" :lunar="false" :start-date="startDate" :end-date="endDate" @confirm="onConfirm" />
       </view>
     </uni-section>
 
     <uni-section title="多选日期" type="line" padding>
       <view class="example-body">
-        <button type="primary" @click="openCalendar('multiple')">多选日期</button>
+        <button type="primary" @click="openCalendar('multiple')">
+          多选日期
+        </button>
         <text class="result-text">已选日期：{{ multipleDates.join(', ') || '无' }}</text>
         <uni-calendar ref="multipleCalendar" :insert="false" :multiple="true" @confirm="onMultipleConfirm" />
       </view>
@@ -28,7 +32,9 @@
 
     <uni-section title="范围选择" type="line" padding>
       <view class="example-body">
-        <button type="primary" @click="openCalendar('range')">范围选择</button>
+        <button type="primary" @click="openCalendar('range')">
+          范围选择
+        </button>
         <text class="result-text">选择范围：{{ rangeDates.start || '' }} 至 {{ rangeDates.end || '' }}</text>
         <uni-calendar ref="rangeCalendar" :insert="false" :range="true" @confirm="onRangeConfirm" />
       </view>
@@ -36,15 +42,19 @@
 
     <uni-section title="显示农历" type="line" padding>
       <view class="example-body">
-        <button type="primary" @click="openCalendar('lunar')">显示农历</button>
+        <button type="primary" @click="openCalendar('lunar')">
+          显示农历
+        </button>
         <uni-calendar ref="lunarCalendar" :insert="false" :lunar="true" @confirm="onConfirm" />
       </view>
     </uni-section>
 
     <uni-section title="自定义日期范围" type="line" padding>
       <view class="example-body">
-        <button type="primary" @click="openCalendar('custom')">自定义范围</button>
-        <uni-calendar ref="customCalendar" :insert="false" :start-date="'2024-01-01'" :end-date="'2024-12-31'" @confirm="onConfirm" />
+        <button type="primary" @click="openCalendar('custom')">
+          自定义范围
+        </button>
+        <uni-calendar ref="customCalendar" :insert="false" start-date="2024-01-01" end-date="2024-12-31" @confirm="onConfirm" />
       </view>
     </uni-section>
   </view>
@@ -59,21 +69,25 @@ export default {
       multipleDates: [],
       rangeDates: {
         start: '',
-        end: ''
-      }
+        end: '',
+      },
     }
   },
   methods: {
     openCalendar(type) {
       if (type === 'single') {
         this.$refs.singleCalendar.open()
-      } else if (type === 'multiple') {
+      }
+      else if (type === 'multiple') {
         this.$refs.multipleCalendar.open()
-      } else if (type === 'range') {
+      }
+      else if (type === 'range') {
         this.$refs.rangeCalendar.open()
-      } else if (type === 'lunar') {
+      }
+      else if (type === 'lunar') {
         this.$refs.lunarCalendar.open()
-      } else if (type === 'custom') {
+      }
+      else if (type === 'custom') {
         this.$refs.customCalendar.open()
       }
     },
@@ -81,7 +95,7 @@ export default {
       console.log('选择日期：', e)
       uni.showToast({
         title: `选择了：${e.fulldate}`,
-        icon: 'none'
+        icon: 'none',
       })
     },
     onMultipleConfirm(e) {
@@ -89,21 +103,21 @@ export default {
       this.multipleDates = e.fulldate || []
       uni.showToast({
         title: `选择了${this.multipleDates.length}个日期`,
-        icon: 'none'
+        icon: 'none',
       })
     },
     onRangeConfirm(e) {
       console.log('范围选择：', e)
       this.rangeDates = {
         start: e.fulldate[0] || '',
-        end: e.fulldate[1] || ''
+        end: e.fulldate[1] || '',
       }
       uni.showToast({
         title: `选择了范围`,
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

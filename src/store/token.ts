@@ -174,28 +174,30 @@ export const useTokenStore = defineStore(
     }
 
     /**
+     * 仅在本地清除 token 与用户信息（不发起网络请求，避免 401 拦截死循环）
+     */
+    const clearTokenInfo = () => {
+      updateNowTime()
+      uni.removeStorageSync('accessTokenExpireTime')
+      uni.removeStorageSync('refreshTokenExpireTime')
+      uni.removeStorageSync('token')
+      tokenInfo.value = { ...tokenInfoState }
+      const userStore = useUserStore()
+      userStore.clearUserInfo()
+    }
+
+    /**
      * 退出登录 并 删除用户信息
      */
     const logout = async () => {
       try {
-        // TODO 实现自己的退出登录逻辑
         await _logout()
       }
       catch (error) {
-        console.error('退出登录失败:', error)
+        console.warn('退出登录远程调用异常，继续清理本地态:', error)
       }
       finally {
-        updateNowTime()
-
-        // 无论成功失败，都需要清除本地token信息
-        // 清除存储的过期时间
-        uni.removeStorageSync('accessTokenExpireTime')
-        uni.removeStorageSync('refreshTokenExpireTime')
-        console.log('退出登录-清除用户信息')
-        tokenInfo.value = { ...tokenInfoState }
-        uni.removeStorageSync('token')
-        const userStore = useUserStore()
-        userStore.clearUserInfo()
+        clearTokenInfo()
       }
     }
 
@@ -298,6 +300,7 @@ export const useTokenStore = defineStore(
       login,
       wxLogin,
       logout,
+      clearTokenInfo,
 
       // 认证状态判断（最常用的）
       hasLogin: hasValidLogin,

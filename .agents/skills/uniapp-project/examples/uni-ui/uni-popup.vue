@@ -99,7 +99,7 @@
     <view>
       <!-- 提示窗示例 -->
       <uni-popup ref="alertDialog" type="dialog">
-        <uni-popup-dialog :type="msgType" cancelText="关闭" confirmText="同意" title="通知" content="欢迎使用 uni-popup!" @confirm="dialogConfirm" @close="dialogClose" />
+        <uni-popup-dialog :type="msgType" cancel-text="关闭" confirm-text="同意" title="通知" content="欢迎使用 uni-popup!" @confirm="dialogConfirm" @close="dialogClose" />
       </uni-popup>
     </view>
 
@@ -112,7 +112,7 @@
 
     <view>
       <!-- 分享示例 -->
-      <uni-popup ref="share" type="share" safeArea backgroundColor="#fff">
+      <uni-popup ref="share" type="share" safe-area background-color="#fff">
         <uni-popup-share />
       </uni-popup>
     </view>
@@ -126,7 +126,7 @@ export default {
       type: 'center',
       msgType: 'success',
       messageText: '这是一条成功消息',
-      value: ''
+      value: '',
     }
   },
   methods: {
@@ -143,7 +143,7 @@ export default {
         success: '这是一条成功消息',
         error: '这是一条错误消息',
         warn: '这是一条警告消息',
-        info: '这是一条提示消息'
+        info: '这是一条提示消息',
       }
       this.messageText = messageMap[type]
       this.$refs.message.open()
@@ -170,8 +170,8 @@ export default {
     },
     shareToggle() {
       this.$refs.share.open()
-    }
-  }
+    },
+  },
 }
 </script>
 

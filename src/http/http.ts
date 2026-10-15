@@ -28,10 +28,28 @@ export function http<T>(options: CustomRequestOptions) {
         const isTokenExpired = res.statusCode === 401 || code === ResultEnum.Unauthorized
 
         if (isTokenExpired) {
+          // 检查是否是认证相关的内部接口（如果是登出或登录接口自身响应 401，坚决不二次递归）
+          const isAuthEndpoint = typeof options.url === 'string' && (
+            options.url.includes('/auth/logout')
+            || options.url.includes('/auth/login')
+            || options.url.includes('/auth/quickLogin')
+          )
+
+          if (isAuthEndpoint) {
+            return reject(createHttpError({
+              type: HttpErrorType.Auth,
+              code,
+              statusCode: res.statusCode,
+              message: getResponseMessage(responseData, '未登录或登录已过期'),
+              data: responseData?.data,
+              raw: res,
+            }))
+          }
+
           const tokenStore = useTokenStore()
           if (!isDoubleTokenMode) {
-            // 未启用双token策略，清理用户信息，跳转到登录页
-            tokenStore.logout()
+            // 未启用双token策略，仅清理本地用户信息与缓存，跳转到登录页（严禁发起二次网络请求避免死循环）
+            tokenStore.clearTokenInfo()
             toLoginPage()
             return reject(createHttpError({
               type: HttpErrorType.Auth,
@@ -83,8 +101,8 @@ export function http<T>(options: CustomRequestOptions) {
                   icon: 'none',
                 })
               })
-              // 清除用户信息
-              await tokenStore.logout()
+              // 清除用户信息（纯本地同步清理，绝不发网络请求）
+              tokenStore.clearTokenInfo()
               // 跳转到登录页
               setTimeout(() => {
                 toLoginPage()

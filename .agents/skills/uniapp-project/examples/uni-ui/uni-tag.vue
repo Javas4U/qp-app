@@ -61,10 +61,10 @@ export default {
     onClose() {
       uni.showToast({
         title: '标签已关闭',
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

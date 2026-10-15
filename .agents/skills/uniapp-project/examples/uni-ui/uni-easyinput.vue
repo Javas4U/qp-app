@@ -34,13 +34,13 @@
 
     <uni-section title="前缀图标" type="line" padding>
       <view class="example-body">
-        <uni-easyinput v-model="value7" placeholder="请输入用户名" :prefixIcon="prefixIcon" />
+        <uni-easyinput v-model="value7" placeholder="请输入用户名" :prefix-icon="prefixIcon" />
       </view>
     </uni-section>
 
     <uni-section title="后缀图标" type="line" padding>
       <view class="example-body">
-        <uni-easyinput v-model="value8" placeholder="请输入密码" type="password" :suffixIcon="suffixIcon" />
+        <uni-easyinput v-model="value8" placeholder="请输入密码" type="password" :suffix-icon="suffixIcon" />
       </view>
     </uni-section>
 
@@ -73,10 +73,10 @@ export default {
       value9: '禁用内容',
       value10: '只读内容',
       prefixIcon: 'person',
-      suffixIcon: 'eye'
+      suffixIcon: 'eye',
     }
   },
-  methods: {}
+  methods: {},
 }
 </script>
 

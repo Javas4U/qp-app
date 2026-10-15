@@ -59,7 +59,7 @@ export default {
       searchValue3: '',
       searchValue4: '',
       searchValue5: '只读内容',
-      searchValue6: ''
+      searchValue6: '',
     }
   },
   methods: {
@@ -67,14 +67,14 @@ export default {
       console.log('搜索：', e)
       uni.showToast({
         title: `搜索：${e.value}`,
-        icon: 'none'
+        icon: 'none',
       })
     },
     onCancel() {
       console.log('取消搜索')
       uni.showToast({
         title: '取消搜索',
-        icon: 'none'
+        icon: 'none',
       })
     },
     onInput(e) {
@@ -88,8 +88,8 @@ export default {
     },
     onClear() {
       console.log('清除内容')
-    }
-  }
+    },
+  },
 }
 </script>
 

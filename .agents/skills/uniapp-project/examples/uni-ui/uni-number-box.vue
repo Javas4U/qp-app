@@ -59,7 +59,7 @@ export default {
       value3: 5,
       value4: 20,
       value5: 15,
-      value6: 1
+      value6: 1,
     }
   },
   methods: {
@@ -67,10 +67,10 @@ export default {
       console.log('值改变：', e)
       uni.showToast({
         title: `当前值：${e}`,
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

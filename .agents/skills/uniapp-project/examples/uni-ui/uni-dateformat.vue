@@ -48,10 +48,10 @@ export default {
       currentDate: new Date(),
       pastDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
       recentDate: new Date(Date.now() - 2 * 60 * 60 * 1000),
-      timestamp: Date.now()
+      timestamp: Date.now(),
     }
   },
-  methods: {}
+  methods: {},
 }
 </script>
 

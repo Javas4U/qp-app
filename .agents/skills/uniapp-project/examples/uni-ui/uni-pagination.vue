@@ -13,21 +13,21 @@
 
     <uni-section title="基础用法" type="line" padding>
       <view class="example-body">
-        <uni-pagination :total="50" :current="current1" :pageSize="10" @change="onPageChange1" />
+        <uni-pagination :total="50" :current="current1" :page-size="10" @change="onPageChange1" />
         <text class="result-text">当前页：{{ current1 }}</text>
       </view>
     </uni-section>
 
     <uni-section title="显示总数" type="line" padding>
       <view class="example-body">
-        <uni-pagination :total="100" :current="current2" :pageSize="10" :show-icon="true" @change="onPageChange2" />
+        <uni-pagination :total="100" :current="current2" :page-size="10" :show-icon="true" @change="onPageChange2" />
         <text class="result-text">当前页：{{ current2 }}</text>
       </view>
     </uni-section>
 
     <uni-section title="自定义样式" type="line" padding>
       <view class="example-body">
-        <uni-pagination :total="80" :current="current3" :pageSize="10" :show-icon="true" @change="onPageChange3" />
+        <uni-pagination :total="80" :current="current3" :page-size="10" :show-icon="true" @change="onPageChange3" />
         <text class="result-text">当前页：{{ current3 }}</text>
       </view>
     </uni-section>
@@ -40,7 +40,7 @@ export default {
     return {
       current1: 1,
       current2: 1,
-      current3: 1
+      current3: 1,
     }
   },
   methods: {
@@ -49,7 +49,7 @@ export default {
       this.current1 = e.current
       uni.showToast({
         title: `第${e.current}页`,
-        icon: 'none'
+        icon: 'none',
       })
     },
     onPageChange2(e) {
@@ -57,8 +57,8 @@ export default {
     },
     onPageChange3(e) {
       this.current3 = e.current
-    }
-  }
+    },
+  },
 }
 </script>
 

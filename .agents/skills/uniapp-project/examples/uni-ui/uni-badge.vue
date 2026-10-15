@@ -10,7 +10,7 @@ uni-badge 数字角标组件示例
     <uni-card is-full :is-shadow="false">
       <text class="uni-h6">数字角标通用来标记重点信息使用，如接受到新消息、有未读消息等</text>
     </uni-card>
-    
+
     <!-- 基础用法 -->
     <uni-section title="基础用法" type="line" padding>
       <view class="example-body">
@@ -21,7 +21,7 @@ uni-badge 数字角标组件示例
         <uni-badge class="uni-badge-left-margin" text="123" type="info" />
       </view>
     </uni-section>
-    
+
     <!-- 无底色 -->
     <uni-section title="无底色" type="line" padding>
       <view class="example-body">
@@ -32,31 +32,31 @@ uni-badge 数字角标组件示例
         <uni-badge class="uni-badge-left-margin" :inverted="true" text="123" type="info" />
       </view>
     </uni-section>
-    
+
     <!-- 自定义样式 -->
     <uni-section title="自定义样式" type="line" padding>
       <view class="example-body">
-        <uni-badge 
-          class="uni-badge-left-margin" 
-          text="2" 
-          type="primary" 
-          :custom-style="{background: '#4335d6'}"
+        <uni-badge
+          class="uni-badge-left-margin"
+          text="2"
+          type="primary"
+          :custom-style="{ background: '#4335d6' }"
         />
-        <uni-badge 
-          class="uni-badge-left-margin" 
-          text="2" 
-          type="primary" 
+        <uni-badge
+          class="uni-badge-left-margin"
+          text="2"
+          type="primary"
           :custom-style="customStyle"
         />
       </view>
     </uni-section>
-    
+
     <!-- 定位: absolute 属性 -->
     <uni-section title="定位: aboslute 属性" sub-title="注：在安卓端不支持 nvue" type="line" padding>
-      <uni-badge 
-        class="uni-badge-left-margin" 
-        :text="value" 
-        absolute="rightTop" 
+      <uni-badge
+        class="uni-badge-left-margin"
+        :text="value"
+        absolute="rightTop"
         size="small"
       >
         <view class="box">
@@ -64,14 +64,14 @@ uni-badge 数字角标组件示例
         </view>
       </uni-badge>
     </uni-section>
-    
+
     <!-- 偏移: offset 属性(存在 aboslute) -->
     <uni-section title="偏移: offset 属性(存在 aboslute)" type="line" padding>
-      <uni-badge 
-        class="uni-badge-left-margin" 
-        :text="8" 
-        absolute="rightTop" 
-        :offset="[-3, -3]" 
+      <uni-badge
+        class="uni-badge-left-margin"
+        :text="8"
+        absolute="rightTop"
+        :offset="[-3, -3]"
         size="small"
       >
         <view class="box">
@@ -79,14 +79,14 @@ uni-badge 数字角标组件示例
         </view>
       </uni-badge>
     </uni-section>
-    
+
     <!-- 仅显示点: is-dot 属性 -->
     <uni-section title="仅显示点: is-dot 属性" type="line" padding>
-      <uni-badge 
-        class="uni-badge-left-margin" 
-        :is-dot="true" 
-        :text="value" 
-        absolute="rightTop" 
+      <uni-badge
+        class="uni-badge-left-margin"
+        :is-dot="true"
+        :text="value"
+        absolute="rightTop"
         size="small"
       >
         <view class="box">
@@ -104,8 +104,8 @@ export default {
       value: 0,
       customStyle: {
         backgroundColor: '#62ed0d',
-        color: '#fff'
-      }
+        color: '#fff',
+      },
     }
   },
   mounted() {
@@ -116,7 +116,7 @@ export default {
       }
       this.value++
     }, 100)
-  }
+  },
 }
 </script>
 
@@ -147,7 +147,7 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-color: #DCDFE6;
+  background-color: #dcdfe6;
   color: #fff;
   font-size: 12px;
 }

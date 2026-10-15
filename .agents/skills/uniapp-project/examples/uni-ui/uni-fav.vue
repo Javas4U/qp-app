@@ -51,7 +51,7 @@ export default {
       checked3: false,
       checked4: false,
       checked5: false,
-      checked6: false
+      checked6: false,
     }
   },
   methods: {
@@ -59,7 +59,7 @@ export default {
       this.checked1 = !this.checked1
       uni.showToast({
         title: this.checked1 ? '已收藏' : '取消收藏',
-        icon: 'none'
+        icon: 'none',
       })
     },
     onFavClick2() {
@@ -78,10 +78,10 @@ export default {
       this.checked6 = !this.checked6
       uni.showToast({
         title: this.checked6 ? '已收藏' : '取消收藏',
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

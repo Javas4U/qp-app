@@ -64,16 +64,16 @@ export default {
     onClose() {
       uni.showToast({
         title: '关闭通告栏',
-        icon: 'none'
+        icon: 'none',
       })
     },
     onClick() {
       uni.showToast({
         title: '点击了通告栏',
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

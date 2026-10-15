@@ -54,7 +54,7 @@ export default {
       fileList3: [],
       fileList4: [],
       fileList5: [],
-      uploadProgress: 0
+      uploadProgress: 0,
     }
   },
   methods: {
@@ -62,7 +62,7 @@ export default {
       console.log('选择文件：', e)
       uni.showToast({
         title: `选择了${e.tempFilePaths.length}个文件`,
-        icon: 'none'
+        icon: 'none',
       })
     },
     onProgress(e) {
@@ -73,17 +73,17 @@ export default {
       console.log('上传成功：', e)
       uni.showToast({
         title: '上传成功',
-        icon: 'success'
+        icon: 'success',
       })
     },
     onFail(e) {
       console.log('上传失败：', e)
       uni.showToast({
         title: '上传失败',
-        icon: 'error'
+        icon: 'error',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

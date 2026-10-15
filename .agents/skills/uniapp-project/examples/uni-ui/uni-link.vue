@@ -29,8 +29,8 @@
 
     <uni-section title="下划线" type="line" padding>
       <view class="example-body">
-        <uni-link href="https://uniapp.dcloud.net.cn" text="显示下划线" :showUnderLine="true" />
-        <uni-link href="https://uniapp.dcloud.net.cn" text="不显示下划线" :showUnderLine="false" />
+        <uni-link href="https://uniapp.dcloud.net.cn" text="显示下划线" :show-under-line="true" />
+        <uni-link href="https://uniapp.dcloud.net.cn" text="不显示下划线" :show-under-line="false" />
       </view>
     </uni-section>
 
@@ -60,10 +60,10 @@ export default {
       console.log('链接被点击', e)
       uni.showToast({
         title: '链接被点击',
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

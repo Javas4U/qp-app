@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "composite": true,
+    "target": "esnext",
     "lib": ["esnext", "dom"],
     "baseUrl": ".",
     "module": "esnext",
@@ -22,6 +23,7 @@
       "./src/typings.d.ts"
     ],
     "allowJs": true,
+    "strictNullChecks": false,
     "noImplicitThis": true,
     "outDir": "dist",
     "sourceMap": true,

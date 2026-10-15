@@ -13,27 +13,39 @@
 
     <uni-section title="基础用法" type="line" padding>
       <view class="example-body">
-        <button type="primary" @click="openDrawer('left')">左侧抽屉</button>
-        <button type="primary" @click="openDrawer('right')">右侧抽屉</button>
+        <button type="primary" @click="openDrawer('left')">
+          左侧抽屉
+        </button>
+        <button type="primary" @click="openDrawer('right')">
+          右侧抽屉
+        </button>
       </view>
     </uni-section>
 
     <uni-section title="不同模式" type="line" padding>
       <view class="example-body">
-        <button type="primary" @click="openDrawer('left')">左侧模式</button>
-        <button type="primary" @click="openDrawer('right')">右侧模式</button>
+        <button type="primary" @click="openDrawer('left')">
+          左侧模式
+        </button>
+        <button type="primary" @click="openDrawer('right')">
+          右侧模式
+        </button>
       </view>
     </uni-section>
 
     <uni-section title="自定义宽度" type="line" padding>
       <view class="example-body">
-        <button type="primary" @click="openCustomDrawer">自定义宽度抽屉</button>
+        <button type="primary" @click="openCustomDrawer">
+          自定义宽度抽屉
+        </button>
       </view>
     </uni-section>
 
     <uni-section title="遮罩层" type="line" padding>
       <view class="example-body">
-        <button type="primary" @click="openMaskDrawer">带遮罩层抽屉</button>
+        <button type="primary" @click="openMaskDrawer">
+          带遮罩层抽屉
+        </button>
       </view>
     </uni-section>
 
@@ -41,7 +53,7 @@
     <uni-drawer ref="leftDrawer" mode="left" :width="300" @change="onChange">
       <view class="drawer-content">
         <text class="drawer-title">左侧抽屉</text>
-        <view class="drawer-item" v-for="(item, index) in menuList" :key="index" @click="onMenuClick(item)">
+        <view v-for="(item, index) in menuList" :key="index" class="drawer-item" @click="onMenuClick(item)">
           <text>{{ item.name }}</text>
         </view>
       </view>
@@ -51,7 +63,7 @@
     <uni-drawer ref="rightDrawer" mode="right" :width="300" @change="onChange">
       <view class="drawer-content">
         <text class="drawer-title">右侧抽屉</text>
-        <view class="drawer-item" v-for="(item, index) in menuList" :key="index" @click="onMenuClick(item)">
+        <view v-for="(item, index) in menuList" :key="index" class="drawer-item" @click="onMenuClick(item)">
           <text>{{ item.name }}</text>
         </view>
       </view>
@@ -82,15 +94,16 @@ export default {
       menuList: [
         { name: '首页', path: '/' },
         { name: '关于', path: '/about' },
-        { name: '设置', path: '/settings' }
-      ]
+        { name: '设置', path: '/settings' },
+      ],
     }
   },
   methods: {
     openDrawer(mode) {
       if (mode === 'left') {
         this.$refs.leftDrawer.open()
-      } else {
+      }
+      else {
         this.$refs.rightDrawer.open()
       }
     },
@@ -107,13 +120,13 @@ export default {
       console.log('点击菜单：', item)
       uni.showToast({
         title: `点击了${item.name}`,
-        icon: 'none'
+        icon: 'none',
       })
       // 关闭抽屉
       this.$refs.leftDrawer.close()
       this.$refs.rightDrawer.close()
-    }
-  }
+    },
+  },
 }
 </script>
 

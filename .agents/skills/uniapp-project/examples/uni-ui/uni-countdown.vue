@@ -46,9 +46,15 @@
       <view class="example-body">
         <uni-countdown ref="countdown" :second="60" />
         <view class="button-group">
-          <button size="mini" @click="pause">暂停</button>
-          <button size="mini" @click="resume">继续</button>
-          <button size="mini" @click="reset">重置</button>
+          <button size="mini" @click="pause">
+            暂停
+          </button>
+          <button size="mini" @click="resume">
+            继续
+          </button>
+          <button size="mini" @click="reset">
+            重置
+          </button>
         </view>
       </view>
     </uni-section>
@@ -59,7 +65,7 @@
 export default {
   data() {
     return {
-      timeupText: '倒计时进行中...'
+      timeupText: '倒计时进行中...',
     }
   },
   methods: {
@@ -67,7 +73,7 @@ export default {
       this.timeupText = '倒计时结束！'
       uni.showToast({
         title: '倒计时结束',
-        icon: 'success'
+        icon: 'success',
       })
     },
     pause() {
@@ -78,8 +84,8 @@ export default {
     },
     reset() {
       this.$refs.countdown.reset()
-    }
-  }
+    },
+  },
 }
 </script>
 

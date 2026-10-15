@@ -44,40 +44,40 @@ export default {
       pattern1: {
         color: '#7A7E83',
         selectedColor: '#007AFF',
-        buttonColor: '#007AFF'
+        buttonColor: '#007AFF',
       },
       content1: [
         { icon: 'plus', text: '添加' },
         { icon: 'star', text: '收藏' },
-        { icon: 'settings', text: '设置' }
+        { icon: 'settings', text: '设置' },
       ],
       pattern2: {
         color: '#7A7E83',
         selectedColor: '#007AFF',
-        buttonColor: '#007AFF'
+        buttonColor: '#007AFF',
       },
       content2: [
         { icon: 'plus', text: '添加' },
-        { icon: 'star', text: '收藏' }
+        { icon: 'star', text: '收藏' },
       ],
       pattern3: {
         color: '#7A7E83',
         selectedColor: '#007AFF',
-        buttonColor: '#4ecdc4'
+        buttonColor: '#4ecdc4',
       },
       content3: [
         { icon: 'plus', text: '添加' },
-        { icon: 'star', text: '收藏' }
+        { icon: 'star', text: '收藏' },
       ],
       pattern4: {
         color: '#7A7E83',
         selectedColor: '#ff6b6b',
-        buttonColor: '#ff6b6b'
+        buttonColor: '#ff6b6b',
       },
       content4: [
         { icon: 'plus', text: '添加' },
-        { icon: 'star', text: '收藏' }
-      ]
+        { icon: 'star', text: '收藏' },
+      ],
     }
   },
   methods: {
@@ -85,10 +85,10 @@ export default {
       console.log('触发操作：', e)
       uni.showToast({
         title: `点击了${e.item.text}`,
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

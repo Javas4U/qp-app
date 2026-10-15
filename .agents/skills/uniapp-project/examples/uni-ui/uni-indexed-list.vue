@@ -35,25 +35,25 @@ export default {
           data: [
             { name: 'Apple' },
             { name: 'Ant' },
-            { name: 'Air' }
-          ]
+            { name: 'Air' },
+          ],
         },
         {
           letter: 'B',
           data: [
             { name: 'Banana' },
             { name: 'Book' },
-            { name: 'Ball' }
-          ]
+            { name: 'Ball' },
+          ],
         },
         {
           letter: 'C',
           data: [
             { name: 'Cat' },
             { name: 'Car' },
-            { name: 'Cup' }
-          ]
-        }
+            { name: 'Cup' },
+          ],
+        },
       ],
       indexedList2: [
         {
@@ -61,30 +61,30 @@ export default {
           data: [
             { name: '北京' },
             { name: '上海' },
-            { name: '广州' }
-          ]
+            { name: '广州' },
+          ],
         },
         {
           letter: 'A',
           data: [
             { name: '安徽' },
-            { name: '澳门' }
-          ]
+            { name: '澳门' },
+          ],
         },
         {
           letter: 'B',
           data: [
-            { name: '北京' }
-          ]
+            { name: '北京' },
+          ],
         },
         {
           letter: 'G',
           data: [
             { name: '广东' },
-            { name: '广西' }
-          ]
-        }
-      ]
+            { name: '广西' },
+          ],
+        },
+      ],
     }
   },
   methods: {
@@ -92,10 +92,10 @@ export default {
       console.log('点击项：', e)
       uni.showToast({
         title: `点击了${e.item.name}`,
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

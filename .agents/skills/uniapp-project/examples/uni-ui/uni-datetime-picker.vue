@@ -57,7 +57,7 @@ export default {
       value4: '',
       value5: '2024-01-01',
       startDate: '2024-01-01',
-      endDate: '2024-12-31'
+      endDate: '2024-12-31',
     }
   },
   methods: {
@@ -65,10 +65,10 @@ export default {
       console.log('选择改变：', e)
       uni.showToast({
         title: '选择已改变',
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -42,7 +42,7 @@
     </uni-section>
 
     <uni-section title="自定义右侧内容" type="line" padding>
-      <template v-slot:right>
+      <template #right>
         <text class="custom-right">更多</text>
       </template>
       <view class="example-body">
@@ -57,7 +57,7 @@ export default {
   data() {
     return {}
   },
-  methods: {}
+  methods: {},
 }
 </script>
 

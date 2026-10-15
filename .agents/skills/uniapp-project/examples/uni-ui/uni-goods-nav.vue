@@ -13,19 +13,19 @@
 
     <uni-section title="基础用法" type="line" padding>
       <view class="example-body">
-        <uni-goods-nav :options="options1" :buttonGroup="buttonGroup1" @click="onClick" @buttonClick="onButtonClick" />
+        <uni-goods-nav :options="options1" :button-group="buttonGroup1" @click="onClick" @button-click="onButtonClick" />
       </view>
     </uni-section>
 
     <uni-section title="自定义按钮" type="line" padding>
       <view class="example-body">
-        <uni-goods-nav :options="options2" :buttonGroup="buttonGroup2" @click="onClick" @buttonClick="onButtonClick" />
+        <uni-goods-nav :options="options2" :button-group="buttonGroup2" @click="onClick" @button-click="onButtonClick" />
       </view>
     </uni-section>
 
     <uni-section title="购物车数量" type="line" padding>
       <view class="example-body">
-        <uni-goods-nav :options="options3" :buttonGroup="buttonGroup3" @click="onClick" @buttonClick="onButtonClick" />
+        <uni-goods-nav :options="options3" :button-group="buttonGroup3" @click="onClick" @button-click="onButtonClick" />
       </view>
     </uni-section>
   </view>
@@ -38,72 +38,72 @@ export default {
       options1: [
         {
           icon: 'shop',
-          text: '店铺'
+          text: '店铺',
         },
         {
           icon: 'cart',
           text: '购物车',
-          info: 0
-        }
+          info: 0,
+        },
       ],
       buttonGroup1: [
         {
           text: '加入购物车',
           backgroundColor: '#ff0000',
-          color: '#fff'
+          color: '#fff',
         },
         {
           text: '立即购买',
           backgroundColor: '#ffa200',
-          color: '#fff'
-        }
+          color: '#fff',
+        },
       ],
       options2: [
         {
           icon: 'shop',
-          text: '店铺'
+          text: '店铺',
         },
         {
           icon: 'cart',
           text: '购物车',
-          info: 2
-        }
+          info: 2,
+        },
       ],
       buttonGroup2: [
         {
           text: '加入购物车',
           backgroundColor: '#4ecdc4',
-          color: '#fff'
+          color: '#fff',
         },
         {
           text: '立即购买',
           backgroundColor: '#ff6b6b',
-          color: '#fff'
-        }
+          color: '#fff',
+        },
       ],
       options3: [
         {
           icon: 'shop',
-          text: '店铺'
+          text: '店铺',
         },
         {
           icon: 'cart',
           text: '购物车',
-          info: 5
-        }
+          info: 5,
+        },
       ],
       buttonGroup3: [
         {
           text: '加入购物车',
           backgroundColor: '#ff0000',
-          color: '#fff'
+          color: '#fff',
         },
         {
           text: '立即购买',
           backgroundColor: '#ffa200',
-          color: '#fff'
-        }
-      ]
+          color: '#fff',
+        },
+      ],
     }
   },
   methods: {
@@ -111,17 +111,17 @@ export default {
       console.log('点击选项：', e)
       uni.showToast({
         title: `点击了${e.content.text}`,
-        icon: 'none'
+        icon: 'none',
       })
     },
     onButtonClick(e) {
       console.log('点击按钮：', e)
       uni.showToast({
         title: `点击了${e.content.text}`,
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

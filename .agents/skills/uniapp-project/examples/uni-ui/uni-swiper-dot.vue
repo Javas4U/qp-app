@@ -15,7 +15,9 @@
       <view class="example-body">
         <swiper class="swiper" :current="current1" @change="onChange1">
           <swiper-item v-for="(item, index) in swiperList1" :key="index">
-            <view class="swiper-item">{{ item }}</view>
+            <view class="swiper-item">
+              {{ item }}
+            </view>
           </swiper-item>
         </swiper>
         <uni-swiper-dot :info="swiperList1" :current="current1" :dots-styles="dotsStyles1" />
@@ -26,7 +28,9 @@
       <view class="example-body">
         <swiper class="swiper" :current="current2" @change="onChange2">
           <swiper-item v-for="(item, index) in swiperList2" :key="index">
-            <view class="swiper-item">{{ item }}</view>
+            <view class="swiper-item">
+              {{ item }}
+            </view>
           </swiper-item>
         </swiper>
         <uni-swiper-dot :info="swiperList2" :current="current2" :dots-styles="dotsStyles2" />
@@ -37,7 +41,9 @@
       <view class="example-body">
         <swiper class="swiper" :current="current3" @change="onChange3">
           <swiper-item v-for="(item, index) in swiperList3" :key="index">
-            <view class="swiper-item">{{ item }}</view>
+            <view class="swiper-item">
+              {{ item }}
+            </view>
           </swiper-item>
         </swiper>
         <uni-swiper-dot :info="swiperList3" :current="current3" mode="round" />
@@ -61,15 +67,15 @@ export default {
         border: 'none',
         color: '#fff',
         selectedBackgroundColor: '#007aff',
-        selectedBorder: 'none'
+        selectedBorder: 'none',
       },
       dotsStyles2: {
         backgroundColor: '#ff6b6b',
         border: 'none',
         color: '#fff',
         selectedBackgroundColor: '#4ecdc4',
-        selectedBorder: 'none'
-      }
+        selectedBorder: 'none',
+      },
     }
   },
   methods: {
@@ -81,8 +87,8 @@ export default {
     },
     onChange3(e) {
       this.current3 = e.detail.current
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -31,83 +31,90 @@ export const nativeTabbarList: NativeTabBarItem[] = [
     text: '首页',
   },
   {
+    iconPath: 'static/tabbar/home.png',
+    selectedIconPath: 'static/tabbar/homeHL.png',
+    pagePath: 'pages/rescue/index',
+    text: '救援',
+  },
+  {
+    iconPath: 'static/tabbar/home.png',
+    selectedIconPath: 'static/tabbar/homeHL.png',
+    pagePath: 'pages/diagnosis/index',
+    text: '诊断',
+  },
+  {
+    iconPath: 'static/tabbar/personal.png',
+    selectedIconPath: 'static/tabbar/personalHL.png',
+    pagePath: 'pages/order/index',
+    text: '订单',
+  },
+  {
     iconPath: 'static/tabbar/personal.png',
     selectedIconPath: 'static/tabbar/personalHL.png',
     pagePath: 'pages/me/me',
-    text: '个人',
+    text: '我的',
   },
 ]
 
 // TODO: 3/3. 使用 CUSTOM_TABBAR 时，更新下面的 tabbar 配置
-// 如果需要配置鼓包，需要在 'tabbar/store.ts' 里面设置，最后在 `tabbar/index.vue` 里面更改鼓包的图片
 export const customTabbarList: CustomTabBarItem[] = [
   {
     text: '首页',
     pagePath: 'pages/index/index',
-    // 注意 unocss 图标需要如下处理：（二选一）
-    // 1）在fg-tabbar.vue页面上引入一下并注释掉（见tabbar/index.vue代码第2行）
-    // 2）配置到 unocss.config.ts 的 safelist 中
     iconType: 'unocss',
     icon: 'i-carbon-home',
-    // badge: 'dot',
   },
-  // 鼓包配置示例（2025-12-31）
-  // 中间鼓包tabbarItem配置：通常是扫描按钮、发布按钮、更多按钮等，点击触发业务逻辑
-  // {
-  //   pagePath: 'pages/me/me',
-  //   text: '我的',
-  //   // 1）在fg-tabbar.vue页面上引入一下并注释掉（见tabbar/index.vue代码第2行）
-  //   // 2）配置到 unocss.config.ts 的 safelist 中
-  //   iconType: 'image',
-  //   icon: '/static/tabbar/scan.png',
-  //   isBulge: true,
-  // },
   {
-    pagePath: 'pages/about/about',
-    text: '关于',
-    // 1）在fg-tabbar.vue页面上引入一下并注释掉（见tabbar/index.vue代码第2行）
-    // 2）配置到 unocss.config.ts 的 safelist 中
+    text: '救援',
+    pagePath: 'pages/rescue/index',
     iconType: 'unocss',
-    icon: 'i-carbon-menu',
-    // badge: 10,
-    roles: ['admin'],
+    icon: 'i-carbon-warning-alt',
   },
   {
-    pagePath: 'pages/me/me',
+    text: '诊断',
+    pagePath: 'pages/diagnosis/index',
+    iconType: 'unocss',
+    icon: 'i-carbon-analytics',
+  },
+  {
+    text: '订单',
+    pagePath: 'pages/order/index',
+    iconType: 'unocss',
+    icon: 'i-carbon-document',
+  },
+  {
     text: '我的',
-    // 1）在fg-tabbar.vue页面上引入一下并注释掉（见tabbar/index.vue代码第2行）
-    // 2）配置到 unocss.config.ts 的 safelist 中
+    pagePath: 'pages/me/me',
     iconType: 'unocss',
     icon: 'i-carbon-user',
-    // badge: 10,
   },
-
-  // 其他类型演示
-  // 1、uiLib
-  // {
-  //   pagePath: 'pages/index/index',
-  //   text: '首页',
-  //   iconType: 'uiLib',
-  //   icon: 'home',
-  // },
-  // 2、iconfont
-  // {
-  //   pagePath: 'pages/index/index',
-  //   text: '首页',
-  //   // 注意 iconfont 图标需要额外加上 'iconfont'，如下
-  //   iconType: 'iconfont',
-  //   icon: 'iconfont icon-my',
-  // },
-  // 3、image
-  // {
-  //   pagePath: 'pages/index/index',
-  //   text: '首页',
-  //   // 使用 ‘image’时，需要配置 icon + iconActive 2张图片
-  //   iconType: 'image',
-  //   icon: '/static/tabbar/home.png',
-  //   iconActive: '/static/tabbar/homeHL.png',
-  // },
 ]
+
+// 其他类型演示
+// 1、uiLib
+// {
+//   pagePath: 'pages/index/index',
+//   text: '首页',
+//   iconType: 'uiLib',
+//   icon: 'home',
+// },
+// 2、iconfont
+// {
+//   pagePath: 'pages/index/index',
+//   text: '首页',
+//   // 注意 iconfont 图标需要额外加上 'iconfont'，如下
+//   iconType: 'iconfont',
+//   icon: 'iconfont icon-my',
+// },
+// 3、image
+// {
+//   pagePath: 'pages/index/index',
+//   text: '首页',
+//   // 使用 ‘image’时，需要配置 icon + iconActive 2张图片
+//   iconType: 'image',
+//   icon: '/static/tabbar/home.png',
+//   iconActive: '/static/tabbar/homeHL.png',
+// },
 
 /**
  * 是否启用 tabbar 缓存

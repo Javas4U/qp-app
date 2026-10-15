@@ -4,10 +4,10 @@ import { tabBar } from './src/tabbar/config'
 export default defineUniPages({
   globalStyle: {
     navigationStyle: 'default',
-    navigationBarTitleText: 'unibest',
+    navigationBarTitleText: '卡车汇',
     navigationBarBackgroundColor: '#f8f8f8',
     navigationBarTextStyle: 'black',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F8F8F8',
   },
   easycom: {
     autoscan: true,
@@ -19,4 +19,17 @@ export default defineUniPages({
   },
   // tabbar 的配置统一在 “./src/tabbar/config.ts” 文件中
   tabBar: tabBar as any,
+  subPackages: [
+    {
+      root: 'pages-sub',
+      pages: [],
+    },
+  ],
+  // 分包预下载策略
+  preloadRule: {
+    'pages/index/index': {
+      network: 'all',
+      packages: ['pages-sub'],
+    },
+  },
 })

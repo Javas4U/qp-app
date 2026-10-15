@@ -13,33 +13,33 @@
 
     <uni-section title="基础用法" type="line" padding>
       <view class="example-body">
-        <uni-combox :candidates="candidates1" v-model="value1" placeholder="请输入或选择" />
+        <uni-combox v-model="value1" :candidates="candidates1" placeholder="请输入或选择" />
         <text class="result-text">当前值：{{ value1 }}</text>
       </view>
     </uni-section>
 
     <uni-section title="自定义候选列表" type="line" padding>
       <view class="example-body">
-        <uni-combox :candidates="candidates2" v-model="value2" placeholder="请输入或选择" />
+        <uni-combox v-model="value2" :candidates="candidates2" placeholder="请输入或选择" />
         <text class="result-text">当前值：{{ value2 }}</text>
       </view>
     </uni-section>
 
     <uni-section title="禁用状态" type="line" padding>
       <view class="example-body">
-        <uni-combox :candidates="candidates1" v-model="value3" placeholder="禁用状态" :disabled="true" />
+        <uni-combox v-model="value3" :candidates="candidates1" placeholder="禁用状态" :disabled="true" />
       </view>
     </uni-section>
 
     <uni-section title="只读状态" type="line" padding>
       <view class="example-body">
-        <uni-combox :candidates="candidates1" v-model="value4" placeholder="只读状态" :readonly="true" />
+        <uni-combox v-model="value4" :candidates="candidates1" placeholder="只读状态" :readonly="true" />
       </view>
     </uni-section>
 
     <uni-section title="事件监听" type="line" padding>
       <view class="example-body">
-        <uni-combox :candidates="candidates1" v-model="value5" placeholder="请输入或选择" @input="onInput" @select="onSelect" />
+        <uni-combox v-model="value5" :candidates="candidates1" placeholder="请输入或选择" @input="onInput" @select="onSelect" />
         <text class="result-text">当前值：{{ value5 }}</text>
       </view>
     </uni-section>
@@ -56,7 +56,7 @@ export default {
       value4: '只读内容',
       value5: '',
       candidates1: ['选项1', '选项2', '选项3', '选项4', '选项5'],
-      candidates2: ['北京', '上海', '广州', '深圳', '杭州', '成都']
+      candidates2: ['北京', '上海', '广州', '深圳', '杭州', '成都'],
     }
   },
   methods: {
@@ -67,10 +67,10 @@ export default {
       console.log('选择：', e)
       uni.showToast({
         title: `选择了：${e}`,
-        icon: 'none'
+        icon: 'none',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

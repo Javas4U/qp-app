@@ -25,7 +25,7 @@
 
     <uni-section title="自定义样式" type="line" padding>
       <view class="example-body">
-        <uni-steps :options="steps3" :active="active3" activeColor="#ff6b6b" />
+        <uni-steps :options="steps3" :active="active3" active-color="#ff6b6b" />
       </view>
     </uni-section>
 
@@ -48,26 +48,26 @@ export default {
       steps1: [
         { title: '步骤1' },
         { title: '步骤2' },
-        { title: '步骤3' }
+        { title: '步骤3' },
       ],
       steps2: [
         { title: '待处理', desc: '等待处理' },
         { title: '处理中', desc: '正在处理' },
-        { title: '已完成', desc: '处理完成' }
+        { title: '已完成', desc: '处理完成' },
       ],
       steps3: [
         { title: '步骤A' },
         { title: '步骤B' },
-        { title: '步骤C' }
+        { title: '步骤C' },
       ],
       steps4: [
         { title: '步骤1', desc: '描述1' },
         { title: '步骤2', desc: '描述2' },
-        { title: '步骤3', desc: '描述3' }
-      ]
+        { title: '步骤3', desc: '描述3' },
+      ],
     }
   },
-  methods: {}
+  methods: {},
 }
 </script>
 
