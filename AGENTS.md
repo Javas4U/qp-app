@@ -15,12 +15,14 @@
 | SOP:新页面/全局组件/分包/tabbar/hooks | [hermes/sop-new-page.md](./hermes/sop-new-page.md) |
 | 性能:分包规则、包体积检查、编码侧规则 | [hermes/performance.md](./hermes/performance.md) |
 | 发布:upload:mp、changesets、uvm、环境切换 | [hermes/release.md](./hermes/release.md) |
+| UI/UX:干线公路熔炉设计系统与产品约束 | [DESIGN.md](../DESIGN.md) / [PRODUCT.md](../PRODUCT.md) |
 
-三条铁律(全文见 hermes/README.md):
+核心铁律(全文见 hermes/README.md 及 [.agents/rules/mobile-app-design-system.md](../.agents/rules/mobile-app-design-system.md)):
 
 1. **生成物不手改**:`src/pages.json`、`src/manifest.json`、`src/types/*.d.ts` 由 `*.config.ts` 生成,手改会被覆盖
 2. **平台差异只用条件编译**:编译期能确定的不留运行时
 3. **UI 优先原子类**:先 UnoCSS,再自定义 CSS
+4. **UI 严格遵循 The Highway Crucible (干线公路熔炉)**: 严禁模糊弥散阴影、粉紫渐变与多层卡片嵌套；采用纯色深沥青硬质分层、信标冷蓝与警示橙；操作热区 ≥ 88rpx；对比度满足 WCAG AAA 级
 
 ## AI 辅助 Skills
 

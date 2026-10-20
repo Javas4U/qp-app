@@ -95,11 +95,37 @@ export default defineConfig({
     colors: {
       /** 主题色，用法如: text-primary */
       primary: 'var(--wot-color-theme,#0957DE)',
+      // The Highway Crucible 设计系统令牌 (源自 DESIGN.md)
+      'beacon-sky-core': '#0284c7',
+      'beacon-sky-glow': '#38bdf8',
+      'beacon-sky-deep': '#0369a1',
+      'signal-amber': '#f59e0b',
+      'signal-emerald': '#10b981',
+      'signal-crimson': '#ef4444',
+      'crucible-asphalt': '#0f172a',
+      'crucible-slate': '#1e293b',
+      'crucible-steel': '#334155',
+      'crucible-iron': '#475569',
+      'text-starlight': '#f8fafc',
+      'text-silver': '#cbd5e1',
+      'text-haze': '#94a3b8',
+      'text-phantom': '#64748b',
+    },
+    borderRadius: {
+      'crucible-sm': '8rpx',
+      'crucible-md': '12rpx',
+      'crucible-lg': '16rpx',
     },
     fontSize: {
       /** 提供更小号的字体，用法如：text-2xs */
       '2xs': ['20rpx', '28rpx'],
       '3xs': ['18rpx', '26rpx'],
+      // The Highway Crucible 字阶规范
+      'crucible-display': ['34rpx', '1.3'],
+      'crucible-headline': ['30rpx', '1.4'],
+      'crucible-title': ['28rpx', '1.4'],
+      'crucible-body': ['26rpx', '1.5'],
+      'crucible-label': ['24rpx', '1.4'],
     },
   },
   // windows 系统会报错：[plugin:unocss:transformers:pre] Cannot overwrite a zero-length range - use append Left or prependRight instead.
