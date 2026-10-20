@@ -11,7 +11,7 @@ defineOptions({
 definePage({
   style: {
     navigationBarTitleText: '技师工作台 - 故障换件确认',
-    navigationBarBackgroundColor: '#00b578',
+    navigationBarBackgroundColor: '#0f172a',
     navigationBarTextStyle: 'white',
   },
 })
@@ -80,17 +80,17 @@ function handleNext() {
 </script>
 
 <template>
-  <view class="tech-parts-page min-h-screen bg-[#f5f7fa] pb-24 flex flex-col justify-between">
+  <view class="tech-parts-page min-h-screen bg-[#0f172a] text-slate-100 pb-28 flex flex-col justify-between">
     <view>
-      <!-- 1. 顶部非平台配件无质保醒目警示横幅 (对标 救援8.jpg) -->
-      <view class="bg-red-500 text-white p-4 shadow-sm">
+      <!-- 1. 顶部非平台配件无质保醒目警示横幅 (工业合规安全条) -->
+      <view class="bg-rose-950/80 border-b border-rose-500/40 text-rose-200 p-3.5">
         <view class="flex items-start gap-2">
-          <text class="i-carbon-warning-filled text-xl shrink-0 mt-0.5 text-amber-300" />
+          <text class="i-carbon-warning-filled text-lg shrink-0 mt-0.5 text-amber-400" />
           <view class="text-xs leading-relaxed">
-            <view class="font-bold text-sm">
+            <view class="font-bold text-slate-100">
               质保合规重要声明
             </view>
-            <view class="mt-0.5 opacity-90">
+            <view class="mt-0.5 text-slate-300">
               非卡车汇官方认证原厂配件不享受全国联保与先行赔付政策！现场换件请严格核验原厂防伪码并勾选入库。
             </view>
           </view>
@@ -98,80 +98,80 @@ function handleNext() {
       </view>
 
       <!-- 2. 工单与求援信息简报 -->
-      <view class="mx-4 mt-3 bg-white rounded-2xl p-3.5 shadow-sm border border-gray-100 flex items-center justify-between text-xs">
+      <view class="mx-4 mt-3 bg-[#1e293b] rounded-lg p-3.5 border border-slate-700/80 flex items-center justify-between text-xs">
         <view>
-          <text class="text-gray-400">求援重卡：</text>
-          <text class="font-bold text-gray-900">{{ currentTicket?.plateNo }} ({{ currentTicket?.driverName }})</text>
+          <text class="text-slate-400">求援重卡：</text>
+          <text class="font-bold text-slate-100 font-mono">{{ currentTicket?.plateNo }} ({{ currentTicket?.driverName }})</text>
         </view>
-        <view class="bg-emerald-50 text-emerald-700 text-[20rpx] px-2 py-0.5 rounded font-bold">
+        <view class="bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[20rpx] px-2 py-0.5 rounded-sm font-bold">
           原厂质保 2 年
         </view>
       </view>
 
-      <!-- 3. 配件清单勾选列表 (对标 救援8.jpg) -->
+      <!-- 3. 配件清单勾选列表 -->
       <view class="mx-4 mt-3 space-y-3">
-        <view class="text-xs font-bold text-gray-800 flex items-center justify-between">
+        <view class="text-xs font-bold text-slate-200 flex items-center justify-between">
           <text>现场调配原厂配件明细</text>
-          <text class="text-[20rpx] text-gray-400">点击勾选核销</text>
+          <text class="text-[20rpx] text-slate-400">点击勾选核销入单</text>
         </view>
 
         <view
           v-for="(part, idx) in partsList"
           :key="part.partCode"
-          class="bg-white rounded-2xl p-4 shadow-sm border transition-all cursor-pointer"
-          :class="part.selected ? 'border-[#00b578] ring-2 ring-emerald-100 bg-emerald-50/15' : 'border-gray-100'"
+          class="bg-[#1e293b] rounded-lg p-4 border transition-colors cursor-pointer"
+          :class="part.selected ? 'border-[#0284c7] bg-sky-950/30' : 'border-slate-700/80'"
           @click="togglePart(idx)"
         >
           <view class="flex items-start justify-between">
             <view class="flex items-start gap-2.5">
               <view class="mt-0.5">
                 <view
-                  class="w-5 h-5 rounded-md flex items-center justify-center text-xs"
-                  :class="part.selected ? 'bg-[#00b578] text-white' : 'border border-gray-300 bg-white'"
+                  class="w-5 h-5 rounded-sm flex items-center justify-center text-xs transition-colors"
+                  :class="part.selected ? 'bg-[#0284c7] text-white' : 'border border-slate-600 bg-slate-900'"
                 >
                   <text v-if="part.selected" class="i-carbon-checkmark" />
                 </view>
               </view>
-              <div>
-                <view class="text-xs font-bold text-gray-900 leading-snug">
+              <view>
+                <view class="text-xs font-bold text-slate-100 leading-snug">
                   {{ part.partName }}
                 </view>
-                <view class="text-[20rpx] text-gray-400 font-mono mt-0.5">
-                  OE: {{ part.partCode }} · 100%正品
+                <view class="text-[20rpx] text-slate-400 font-mono mt-0.5">
+                  OE: {{ part.partCode }} · 100%原厂正品
                 </view>
-              </div>
+              </view>
             </view>
           </view>
 
           <!-- 价格与工时费分拆 -->
-          <view class="mt-3 pt-2.5 border-t border-gray-50 flex items-center justify-between text-xs text-gray-600">
-            <text>配件费 ¥{{ part.price }} + 安装工时 ¥{{ part.laborFee }}</text>
-            <text class="font-bold text-red-600 font-mono">小计 ¥{{ part.price + part.laborFee }}</text>
+          <view class="mt-3 pt-2.5 border-t border-slate-700/80 flex items-center justify-between text-xs text-slate-300">
+            <text class="text-slate-400">配件费 ¥{{ part.price }} + 安装工时 ¥{{ part.laborFee }}</text>
+            <text class="font-bold text-rose-400 font-mono">小计 ¥{{ part.price + part.laborFee }}</text>
           </view>
         </view>
       </view>
 
       <!-- 4. 结算合计清单 -->
-      <view class="mx-4 mt-3 bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-xs space-y-2">
-        <view class="flex items-center justify-between text-gray-500">
+      <view class="mx-4 mt-3 bg-[#1e293b] rounded-lg p-4 border border-slate-700/80 text-xs space-y-2">
+        <view class="flex items-center justify-between text-slate-400">
           <text>原厂备件费合计</text>
-          <text class="font-bold text-gray-800">¥{{ totalPartCost }}.00</text>
+          <text class="font-bold text-slate-200 font-mono">¥{{ totalPartCost }}.00</text>
         </view>
-        <view class="flex items-center justify-between text-gray-500">
+        <view class="flex items-center justify-between text-slate-400">
           <text>现场标准工时费</text>
-          <text class="font-bold text-gray-800">¥{{ totalLaborCost }}.00</text>
+          <text class="font-bold text-slate-200 font-mono">¥{{ totalLaborCost }}.00</text>
         </view>
-        <view class="flex items-center justify-between pt-2 border-t border-gray-100 text-sm font-bold text-gray-900">
+        <view class="flex items-center justify-between pt-2 border-t border-slate-700 text-sm font-bold text-slate-100">
           <text>维修应付总额</text>
-          <text class="text-base text-red-600 font-black font-mono">¥{{ grandTotal }}.00</text>
+          <text class="text-base text-rose-400 font-black font-mono">¥{{ grandTotal }}.00</text>
         </view>
       </view>
     </view>
 
-    <!-- 5. 底部确认按钮 -->
-    <view class="p-4 bg-white border-t border-gray-100 shadow-lg">
+    <!-- 5. 底部确认按钮 (手套防误触 ≥ 44px) -->
+    <view class="fixed bottom-0 left-0 right-0 p-4 bg-[#1e293b]/95 border-t border-slate-700 z-30">
       <button
-        class="w-full bg-[#00b578] text-white py-3 rounded-xl font-bold text-sm shadow-md active:opacity-90 flex items-center justify-center gap-2 border-none"
+        class="w-full bg-[#0284c7] active:bg-[#0369a1] text-white min-h-[88rpx] rounded-lg font-bold text-sm flex items-center justify-center gap-2 border-none transition-colors"
         @click="handleNext"
       >
         <text class="i-carbon-camera text-base" />

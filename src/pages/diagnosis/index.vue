@@ -10,7 +10,7 @@ defineOptions({
 definePage({
   style: {
     navigationBarTitleText: '智能诊断',
-    navigationBarBackgroundColor: '#1677ff',
+    navigationBarBackgroundColor: '#0284c7',
     navigationBarTextStyle: 'white',
   },
 })
@@ -61,7 +61,7 @@ const faultCategories = ref([
     id: 'ENG',
     name: '发动机与排气系统',
     icon: 'i-carbon-meter',
-    color: '#ff4d4f',
+    color: '#ef4444',
     symptoms: [
       { name: '发动机高温水温报警', recommendedPart: '原厂节温器总成', partId: 'PART-001' },
       { name: '加速无力冒黑烟', recommendedPart: '共轨高压油泵', partId: 'PART-001' },
@@ -73,7 +73,7 @@ const faultCategories = ref([
     id: 'ELEC',
     name: '全车电气与电控线路',
     icon: 'i-carbon-flash',
-    color: '#fa8c16',
+    color: '#f59e0b',
     symptoms: [
       { name: '起动机卡死无反应', recommendedPart: '原厂减速起动机', partId: 'PART-002' },
       { name: '仪表盘CAN总线掉线', recommendedPart: '全车线束检修', partId: 'PART-002' },
@@ -85,7 +85,7 @@ const faultCategories = ref([
     id: 'TRANS',
     name: '传动与变速箱总成',
     icon: 'i-carbon-settings',
-    color: '#1677ff',
+    color: '#0284c7',
     symptoms: [
       { name: '挂挡异响/打齿掉挡', recommendedPart: '法士特变速箱总成', partId: 'PART-003' },
       { name: '离合器沉重发卡打滑', recommendedPart: '离合器压盘及从动盘', partId: 'PART-003' },
@@ -96,7 +96,7 @@ const faultCategories = ref([
     id: 'BRAKE',
     name: '气路与气压制动系统',
     icon: 'i-carbon-warning-alt',
-    color: '#722ed1',
+    color: '#8b5cf6',
     symptoms: [
       { name: '气压上升慢/干燥筒漏气', recommendedPart: '原厂空气干燥器', partId: 'PART-004' },
       { name: '刹车跑偏/制动距离过长', recommendedPart: '刹车分泵及蹄片', partId: 'PART-004' },
@@ -118,6 +118,7 @@ function consultExpert(expert: any) {
   uni.showModal({
     title: `连线 ${expert.name}`,
     content: `即将发起与【${expert.title}】的 1v1 故障远程音视频指导，是否继续？`,
+    confirmColor: '#0284c7',
     confirmText: '立即连线',
     success: (res) => {
       if (res.confirm) {
@@ -139,14 +140,14 @@ function callRescue() {
 </script>
 
 <template>
-  <view class="diagnosis-page min-h-screen bg-[#f5f7fa] pb-24">
-    <!-- 1. 顶部品牌滑动栏 (对标智能诊断详情图顶部) -->
-    <view class="bg-[#1677ff] pt-3 pb-5 px-4 text-white rounded-b-3xl">
+  <view class="diagnosis-page min-h-screen bg-[#f8fafc] pb-24">
+    <!-- 1. 顶部品牌滑动栏：深碳与信标蓝交融机能顶栏 -->
+    <view class="bg-gradient-to-b from-[#0f172a] via-[#0369a1] to-[#0284c7] pt-3.5 pb-5 px-4 text-white rounded-b-2xl border-b border-sky-400/20">
       <view class="flex items-center justify-between">
-        <view class="text-base font-bold">
+        <view class="text-base font-extrabold tracking-tight text-white">
           重卡全生命周期智能诊断
         </view>
-        <view class="text-[20rpx] bg-white/20 px-2 py-0.5 rounded-full backdrop-blur">
+        <view class="text-[20rpx] bg-black/25 border border-white/20 px-2 py-0.5 rounded-sm font-bold">
           当前车型: {{ selectedModel.name.slice(0, 10) }}
         </view>
       </view>
@@ -157,8 +158,8 @@ function callRescue() {
           <view
             v-for="brand in brands"
             :key="brand.id"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-all"
-            :class="activeBrandId === brand.id ? 'bg-white text-[#1677ff] font-bold shadow' : 'bg-white/15 text-white'"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold cursor-pointer transition-all border"
+            :class="activeBrandId === brand.id ? 'bg-white text-[#0284c7] border-white' : 'bg-black/20 text-slate-100 border-white/10 active:opacity-80'"
             @click="activeBrandId = brand.id"
           >
             <text class="text-xs">{{ brand.logo }}</text>
@@ -168,15 +169,15 @@ function callRescue() {
       </scroll-view>
     </view>
 
-    <!-- 2. 在线技术专家推荐卡片横滑 (对标智能诊断专家模块) -->
+    <!-- 2. 在线技术专家推荐卡片横滑 -->
     <view class="mx-4 mt-3">
       <view class="flex items-center justify-between mb-2">
         <view class="flex items-center gap-1.5">
-          <view class="w-1 h-3.5 bg-indigo-600 rounded-full" />
-          <text class="text-sm font-bold text-gray-900">原厂特邀技术专家</text>
-          <text class="text-[20rpx] text-indigo-600 bg-indigo-50 px-1.5 py-0.2 rounded font-semibold">1对1解答</text>
+          <view class="w-1 h-3.5 bg-[#0284c7] rounded-sm" />
+          <text class="text-sm font-bold text-slate-900">原厂特邀技术专家</text>
+          <text class="text-[20rpx] text-[#0284c7] bg-sky-50 border border-sky-200/80 px-1.5 py-0.2 rounded-sm font-bold">1对1解答</text>
         </view>
-        <text class="text-xs text-gray-400">平均1分钟响应</text>
+        <text class="text-xs text-slate-400 font-medium">平均1分钟响应</text>
       </view>
 
       <scroll-view scroll-x class="whitespace-nowrap -mx-1">
@@ -184,38 +185,38 @@ function callRescue() {
           <view
             v-for="expert in expertList"
             :key="expert.id"
-            class="inline-block w-64 bg-white rounded-2xl p-3 shadow-sm border border-gray-100 align-top"
+            class="inline-block w-64 bg-white rounded-lg p-3 border border-slate-200/80 align-top"
           >
             <view class="flex items-center gap-2.5">
               <view class="relative">
                 <image
                   :src="expert.avatar"
-                  class="w-11 h-11 rounded-full object-cover bg-gray-100"
+                  class="w-11 h-11 rounded-md object-cover bg-slate-100 border border-slate-200"
                 />
                 <view
                   v-if="expert.online"
-                  class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"
+                  class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-white rounded-sm"
                 />
               </view>
               <view class="flex-1 overflow-hidden">
                 <view class="flex items-center gap-1">
-                  <text class="text-xs font-bold text-gray-900">{{ expert.name }}</text>
-                  <text class="text-[18rpx] bg-blue-50 text-blue-600 px-1 py-0.2 rounded">{{ expert.experience }}</text>
+                  <text class="text-xs font-bold text-slate-900">{{ expert.name }}</text>
+                  <text class="text-[18rpx] bg-sky-50 text-[#0284c7] border border-sky-200/80 px-1 py-0.2 rounded-sm font-bold">{{ expert.experience }}</text>
                 </view>
-                <view class="text-[20rpx] text-gray-500 truncate mt-0.5">
+                <view class="text-[20rpx] text-slate-500 truncate mt-0.5 font-medium">
                   {{ expert.title }}
                 </view>
               </view>
             </view>
 
-            <view class="mt-2 text-[20rpx] text-gray-600 bg-gray-50 p-1.5 rounded-lg">
+            <view class="mt-2 text-[20rpx] text-slate-700 bg-slate-50 border border-slate-100 p-1.5 rounded-md font-medium">
               擅长领域：{{ expert.tag }}
             </view>
 
-            <view class="mt-2.5 flex items-center justify-between pt-2 border-t border-gray-50">
-              <text class="text-[20rpx] text-gray-400">已排查解决 {{ expert.solvedCount }} 例</text>
+            <view class="mt-2.5 flex items-center justify-between pt-2 border-t border-slate-100">
+              <text class="text-[20rpx] text-slate-400 font-medium">已排查解决 {{ expert.solvedCount }} 例</text>
               <button
-                class="bg-[#1677ff] text-white text-xs px-3 py-1 rounded-lg font-medium active:opacity-90 m-0"
+                class="bg-[#0284c7] text-white text-xs px-3.5 h-7 rounded-md font-bold active:bg-[#0369a1] m-0 flex items-center justify-center border-none"
                 @click="consultExpert(expert)"
               >
                 立即咨询
@@ -230,38 +231,42 @@ function callRescue() {
     <view class="mx-4 mt-4">
       <view class="flex items-center justify-between mb-2.5">
         <view class="flex items-center gap-1.5">
-          <view class="w-1 h-3.5 bg-red-500 rounded-full" />
-          <text class="text-sm font-bold text-gray-900">故障自查诊断库</text>
+          <view class="w-1 h-3.5 bg-red-600 rounded-sm" />
+          <text class="text-sm font-bold text-slate-900">故障自查诊断库</text>
         </view>
-        <text class="text-[20rpx] text-gray-400">点击诊断症状查看推荐对策</text>
+        <text class="text-[20rpx] text-slate-400 font-medium">点击诊断症状查看推荐对策</text>
       </view>
 
       <view class="space-y-3">
         <view
           v-for="cat in faultCategories"
           :key="cat.id"
-          class="bg-white rounded-2xl p-3.5 shadow-sm"
+          class="bg-white rounded-lg p-3.5 border border-slate-200/80"
         >
-          <view class="flex items-center gap-2 mb-2.5 pb-2 border-b border-gray-100">
+          <view class="flex items-center gap-2 mb-2.5 pb-2 border-b border-slate-100">
             <view
-              class="w-7 h-7 rounded-lg flex items-center justify-center text-sm"
-              :style="{ backgroundColor: `${cat.color}15`, color: cat.color }"
+              class="w-7 h-7 rounded-md flex items-center justify-center text-sm border"
+              :style="{
+                backgroundColor: `${cat.color}12`,
+                borderColor: `${cat.color}30`,
+                color: cat.color,
+              }"
             >
               <text :class="cat.icon" />
             </view>
-            <text class="text-xs font-bold text-gray-800">{{ cat.name }}</text>
+            <text class="text-xs font-bold text-slate-900">{{ cat.name }}</text>
           </view>
 
-          <!-- 故障现象芯片 -->
+          <!-- 故障现象芯片：中圆角与 1px 细边框 -->
           <view class="grid grid-cols-2 gap-2">
             <view
               v-for="symptom in cat.symptoms"
               :key="symptom.name"
-              class="p-2 rounded-xl bg-gray-50/80 hover:bg-blue-50 border border-gray-100 flex items-center justify-between cursor-pointer active:scale-98 transition-all"
+              class="p-2 rounded-md bg-slate-50 border border-slate-200/80 flex items-center justify-between cursor-pointer active:bg-sky-50 active:border-sky-300 transition-all"
               @click="openFaultGuide(symptom)"
             >
-              <text class="text-xs text-gray-700 truncate pr-1">{{ symptom.name }}</text>
-              <text class="i-carbon-chevron-right text-gray-400 text-xs shrink-0" />
+              <text class="text-xs text-slate-800 font-medium truncate pr-1">{{ symptom.name }}</text>
+              <text class="i-carbon-chevron-right text-slate-400 text-xs shrink-0" />
             </view>
           </view>
         </view>

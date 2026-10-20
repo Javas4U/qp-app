@@ -7,7 +7,8 @@ import { reactive, ref } from 'vue'
 definePage({
   style: {
     navigationBarTitleText: '用户登录',
-    navigationBarBackgroundColor: '#ffffff',
+    navigationBarBackgroundColor: '#0f172a',
+    navigationBarTextStyle: 'white',
   },
 })
 
@@ -133,104 +134,115 @@ function showProtocol(name: string) {
 </script>
 
 <template>
-  <view class="h-screen flex flex-col justify-between bg-white px-6 pt-6 pb-6 box-border overflow-hidden">
-    <!-- 上半区：Logo 与 登录卡片 -->
+  <view class="h-screen flex flex-col justify-between bg-[#0f172a] text-slate-100 px-6 pt-6 pb-6 box-border overflow-hidden">
+    <!-- 上半区：Logo 与 工业登录卡片 -->
     <view class="flex-1 flex flex-col justify-center">
-      <!-- 1. Logo 与 标题 (紧凑精致) -->
-      <view class="mb-6 text-center">
-        <view class="mx-auto mb-3 h-13 w-13 flex items-center justify-center rounded-2xl bg-emerald-600 text-xl text-white font-black shadow-md">
+      <!-- 1. Logo 与 标题 (硬派工业风格) -->
+      <view class="mb-8 text-center">
+        <view class="mx-auto mb-4 h-16 w-16 flex items-center justify-center rounded-lg bg-[#0284c7] border border-sky-400/40 text-2xl text-white font-black tracking-wider">
           QP
         </view>
-        <view class="text-xl text-gray-900 font-bold">
+        <view class="text-xl text-slate-100 font-bold tracking-tight">
           卡车汇一体化协同平台
         </view>
-        <view class="mt-1 text-[22rpx] text-gray-400">
-          连接车主 · 赋能技师 · 协同配件
+        <view class="mt-1.5 text-[22rpx] text-slate-400 flex items-center justify-center gap-2">
+          <text>连接车主</text>
+          <text class="text-slate-600">·</text>
+          <text>赋能技师</text>
+          <text class="text-slate-600">·</text>
+          <text>协同配件</text>
         </view>
       </view>
 
-      <!-- 2. 微信快捷登录模式 -->
-      <view v-if="loginMode === 'wechat'" class="space-y-3.5">
-        <button
-          class="w-full flex items-center justify-center rounded-xl bg-emerald-600 py-3 text-sm text-white font-bold shadow-sm transition active:scale-98 space-x-2 border-none"
-          :disabled="loggingIn"
-          @click="handleQuickLogin"
-        >
-          <text class="i-carbon-logo-wechat mr-1 text-lg" />
-          <text>{{ loggingIn ? '正在登录...' : '微信手机号一键安全登录' }}</text>
-        </button>
+      <!-- 登录面板 (刚性深碳卡片) -->
+      <view class="bg-[#1e293b] border border-slate-700/80 rounded-lg p-5">
+        <!-- 2. 微信快捷登录模式 -->
+        <view v-if="loginMode === 'wechat'" class="space-y-3.5">
+          <button
+            class="w-full min-h-[88rpx] h-[88rpx] flex items-center justify-center rounded-lg bg-[#0284c7] hover:bg-sky-500 text-sm text-white font-bold border border-sky-400/40 active:translate-y-0.5 transition-all"
+            :disabled="loggingIn"
+            @click="handleQuickLogin"
+          >
+            <text class="i-carbon-logo-wechat mr-2 text-xl" />
+            <text>{{ loggingIn ? '正在登录...' : '微信手机号一键安全登录' }}</text>
+          </button>
 
-        <button
-          class="w-full border border-gray-200 rounded-xl bg-gray-50 py-3 text-sm text-gray-700 font-medium transition active:scale-98"
-          @click="loginMode = 'account'"
-        >
-          账号密码 / 手机号登录
-        </button>
-      </view>
-
-      <!-- 3. 账号密码 / 验证码登录模式 -->
-      <view v-else class="space-y-3">
-        <view class="space-y-2.5">
-          <view class="flex items-center rounded-xl bg-gray-50 px-3.5 py-2.5 border border-gray-100 text-xs">
-            <text class="i-carbon-phone text-gray-400 mr-2 text-base" />
-            <input
-              v-model="accountForm.account"
-              type="number"
-              placeholder="请输入手机号码 (如 13800138000)"
-              class="flex-1 text-gray-800"
-            >
-          </view>
-
-          <view class="flex items-center rounded-xl bg-gray-50 px-3.5 py-2.5 border border-gray-100 text-xs">
-            <text class="i-carbon-password text-gray-400 mr-2 text-base" />
-            <input
-              v-model="accountForm.password"
-              :password="true"
-              placeholder="请输入密码 (免密模式直接登录)"
-              class="flex-1 text-gray-800"
-            >
-          </view>
+          <button
+            class="w-full min-h-[80rpx] h-[80rpx] border border-slate-700 rounded-lg bg-[#090d16] text-xs text-slate-300 font-medium active:translate-y-0.5 transition-all flex items-center justify-center"
+            @click="loginMode = 'account'"
+          >
+            <text class="i-carbon-password mr-1 text-sm text-slate-400" />
+            账号密码 / 手机号登录
+          </button>
         </view>
 
-        <button
-          class="w-full flex items-center justify-center rounded-xl bg-emerald-600 py-3 text-sm text-white font-bold shadow-sm transition active:scale-98 space-x-2 border-none"
-          :disabled="loggingIn"
-          @click="handleAccountLogin"
-        >
-          <text>{{ loggingIn ? '正在登录...' : '立即登录 / 快捷注册' }}</text>
-        </button>
+        <!-- 3. 账号密码 / 验证码登录模式 -->
+        <view v-else class="space-y-3">
+          <view class="space-y-2.5">
+            <view class="flex items-center rounded-md bg-[#090d16] px-3.5 py-2.5 border border-slate-700 text-xs">
+              <text class="i-carbon-phone text-slate-400 mr-2 text-base shrink-0" />
+              <input
+                v-model="accountForm.account"
+                type="number"
+                placeholder="请输入手机号码 (如 13800138000)"
+                placeholder-class="text-slate-500"
+                class="flex-1 text-slate-100"
+              >
+            </view>
 
-        <view class="flex items-center justify-between text-xs pt-1">
-          <text
-            class="text-emerald-600 font-medium cursor-pointer"
-            @click="handleFillTestAccount"
+            <view class="flex items-center rounded-md bg-[#090d16] px-3.5 py-2.5 border border-slate-700 text-xs">
+              <text class="i-carbon-password text-slate-400 mr-2 text-base shrink-0" />
+              <input
+                v-model="accountForm.password"
+                :password="true"
+                placeholder="请输入密码 (免密模式直接登录)"
+                placeholder-class="text-slate-500"
+                class="flex-1 text-slate-100"
+              >
+            </view>
+          </view>
+
+          <button
+            class="w-full min-h-[88rpx] h-[88rpx] flex items-center justify-center rounded-lg bg-[#0284c7] hover:bg-sky-500 text-sm text-white font-bold border border-sky-400/40 active:translate-y-0.5 transition-all"
+            :disabled="loggingIn"
+            @click="handleAccountLogin"
           >
-            ⚡ 一键填入测试账号并登录
-          </text>
-          <text
-            class="text-gray-400 cursor-pointer"
-            @click="loginMode = 'wechat'"
-          >
-            切回微信快捷登录
-          </text>
+            <text>{{ loggingIn ? '正在登录...' : '立即登录 / 快捷注册' }}</text>
+          </button>
+
+          <view class="flex items-center justify-between text-xs pt-1.5">
+            <text
+              class="text-[#38bdf8] font-medium cursor-pointer hover:underline flex items-center gap-1"
+              @click="handleFillTestAccount"
+            >
+              <text class="i-carbon-flash text-xs" />
+              一键填入测试账号
+            </text>
+            <text
+              class="text-slate-400 cursor-pointer hover:text-slate-200"
+              @click="loginMode = 'wechat'"
+            >
+              切回微信快捷登录
+            </text>
+          </view>
         </view>
       </view>
     </view>
 
-    <!-- 下半区：隐私协议 (单屏底部自然锚定，无需下拉) -->
+    <!-- 下半区：隐私协议 (单屏底部自然锚定，深碳高对比) -->
     <view class="pt-4 pb-2">
-      <view class="flex items-center justify-center text-[22rpx] text-gray-400">
+      <view class="flex items-center justify-center text-[22rpx] text-slate-400">
         <checkbox-group @change="isAgree = !isAgree">
           <label class="flex items-center">
             <checkbox :checked="isAgree" style="transform:scale(0.65)" />
             <text>已阅读并同意</text>
           </label>
         </checkbox-group>
-        <text class="text-emerald-600 ml-0.5 cursor-pointer" @click="showProtocol('卡车汇服务条款')">
+        <text class="text-[#38bdf8] ml-0.5 cursor-pointer hover:underline" @click="showProtocol('卡车汇服务条款')">
           《卡车汇服务条款》
         </text>
         与
-        <text class="text-emerald-600 cursor-pointer" @click="showProtocol('隐私政策')">
+        <text class="text-[#38bdf8] cursor-pointer hover:underline" @click="showProtocol('隐私政策')">
           《隐私政策》
         </text>
       </view>

@@ -1,10 +1,17 @@
-import type { ReplacedPartItem, RescueLocation, RescueTicket, RescueTypeCode } from '@/types/rescue'
+import type { ReplacedPartItem, RescueLocation, RescueOrderVo, RescueTicket, RescueTypeCode } from '@/types/rescue'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
 export const useRescueSessionStore = defineStore(
   'rescueSession',
   () => {
+    // 真实后端工单快照（用于 SWR 秒开及跨页面平滑传递）
+    const activeOrderDetail = ref<RescueOrderVo | null>(null)
+
+    function setActiveOrderDetail(order: RescueOrderVo | null) {
+      activeOrderDetail.value = order
+    }
+
     // 默认提供一个可演示的初始救援工单
     const defaultTicket: RescueTicket = {
       ticketId: 'RC202610120001',
@@ -208,6 +215,8 @@ export const useRescueSessionStore = defineStore(
     }
 
     return {
+      activeOrderDetail,
+      setActiveOrderDetail,
       currentTicket,
       historyTickets,
       dispatchCountdownSeconds,

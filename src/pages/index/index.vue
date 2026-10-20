@@ -46,6 +46,7 @@ async function checkActiveRescueOrder() {
     const res = await getActiveRescueOrder()
     if (res && res.orderNo) {
       activeRescueOrder.value = res
+      rescueStore.setActiveOrderDetail(res)
       uni.setStorageSync('current_rescue_order_no', res.orderNo)
     }
     else {
@@ -57,6 +58,15 @@ async function checkActiveRescueOrder() {
   }
 }
 
+function handleGoTracking(order: RescueOrderVo) {
+  if (!order || !order.orderNo) return
+  rescueStore.setActiveOrderDetail(order)
+  uni.setStorageSync('current_rescue_order_no', order.orderNo)
+  uni.navigateTo({
+    url: `/pages-sub/rescue/tracking?orderNo=${order.orderNo}`,
+  })
+}
+
 // 轮播图配置
 const bannerList = ref([
   {
@@ -64,7 +74,7 @@ const bannerList = ref([
     title: '24小时道路极速救援',
     subtitle: '全国覆盖 · 平均18分钟极速响应',
     badge: '紧急通道',
-    bgClass: 'from-[#1677ff] to-[#0958d9]',
+    bgClass: 'from-[#0284c7] to-[#0369a1]',
     link: '/pages/rescue/index',
   },
   {
@@ -72,7 +82,7 @@ const bannerList = ref([
     title: '东风天龙 原厂正品配件节',
     subtitle: '官方直供 · 100%正品联保 · 到店包安装',
     badge: '限时特惠',
-    bgClass: 'from-[#00b578] to-[#028c5c]',
+    bgClass: 'from-[#059669] to-[#047857]',
     link: '/pages-sub/mall/parts-catalog',
   },
   {
@@ -80,21 +90,21 @@ const bannerList = ref([
     title: '重卡智能故障诊断专家',
     subtitle: 'AI智能分析 + 原厂工程师在线排查',
     badge: '免费诊断',
-    bgClass: 'from-[#fa8c16] to-[#d46b08]',
+    bgClass: 'from-[#d97706] to-[#b45309]',
     link: '/pages/diagnosis/index',
   },
 ])
 
 // 8宫格金刚区
 const gridNavList = [
-  { name: '道路救援', icon: 'i-carbon-warning-alt', color: '#ff4d4f', url: '/pages/rescue/index', isTab: true },
-  { name: '配件选购', icon: 'i-carbon-box', color: '#1677ff', url: '/pages-sub/mall/parts-catalog' },
-  { name: '智能诊断', icon: 'i-carbon-analytics', color: '#722ed1', url: '/pages/diagnosis/index', isTab: true },
-  { name: '车型查询', icon: 'i-carbon-delivery-truck', color: '#13c2c2', url: '/pages-sub/mall/vehicle-query' },
-  { name: '维保套餐', icon: 'i-carbon-tools', color: '#00b578', url: '/pages-sub/mall/package-select' },
-  { name: '附近服务站', icon: 'i-carbon-location', color: '#fa8c16', url: '/pages-sub/mall/checkout' },
-  { name: '综合订单', icon: 'i-carbon-document', color: '#2f54eb', url: '/pages/order/index', isTab: true },
-  { name: '个人中心', icon: 'i-carbon-user', color: '#52c41a', url: '/pages/me/me', isTab: true },
+  { name: '道路救援', icon: 'i-carbon-warning-alt', color: '#ef4444', url: '/pages/rescue/index', isTab: true },
+  { name: '配件选购', icon: 'i-carbon-box', color: '#0284c7', url: '/pages-sub/mall/parts-catalog' },
+  { name: '智能诊断', icon: 'i-carbon-analytics', color: '#8b5cf6', url: '/pages/diagnosis/index', isTab: true },
+  { name: '车型查询', icon: 'i-carbon-delivery-truck', color: '#0891b2', url: '/pages-sub/mall/vehicle-query' },
+  { name: '维保套餐', icon: 'i-carbon-tools', color: '#10b981', url: '/pages-sub/mall/package-select' },
+  { name: '附近服务站', icon: 'i-carbon-location', color: '#f59e0b', url: '/pages-sub/mall/checkout' },
+  { name: '综合订单', icon: 'i-carbon-document', color: '#3b82f6', url: '/pages/order/index', isTab: true },
+  { name: '个人中心', icon: 'i-carbon-user', color: '#10b981', url: '/pages/me/me', isTab: true },
 ]
 
 function navigateTo(url: string, isTab = false) {
@@ -150,9 +160,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <view class="home-container min-h-screen pb-20 bg-[#f5f7fa]">
+  <view class="home-container min-h-screen pb-20 bg-[#f8fafc]">
     <!-- 1. 顶部自定义 Header：状态栏安全区 + 车型绑定与会员 + 通栏搜索框 -->
-    <view class="custom-header px-4 pb-3 bg-gradient-to-b from-[#0e2238] to-[#1a365d] text-white">
+    <view class="custom-header px-4 pb-3.5 bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#1e293b] text-white">
       <!-- 状态栏/灵动岛占位：避开时间、电池栏与灵动岛 -->
       <view :style="{ height: `${statusBarHeight}px` }" />
 
@@ -164,41 +174,41 @@ onMounted(() => {
           paddingRight: `${menuButtonPaddingRight}px`,
         }"
       >
-        <!-- 车型切换器 -->
+        <!-- 车型切换器：规整中圆角与防眩光深色机能底框 -->
         <view
-          class="flex items-center gap-1.5 bg-white/15 px-3 py-1.5 rounded-full backdrop-blur cursor-pointer active:opacity-80 shrink-0"
+          class="flex items-center gap-1.5 bg-slate-900/60 border border-slate-600/80 px-3 py-1.5 rounded-md cursor-pointer active:opacity-80 shrink-0"
           @click="navigateTo('/pages-sub/mall/vehicle-query')"
         >
           <text class="i-carbon-delivery-truck text-amber-400 text-sm" />
-          <text class="text-xs font-semibold max-w-[240rpx] truncate">
+          <text class="text-xs font-bold text-slate-100 max-w-[240rpx] truncate">
             {{ selectedModel.name }}
           </text>
-          <text class="i-carbon-chevron-down text-xs opacity-70" />
+          <text class="i-carbon-chevron-down text-xs text-slate-400" />
         </view>
 
-        <!-- 会员等级标识 -->
+        <!-- 会员等级标识：琥珀金小圆角机能标签 -->
         <view
-          class="flex items-center gap-1 bg-gradient-to-r from-amber-400 to-amber-500 text-[#0e2238] px-2.5 py-1 rounded-full text-xs font-bold shadow-sm shrink-0"
+          class="flex items-center gap-1 bg-amber-400/15 border border-amber-400/40 text-amber-300 px-2.5 py-1 rounded-sm text-xs font-bold shrink-0 active:opacity-80"
           @click="navigateTo('/pages/me/me', true)"
         >
-          <text class="i-carbon-star-filled text-xs" />
+          <text class="i-carbon-star-filled text-xs text-amber-400" />
           <text>{{ userInfo.memberLevel }}</text>
         </view>
       </view>
 
-      <!-- 通栏搜索框：置于导航栏下方，左右通栏，无胶囊遮挡风险 -->
-      <view class="mt-2 flex items-center bg-white rounded-xl px-3 py-2 shadow-sm">
-        <text class="i-carbon-search text-gray-400 text-base mr-2" />
+      <!-- 通栏搜索框：提升至 44px 热区高度，强化强光对比度与信标蓝按钮 -->
+      <view class="mt-2.5 flex items-center bg-white border border-slate-200/90 rounded-md px-3 h-11">
+        <text class="i-carbon-search text-slate-400 text-base mr-2 shrink-0" />
         <input
           v-model="searchKeyword"
           type="text"
           placeholder="搜索原厂总成、发动机配件、滤芯、救援网点"
-          class="flex-1 text-xs text-gray-800 placeholder-gray-400 bg-transparent outline-none"
+          class="flex-1 text-xs text-slate-900 font-medium placeholder-slate-400 bg-transparent outline-none h-full"
           confirm-type="search"
           @confirm="handleSearch"
         >
         <view
-          class="bg-[#1677ff] text-white px-3 py-1 rounded-lg text-xs font-medium ml-2 active:opacity-90 shrink-0"
+          class="bg-[#0284c7] text-white px-3.5 h-8 flex items-center justify-center rounded-md text-xs font-bold ml-2 active:bg-[#0369a1] shrink-0"
           @click="handleSearch"
         >
           搜索
@@ -206,10 +216,10 @@ onMounted(() => {
       </view>
     </view>
 
-    <!-- 2. 轮播 Banner -->
+    <!-- 2. 轮播 Banner：摒弃胶囊圆角与弥散阴影，使用 1px 规整实线边框 -->
     <view class="px-4 mt-3">
       <swiper
-        class="h-38 rounded-2xl overflow-hidden shadow-sm"
+        class="h-38 rounded-lg overflow-hidden border border-slate-200/80"
         circular
         autoplay
         indicator-dots
@@ -224,18 +234,18 @@ onMounted(() => {
             @click="navigateTo(banner.link, banner.link.startsWith('/pages/'))"
           >
             <view>
-              <view class="inline-block bg-white/25 text-[20rpx] px-2 py-0.5 rounded-full font-semibold mb-1 backdrop-blur">
+              <view class="inline-block bg-black/25 text-[20rpx] px-2 py-0.5 rounded-sm font-bold mb-1 border border-white/20">
                 {{ banner.badge }}
               </view>
               <view class="text-base font-bold tracking-tight">
                 {{ banner.title }}
               </view>
-              <view class="text-xs opacity-90 mt-0.5">
+              <view class="text-xs text-white/90 mt-0.5">
                 {{ banner.subtitle }}
               </view>
             </view>
-            <view class="flex items-center justify-between text-xs pt-1 border-t border-white/20">
-              <text class="opacity-90">新人专享领 ¥100 备件直减券</text>
+            <view class="flex items-center justify-between text-xs pt-1.5 border-t border-white/20">
+              <text class="text-white/90">新人专享领 ¥100 备件直减券</text>
               <view class="flex items-center font-bold">
                 <text>立即直达</text>
                 <text class="i-carbon-arrow-right ml-1 text-xs" />
@@ -246,40 +256,40 @@ onMounted(() => {
       </swiper>
     </view>
 
-    <!-- 3. 正在进行的真实救援悬浮提醒条 (FR-016 真实后端联动) -->
+    <!-- 3. 正在进行的真实救援应急机能面板 (FR-016 真实后端联动) -->
     <view
       v-if="activeRescueOrder"
-      class="mx-4 mt-3 p-3 bg-red-50 border border-red-200 rounded-xl flex items-center justify-between shadow-sm cursor-pointer"
-      @click="navigateTo(`/pages-sub/rescue/tracking?orderNo=${activeRescueOrder.orderNo}`)"
+      class="mx-4 mt-3 p-3.5 bg-[#0f172a] border-2 border-red-500 rounded-lg flex items-center justify-between cursor-pointer active:opacity-95"
+      @click="handleGoTracking(activeRescueOrder)"
     >
-      <view class="flex items-center gap-2">
-        <view class="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center animate-pulse">
-          <text class="i-carbon-warning-alt text-base" />
+      <view class="flex items-center gap-2.5 flex-1 min-w-0 mr-2">
+        <view class="w-9 h-9 rounded-md bg-red-600 text-white flex items-center justify-center animate-pulse shrink-0">
+          <text class="i-carbon-warning-alt text-lg" />
         </view>
-        <view>
-          <view class="text-xs font-bold text-red-700 flex items-center gap-1">
-            <text>救援跟单进行中</text>
-            <text class="text-[20rpx] bg-red-600 text-white px-1.5 py-0.2 rounded font-mono">
+        <view class="flex-1 min-w-0">
+          <view class="text-xs font-bold text-red-400 flex items-center gap-1.5">
+            <text>救援紧急调度中</text>
+            <text class="text-[20rpx] bg-red-600 text-white px-1.5 py-0.2 rounded-sm font-mono font-bold">
               {{ activeRescueOrder.orderStatus === 'DISPATCHING' || activeRescueOrder.orderStatus === 'PENDING_DISPATCH' ? '调度派单中' :
                 activeRescueOrder.orderStatus === 'ACCEPTED' ? '已派工出警' :
                 activeRescueOrder.orderStatus === 'DEPARTED' ? '技师赶赴现场' :
                 activeRescueOrder.orderStatus === 'ARRIVED' || activeRescueOrder.orderStatus === 'IN_PROGRESS' ? '已到场抢修' : '进行中' }}
             </text>
           </view>
-          <view class="text-[22rpx] text-red-500 mt-0.5 truncate max-w-56">
-            单号: {{ activeRescueOrder.orderNo }} · {{ activeRescueOrder.technicianName ? `${activeRescueOrder.technicianName}师傅` : '网点调度中' }}
+          <view class="text-[22rpx] text-slate-300 mt-1 truncate">
+            单号: <text class="font-mono text-white">{{ activeRescueOrder.orderNo }}</text> · {{ activeRescueOrder.technicianName ? `${activeRescueOrder.technicianName}师傅` : '网点调度中' }}
             <text v-if="activeRescueOrder.technicianPlateNo"> · {{ activeRescueOrder.technicianPlateNo }}</text>
           </view>
         </view>
       </view>
-      <view class="flex items-center text-red-600 text-xs font-bold shrink-0">
+      <view class="flex items-center bg-red-500/20 border border-red-500/50 text-red-400 px-2.5 py-1.5 rounded-sm text-xs font-bold shrink-0">
         <text>查看轨迹</text>
         <text class="i-carbon-chevron-right ml-0.5 text-xs" />
       </view>
     </view>
 
-    <!-- 4. 核心 8 宫格金刚区 -->
-    <view class="mx-4 mt-3 bg-white rounded-2xl p-4 shadow-sm">
+    <!-- 4. 核心 8 宫格金刚区：规整 1px 实线轻边框与中圆角图标容器 -->
+    <view class="mx-4 mt-3 bg-white rounded-lg p-4 border border-slate-200/80">
       <view class="grid grid-cols-4 gap-y-4 gap-x-2">
         <view
           v-for="item in gridNavList"
@@ -288,8 +298,11 @@ onMounted(() => {
           @click="navigateTo(item.url, item.isTab)"
         >
           <view
-            class="w-12 h-12 rounded-2xl flex items-center justify-center mb-1.5 shadow-sm"
-            :style="{ backgroundColor: `${item.color}15` }"
+            class="w-12 h-12 rounded-md flex items-center justify-center mb-1.5 border"
+            :style="{
+              backgroundColor: `${item.color}12`,
+              borderColor: `${item.color}30`,
+            }"
           >
             <text
               :class="item.icon"
@@ -297,26 +310,26 @@ onMounted(() => {
               :style="{ color: item.color }"
             />
           </view>
-          <text class="text-xs font-medium text-gray-700">
+          <text class="text-xs font-bold text-slate-800">
             {{ item.name }}
           </text>
         </view>
       </view>
     </view>
 
-    <!-- 5. 紧急救援一键呼叫醒目卡片 -->
-    <view class="mx-4 mt-3 bg-gradient-to-r from-red-600 to-rose-500 rounded-2xl p-4 text-white shadow-md flex items-center justify-between">
-      <view>
+    <!-- 5. 紧急救援一键呼叫醒目卡片：强化核心行动触控热区（高度40px以上） -->
+    <view class="mx-4 mt-3 bg-gradient-to-r from-red-600 to-red-700 rounded-lg p-4 text-white border border-red-500/40 flex items-center justify-between">
+      <view class="flex-1 min-w-0 mr-3">
         <view class="flex items-center gap-1.5">
-          <text class="text-sm font-bold">卡车汇 24H 道路极速救援热线</text>
-          <text class="bg-white/20 text-[20rpx] px-1.5 py-0.5 rounded font-mono">全国联保</text>
+          <text class="text-sm font-bold tracking-tight">卡车汇 24H 道路极速救援</text>
+          <text class="bg-black/25 text-[20rpx] px-1.5 py-0.5 rounded-sm font-mono border border-white/20">全国联保</text>
         </view>
-        <view class="text-xs opacity-90 mt-1">
+        <view class="text-xs text-white/90 mt-1 truncate">
           爆胎 / 无法启动 / 线路断电 / 故障拖车 / 现场换件
         </view>
       </view>
       <view
-        class="bg-white text-red-600 px-3.5 py-2 rounded-xl text-xs font-bold shadow active:opacity-90 flex items-center gap-1 cursor-pointer"
+        class="bg-white text-red-600 px-4 h-10 rounded-md text-xs font-extrabold flex items-center justify-center gap-1 cursor-pointer active:opacity-90 shrink-0"
         @click="navigateTo('/pages-sub/rescue/create')"
       >
         <text class="i-carbon-phone-filled text-sm" />
@@ -324,20 +337,20 @@ onMounted(() => {
       </view>
     </view>
 
-    <!-- 6. 原厂配件特惠专区 (对标 1c.png 底部热卖推荐) -->
+    <!-- 6. 原厂配件特惠专区：统一信标蓝色调与大号明码实价 -->
     <view class="mx-4 mt-4">
       <view class="flex items-center justify-between mb-2.5">
         <view class="flex items-center gap-1.5">
-          <view class="w-1 h-3.5 bg-[#1677ff] rounded-full" />
-          <text class="text-sm font-bold text-gray-900">天龙旗舰 · 原厂配件直选</text>
-          <text class="text-[20rpx] text-[#00b578] bg-emerald-50 px-1.5 py-0.5 rounded font-semibold">100% 正品质保</text>
+          <view class="w-1 h-3.5 bg-[#0284c7] rounded-sm" />
+          <text class="text-sm font-bold text-slate-900">天龙旗舰 · 原厂配件直选</text>
+          <text class="text-[20rpx] text-[#059669] bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.5 rounded-sm font-bold">100% 正品质保</text>
         </view>
         <view
-          class="flex items-center text-xs text-gray-400 cursor-pointer"
+          class="flex items-center text-xs text-slate-400 cursor-pointer active:text-slate-600"
           @click="navigateTo('/pages-sub/mall/parts-catalog')"
         >
           <text>更多部件</text>
-          <text class="i-carbon-chevron-right text-xs" />
+          <text class="i-carbon-chevron-right text-xs ml-0.5" />
         </view>
       </view>
 
@@ -346,31 +359,31 @@ onMounted(() => {
         <view
           v-for="part in partsProducts"
           :key="part.id"
-          class="bg-white rounded-xl overflow-hidden shadow-sm flex flex-col justify-between cursor-pointer active:opacity-90"
+          class="bg-white rounded-lg overflow-hidden border border-slate-200/80 flex flex-col justify-between cursor-pointer active:opacity-90"
           @click="navigateTo('/pages-sub/mall/parts-detail')"
         >
           <image
             :src="part.image"
             mode="aspectFill"
-            class="w-full h-32 bg-gray-100"
+            class="w-full h-32 bg-slate-100"
           />
           <view class="p-2.5 flex-1 flex flex-col justify-between">
             <view>
               <view class="flex items-center gap-1 mb-1">
-                <text class="bg-blue-50 text-[#1677ff] text-[18rpx] px-1 py-0.2 rounded font-medium">原厂品质</text>
-                <text class="text-[18rpx] text-gray-400 font-mono">{{ part.oeCode.slice(0, 10) }}</text>
+                <text class="bg-sky-50 text-[#0284c7] border border-sky-200/80 text-[18rpx] px-1 py-0.2 rounded-sm font-bold">原厂品质</text>
+                <text class="text-[18rpx] text-slate-400 font-mono">{{ part.oeCode.slice(0, 10) }}</text>
               </view>
-              <view class="text-xs font-bold text-gray-800 line-clamp-2 leading-tight">
+              <view class="text-xs font-bold text-slate-900 line-clamp-2 leading-tight">
                 {{ part.name }}
               </view>
             </view>
 
-            <view class="mt-2 pt-2 border-t border-gray-100 flex items-center justify-between">
+            <view class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between">
               <view>
                 <text class="text-[20rpx] text-red-600 font-bold">¥</text>
-                <text class="text-base text-red-600 font-bold">{{ part.priceRetail }}</text>
+                <text class="text-base text-red-600 font-bold font-mono">{{ part.priceRetail }}</text>
               </view>
-              <view class="w-6 h-6 rounded-full bg-blue-50 text-[#1677ff] flex items-center justify-center">
+              <view class="w-7 h-7 rounded-md bg-sky-50 border border-sky-200/80 text-[#0284c7] flex items-center justify-center active:bg-sky-100">
                 <text class="i-carbon-shopping-cart-plus text-xs" />
               </view>
             </view>
@@ -383,7 +396,7 @@ onMounted(() => {
 
 <style scoped>
 .custom-header {
-  border-bottom-left-radius: 28rpx;
-  border-bottom-right-radius: 28rpx;
+  border-bottom-left-radius: 24rpx;
+  border-bottom-right-radius: 24rpx;
 }
 </style>
