@@ -141,13 +141,13 @@ function callRescue() {
 
 <template>
   <view class="diagnosis-page min-h-screen bg-[#f8fafc] pb-24">
-    <!-- 1. 顶部品牌滑动栏：深碳与信标蓝交融机能顶栏 -->
-    <view class="bg-gradient-to-b from-[#0f172a] via-[#0369a1] to-[#0284c7] pt-3.5 pb-5 px-4 text-white rounded-b-2xl border-b border-sky-400/20">
+    <!-- 1. 顶部品牌滑动栏：高可视信标蓝工业机能顶栏 -->
+    <view class="bg-gradient-to-r from-[#0284c7] to-[#0369a1] pt-3.5 pb-5 px-4 text-white rounded-b-2xl border-b border-sky-400/20 shadow-sm">
       <view class="flex items-center justify-between">
         <view class="text-base font-extrabold tracking-tight text-white">
           重卡全生命周期智能诊断
         </view>
-        <view class="text-[20rpx] bg-black/25 border border-white/20 px-2 py-0.5 rounded-sm font-bold">
+        <view class="text-[20rpx] bg-black/20 border border-white/30 px-2 py-0.5 rounded-sm font-bold">
           当前车型: {{ selectedModel.name.slice(0, 10) }}
         </view>
       </view>
@@ -159,7 +159,7 @@ function callRescue() {
             v-for="brand in brands"
             :key="brand.id"
             class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold cursor-pointer transition-all border"
-            :class="activeBrandId === brand.id ? 'bg-white text-[#0284c7] border-white' : 'bg-black/20 text-slate-100 border-white/10 active:opacity-80'"
+            :class="activeBrandId === brand.id ? 'bg-white text-[#0284c7] border-white shadow-sm' : 'bg-black/20 text-slate-100 border-white/20 active:opacity-80'"
             @click="activeBrandId = brand.id"
           >
             <text class="text-xs">{{ brand.logo }}</text>

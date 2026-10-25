@@ -87,3 +87,17 @@ export function evaluateRescueOrder(orderNo: string, data: RescueOrderEvaluation
   return http.post<void>(`/rescue/orders/${orderNo}/evaluate`, data)
 }
 
+/**
+ * 司机在线授权同意或拒绝更换配件
+ */
+export function confirmRescuePart(data: { id: number, approved: boolean, rejectReason?: string }) {
+  return http.post<void>('/provider/rescue/parts/confirm', data)
+}
+
+/**
+ * 司机在线授权同意或拒绝现场服务增项
+ */
+export function confirmRescueExtraItem(id: number, data: { agreed: boolean, rejectReason?: string }) {
+  return http.post<void>(`/rescue/extraItems/${id}/confirm`, data)
+}
+

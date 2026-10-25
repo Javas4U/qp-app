@@ -161,8 +161,8 @@ onMounted(() => {
 
 <template>
   <view class="home-container min-h-screen pb-20 bg-[#f8fafc]">
-    <!-- 1. 顶部自定义 Header：状态栏安全区 + 车型绑定与会员 + 通栏搜索框 -->
-    <view class="custom-header px-4 pb-3.5 bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#1e293b] text-white">
+    <!-- 1. 顶部自定义 Header：状态栏安全区 + 车型绑定与会员 + 通栏搜索框 (工业高可视亮色模式) -->
+    <view class="custom-header px-4 pb-3.5 bg-white border-b border-slate-200/90 shadow-sm text-slate-900">
       <!-- 状态栏/灵动岛占位：避开时间、电池栏与灵动岛 -->
       <view :style="{ height: `${statusBarHeight}px` }" />
 
@@ -174,30 +174,30 @@ onMounted(() => {
           paddingRight: `${menuButtonPaddingRight}px`,
         }"
       >
-        <!-- 车型切换器：规整中圆角与防眩光深色机能底框 -->
+        <!-- 车型切换器：规整中圆角与防眩光浅色机能底框 -->
         <view
-          class="flex items-center gap-1.5 bg-slate-900/60 border border-slate-600/80 px-3 py-1.5 rounded-md cursor-pointer active:opacity-80 shrink-0"
+          class="flex items-center gap-1.5 bg-slate-100 border border-slate-300/80 px-3 py-1.5 rounded-md cursor-pointer active:bg-slate-200 shrink-0"
           @click="navigateTo('/pages-sub/mall/vehicle-query')"
         >
-          <text class="i-carbon-delivery-truck text-amber-400 text-sm" />
-          <text class="text-xs font-bold text-slate-100 max-w-[240rpx] truncate">
+          <text class="i-carbon-delivery-truck text-amber-500 text-sm" />
+          <text class="text-xs font-bold text-slate-900 max-w-[240rpx] truncate">
             {{ selectedModel.name }}
           </text>
-          <text class="i-carbon-chevron-down text-xs text-slate-400" />
+          <text class="i-carbon-chevron-down text-xs text-slate-500" />
         </view>
 
         <!-- 会员等级标识：琥珀金小圆角机能标签 -->
         <view
-          class="flex items-center gap-1 bg-amber-400/15 border border-amber-400/40 text-amber-300 px-2.5 py-1 rounded-sm text-xs font-bold shrink-0 active:opacity-80"
+          class="flex items-center gap-1 bg-amber-50 border border-amber-300 text-amber-700 px-2.5 py-1 rounded-sm text-xs font-bold shrink-0 active:opacity-80"
           @click="navigateTo('/pages/me/me', true)"
         >
-          <text class="i-carbon-star-filled text-xs text-amber-400" />
+          <text class="i-carbon-star-filled text-xs text-amber-500" />
           <text>{{ userInfo.memberLevel }}</text>
         </view>
       </view>
 
       <!-- 通栏搜索框：提升至 44px 热区高度，强化强光对比度与信标蓝按钮 -->
-      <view class="mt-2.5 flex items-center bg-white border border-slate-200/90 rounded-md px-3 h-11">
+      <view class="mt-2.5 flex items-center bg-slate-50 border border-slate-300 rounded-md px-3 h-11">
         <text class="i-carbon-search text-slate-400 text-base mr-2 shrink-0" />
         <input
           v-model="searchKeyword"
@@ -208,7 +208,7 @@ onMounted(() => {
           @confirm="handleSearch"
         >
         <view
-          class="bg-[#0284c7] text-white px-3.5 h-8 flex items-center justify-center rounded-md text-xs font-bold ml-2 active:bg-[#0369a1] shrink-0"
+          class="bg-[#0284c7] text-white px-3.5 h-8 flex items-center justify-center rounded-md text-xs font-bold ml-2 active:bg-[#0369a1] shrink-0 shadow-sm"
           @click="handleSearch"
         >
           搜索
@@ -259,30 +259,30 @@ onMounted(() => {
     <!-- 3. 正在进行的真实救援应急机能面板 (FR-016 真实后端联动) -->
     <view
       v-if="activeRescueOrder"
-      class="mx-4 mt-3 p-3.5 bg-[#0f172a] border-2 border-red-500 rounded-lg flex items-center justify-between cursor-pointer active:opacity-95"
+      class="mx-4 mt-3 p-3.5 bg-white border-2 border-rose-500 rounded-lg shadow-sm flex items-center justify-between cursor-pointer active:opacity-95"
       @click="handleGoTracking(activeRescueOrder)"
     >
       <view class="flex items-center gap-2.5 flex-1 min-w-0 mr-2">
-        <view class="w-9 h-9 rounded-md bg-red-600 text-white flex items-center justify-center animate-pulse shrink-0">
+        <view class="w-9 h-9 rounded-md bg-rose-600 text-white flex items-center justify-center animate-pulse shrink-0">
           <text class="i-carbon-warning-alt text-lg" />
         </view>
         <view class="flex-1 min-w-0">
-          <view class="text-xs font-bold text-red-400 flex items-center gap-1.5">
+          <view class="text-xs font-bold text-rose-600 flex items-center gap-1.5">
             <text>救援紧急调度中</text>
-            <text class="text-[20rpx] bg-red-600 text-white px-1.5 py-0.2 rounded-sm font-mono font-bold">
+            <text class="text-[20rpx] bg-rose-600 text-white px-1.5 py-0.2 rounded-sm font-mono font-bold">
               {{ activeRescueOrder.orderStatus === 'DISPATCHING' || activeRescueOrder.orderStatus === 'PENDING_DISPATCH' ? '调度派单中' :
                 activeRescueOrder.orderStatus === 'ACCEPTED' ? '已派工出警' :
                 activeRescueOrder.orderStatus === 'DEPARTED' ? '技师赶赴现场' :
                 activeRescueOrder.orderStatus === 'ARRIVED' || activeRescueOrder.orderStatus === 'IN_PROGRESS' ? '已到场抢修' : '进行中' }}
             </text>
           </view>
-          <view class="text-[22rpx] text-slate-300 mt-1 truncate">
-            单号: <text class="font-mono text-white">{{ activeRescueOrder.orderNo }}</text> · {{ activeRescueOrder.technicianName ? `${activeRescueOrder.technicianName}师傅` : '网点调度中' }}
+          <view class="text-[22rpx] text-slate-600 mt-1 truncate">
+            单号: <text class="font-mono text-slate-900 font-bold">{{ activeRescueOrder.orderNo }}</text> · {{ activeRescueOrder.technicianName ? `${activeRescueOrder.technicianName}师傅` : '网点调度中' }}
             <text v-if="activeRescueOrder.technicianPlateNo"> · {{ activeRescueOrder.technicianPlateNo }}</text>
           </view>
         </view>
       </view>
-      <view class="flex items-center bg-red-500/20 border border-red-500/50 text-red-400 px-2.5 py-1.5 rounded-sm text-xs font-bold shrink-0">
+      <view class="flex items-center bg-rose-50 border border-rose-200 text-rose-600 px-2.5 py-1.5 rounded-sm text-xs font-bold shrink-0">
         <text>查看轨迹</text>
         <text class="i-carbon-chevron-right ml-0.5 text-xs" />
       </view>

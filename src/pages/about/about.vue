@@ -6,8 +6,8 @@ defineOptions({
 definePage({
   style: {
     navigationBarTitleText: '关于卡车汇',
-    navigationBarBackgroundColor: '#0f172a',
-    navigationBarTextStyle: 'white',
+    navigationBarBackgroundColor: '#f8fafc',
+    navigationBarTextStyle: 'black',
   },
 })
 
@@ -23,18 +23,18 @@ function callService() {
 
 <template>
   <view class="about-page min-h-screen bg-[#f8fafc] pb-16">
-    <!-- 1. 顶部品牌展示区 (深碳沥青工业风) -->
-    <view class="bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#1e293b] text-white px-5 pt-8 pb-12 text-center rounded-b-2xl border-b border-slate-700/60">
-      <view class="w-16 h-16 mx-auto rounded-lg bg-[#0284c7] border-2 border-sky-400/50 flex items-center justify-center text-3xl shadow-sm">
+    <!-- 1. 顶部品牌展示区 (高可视信标蓝工业风) -->
+    <view class="bg-gradient-to-r from-[#0284c7] to-[#0369a1] text-white px-5 pt-8 pb-12 text-center rounded-b-2xl border-b border-sky-400/20 shadow-sm">
+      <view class="w-16 h-16 mx-auto rounded-lg bg-white/10 border-2 border-white/40 flex items-center justify-center text-3xl shadow-sm">
         <text class="i-carbon-delivery-truck text-white" />
       </view>
       <view class="text-lg font-black tracking-tight mt-3 text-white">
         卡车汇 Truck Hub
       </view>
-      <view class="text-xs text-slate-300 mt-1 font-mono">
+      <view class="text-xs text-sky-100 mt-1 font-mono">
         Version 1.2.0 (Build 2026.10)
       </view>
-      <view class="mt-2 inline-block bg-black/25 border border-white/20 text-sky-400 text-[20rpx] px-2.5 py-0.5 rounded-sm font-bold">
+      <view class="mt-2 inline-block bg-black/20 border border-white/30 text-white text-[20rpx] px-2.5 py-0.5 rounded-sm font-bold">
         全国公路商用车应急保障枢纽
       </view>
     </view>

@@ -47,31 +47,31 @@ function gotoDiagnosis() {
 
 <template>
   <view class="rescue-page min-h-screen bg-[#f8fafc] pb-24">
-    <!-- 1. 顶部 24 小时救援横幅：深碳与信标蓝交融机能顶栏 -->
-    <view class="bg-gradient-to-b from-[#0f172a] via-[#0369a1] to-[#0284c7] text-white px-4 pt-3 pb-6 rounded-b-2xl border-b border-sky-400/20">
+    <!-- 1. 顶部 24 小时救援横幅：高可视信标蓝工业机能顶栏 -->
+    <view class="bg-gradient-to-r from-[#0284c7] to-[#0369a1] text-white px-4 pt-3 pb-6 rounded-b-2xl border-b border-sky-400/20 shadow-sm">
       <view class="flex items-center justify-between">
         <view class="flex items-center gap-2">
           <view class="w-2.5 h-2.5 rounded-sm bg-emerald-400 animate-pulse" />
-          <text class="text-xs font-bold tracking-wider text-slate-100">全国 1200+ 特约救援网点 24H 在线</text>
+          <text class="text-xs font-bold tracking-wider text-white">全国 1200+ 特约救援网点 24H 在线</text>
         </view>
         <view
-          class="bg-black/25 border border-white/25 text-white px-3 py-1 rounded-sm text-[20rpx] font-bold flex items-center gap-1 active:opacity-80 cursor-pointer"
+          class="bg-black/20 border border-white/30 text-white px-3 py-1 rounded-sm text-[20rpx] font-bold flex items-center gap-1 active:opacity-80 cursor-pointer"
           @click="callPhone"
         >
-          <text class="i-carbon-phone text-xs text-amber-400" />
+          <text class="i-carbon-phone text-xs text-amber-300" />
           <text>电话专线</text>
         </view>
       </view>
 
       <view class="mt-4 flex items-baseline gap-2">
         <text class="text-2xl font-black tracking-tight text-white">卡车汇极速道路救援</text>
-        <text class="text-xs bg-amber-400 text-slate-950 px-2 py-0.5 rounded-sm font-extrabold">平均18分钟直达</text>
+        <text class="text-xs bg-amber-400 text-slate-950 px-2 py-0.5 rounded-sm font-extrabold shadow-sm">平均18分钟直达</text>
       </view>
-      <text class="text-xs text-slate-200 mt-1 block font-medium">一键智能定位 · 专业技师调度 · 统一透明公道收费</text>
+      <text class="text-xs text-sky-100 mt-1 block font-medium">一键智能定位 · 专业技师调度 · 统一透明公道收费</text>
     </view>
 
     <!-- 2. 一键呼叫救援大卡片：硬核纯色实体分层与超大触感按钮 (88rpx/44px) -->
-    <view class="mx-4 -mt-3 bg-white rounded-lg p-5 border border-slate-200/90">
+    <view class="mx-4 -mt-3 bg-white rounded-lg p-5 border border-slate-200/90 shadow-sm">
       <view class="flex items-center justify-between">
         <view>
           <view class="text-base font-bold text-slate-900 flex items-center gap-1.5">
@@ -86,7 +86,7 @@ function gotoDiagnosis() {
 
       <view class="mt-4">
         <button
-          class="w-full bg-gradient-to-r from-red-600 to-red-700 text-white font-extrabold text-base h-12 rounded-md active:bg-red-800 flex items-center justify-center gap-2 border-none"
+          class="w-full bg-gradient-to-r from-red-600 to-red-700 text-white font-extrabold text-base h-12 rounded-md active:bg-red-800 flex items-center justify-center gap-2 border-none shadow-md shadow-red-600/20"
           @click="startRescue()"
         >
           <text class="i-carbon-warning-filled text-xl" />
@@ -95,25 +95,25 @@ function gotoDiagnosis() {
       </view>
     </view>
 
-    <!-- 3. 故障诊断快捷引导横幅：轻量机能提示条 -->
+    <!-- 3. 故障诊断快捷引导横幅：亮色高可视机能提示条 -->
     <view
-      class="mx-4 mt-4 bg-slate-900 border border-slate-700 rounded-lg p-3.5 flex items-center justify-between cursor-pointer active:opacity-90"
+      class="mx-4 mt-4 bg-white border border-slate-200/90 rounded-lg p-3.5 flex items-center justify-between cursor-pointer active:bg-slate-50 shadow-sm"
       @click="gotoDiagnosis"
     >
       <view class="flex items-center gap-3">
-        <view class="w-9 h-9 rounded-md bg-indigo-600 text-white flex items-center justify-center shrink-0">
+        <view class="w-9 h-9 rounded-md bg-indigo-50 border border-indigo-200 text-indigo-600 flex items-center justify-center shrink-0">
           <text class="i-carbon-analytics text-base" />
         </view>
         <view>
-          <view class="text-xs font-bold text-slate-100">
+          <view class="text-xs font-bold text-slate-900">
             不确定什么故障？试试智能诊断
           </view>
-          <view class="text-[20rpx] text-slate-400 mt-0.5 font-medium">
+          <view class="text-[20rpx] text-slate-500 mt-0.5 font-medium">
             AI故障排查树 · 原厂工程师指导 · 推荐备件
           </view>
         </view>
       </view>
-      <view class="flex items-center text-indigo-400 text-xs font-bold shrink-0">
+      <view class="flex items-center text-indigo-600 text-xs font-bold shrink-0">
         <text>去诊断</text>
         <text class="i-carbon-chevron-right text-xs ml-0.5" />
       </view>

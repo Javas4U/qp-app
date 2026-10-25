@@ -15,8 +15,8 @@ defineOptions({
 definePage({
   style: {
     navigationBarTitleText: '个人中心',
-    navigationBarBackgroundColor: '#0f172a',
-    navigationBarTextStyle: 'white',
+    navigationBarBackgroundColor: '#f8fafc',
+    navigationBarTextStyle: 'black',
   },
 })
 
@@ -149,14 +149,14 @@ function handleContactService() {
 
 <template>
   <view class="min-h-screen bg-[#f8fafc] pb-24">
-    <!-- 1. 顶部用户信息卡片 (深碳沥青工业风) -->
-    <view class="bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#1e293b] text-white px-5 pt-4 pb-14 rounded-b-2xl border-b border-slate-700/60">
+    <!-- 1. 顶部用户信息卡片 (高可视信标蓝工业风) -->
+    <view class="bg-gradient-to-r from-[#0284c7] to-[#0369a1] text-white px-5 pt-4 pb-14 rounded-b-2xl border-b border-sky-400/20 shadow-sm">
       <!-- 已登录状态展示 -->
       <view v-if="hasLogin" class="flex items-center justify-between">
         <view class="flex items-center gap-3">
           <image
             :src="currentUser?.avatar || userInfo.avatar"
-            class="w-14 h-14 rounded-md border-2 border-amber-400 bg-slate-900 object-cover shrink-0"
+            class="w-14 h-14 rounded-md border-2 border-amber-300 bg-white/20 object-cover shrink-0 shadow-sm"
           />
           <view>
             <view class="flex items-center gap-2">
@@ -192,10 +192,10 @@ function handleContactService() {
         <!-- 视角切换开关胶囊 (机能风格) -->
         <view
           v-if="hasLogin && userStore.hasBothRoles"
-          class="bg-slate-900/80 border border-slate-600 px-3 py-1.5 rounded-md text-xs flex items-center gap-1.5 cursor-pointer active:opacity-80"
+          class="bg-black/20 border border-white/30 px-3 py-1.5 rounded-md text-xs flex items-center gap-1.5 cursor-pointer active:opacity-80"
           @click="switchRole"
         >
-          <text :class="currentRole === 'DRIVER' ? 'i-carbon-tools' : 'i-carbon-delivery-truck'" class="text-amber-400 text-sm" />
+          <text :class="currentRole === 'DRIVER' ? 'i-carbon-tools' : 'i-carbon-delivery-truck'" class="text-amber-300 text-sm" />
           <text class="font-bold text-white">切为{{ currentRole === 'DRIVER' ? '技师' : '司机' }}</text>
         </view>
       </view>
@@ -203,24 +203,24 @@ function handleContactService() {
       <!-- 未登录状态展示 -->
       <view v-else class="flex items-center justify-between">
         <view class="flex items-center gap-3 cursor-pointer" @click="handleGoLogin">
-          <view class="w-14 h-14 rounded-md border-2 border-slate-600 bg-slate-900 flex items-center justify-center text-2xl text-slate-300">
+          <view class="w-14 h-14 rounded-md border-2 border-white/40 bg-white/10 flex items-center justify-center text-2xl text-white">
             <text class="i-carbon-user-avatar-filled" />
           </view>
           <view>
             <view class="flex items-center gap-2">
-              <text class="text-base font-bold text-white hover:text-emerald-400">点击登录 / 注册</text>
-              <view class="bg-slate-800 border border-slate-600 text-slate-300 text-[18rpx] px-2 py-0.5 rounded-sm font-medium">
+              <text class="text-base font-bold text-white">点击登录 / 注册</text>
+              <view class="bg-black/20 border border-white/30 text-white text-[18rpx] px-2 py-0.5 rounded-sm font-medium">
                 未登录
               </view>
             </view>
-            <view class="text-xs text-slate-300 mt-1 font-medium">
+            <view class="text-xs text-sky-100 mt-1 font-medium">
               登录后享爱车档案、紧急呼救与车队权益
             </view>
           </view>
         </view>
 
         <button
-          class="bg-[#0284c7] text-white text-xs px-3.5 h-8 rounded-md font-bold active:bg-[#0369a1] m-0 border-none flex items-center justify-center"
+          class="bg-white text-[#0284c7] text-xs px-3.5 h-8 rounded-md font-bold active:bg-slate-100 m-0 border-none flex items-center justify-center shadow-sm"
           @click="handleGoLogin"
         >
           立即登录

@@ -261,10 +261,10 @@ async function submitRescue() {
 <template>
   <view class="rescue-create-page min-h-screen bg-[#f8fafc] pb-28">
     <!-- 0. 存在进行中的救援订单时，置顶态势机能卡片 (FR-016) -->
-    <view v-if="activeOrder" class="mx-4 mt-3 mb-3 bg-[#0f172a] text-white rounded-lg p-4 border-2 border-red-500">
-      <view class="flex items-center justify-between pb-2.5 border-b border-slate-700">
-        <view class="flex items-center gap-1.5 font-bold text-sm text-red-400">
-          <text class="i-carbon-warning-alt text-amber-400 text-base animate-pulse" />
+    <view v-if="activeOrder" class="mx-4 mt-3 mb-3 bg-white text-slate-800 rounded-lg p-4 border-2 border-rose-500 shadow-sm">
+      <view class="flex items-center justify-between pb-2.5 border-b border-slate-200">
+        <view class="flex items-center gap-1.5 font-bold text-sm text-rose-600">
+          <text class="i-carbon-warning-alt text-amber-500 text-base animate-pulse" />
           <text>您有 1 笔进行中的救援服务</text>
         </view>
         <view :class="getStatusBadge(activeOrder.orderStatus).bg" class="text-[20rpx] text-white px-2 py-0.5 rounded-sm font-bold flex items-center gap-1">
@@ -274,17 +274,17 @@ async function submitRescue() {
       </view>
 
       <view class="mt-3 grid grid-cols-2 gap-2 text-xs">
-        <view class="bg-slate-800 border border-slate-700 rounded-md p-2.5">
-          <text class="text-slate-400 text-[20rpx] block">救援工单号</text>
-          <text class="font-mono font-bold text-white text-xs mt-0.5 block truncate">{{ activeOrder.orderNo }}</text>
+        <view class="bg-slate-50 border border-slate-200 rounded-md p-2.5">
+          <text class="text-slate-500 text-[20rpx] block">救援工单号</text>
+          <text class="font-mono font-bold text-slate-900 text-xs mt-0.5 block truncate">{{ activeOrder.orderNo }}</text>
         </view>
-        <view class="bg-slate-800 border border-slate-700 rounded-md p-2.5">
-          <text class="text-slate-400 text-[20rpx] block">出警救援车辆</text>
-          <text class="font-mono font-bold text-emerald-400 text-xs mt-0.5 block truncate">{{ activeOrder.technicianPlateNo || '专车整备中' }}</text>
+        <view class="bg-slate-50 border border-slate-200 rounded-md p-2.5">
+          <text class="text-slate-500 text-[20rpx] block">出警救援车辆</text>
+          <text class="font-mono font-bold text-emerald-600 text-xs mt-0.5 block truncate">{{ activeOrder.technicianPlateNo || '专车整备中' }}</text>
         </view>
       </view>
 
-      <view class="mt-2.5 flex items-center justify-between text-xs text-slate-300">
+      <view class="mt-2.5 flex items-center justify-between text-xs text-slate-600">
         <view class="flex items-center gap-1.5 truncate max-w-56">
           <text class="i-carbon-user-avatar text-sm text-slate-400" />
           <text class="font-medium truncate">{{ activeOrder.technicianName ? `出警技师：${activeOrder.technicianName}（${activeOrder.technicianPhone || '已指派'}）` : '调度指派技师中...' }}</text>

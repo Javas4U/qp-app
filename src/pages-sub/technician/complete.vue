@@ -11,8 +11,8 @@ defineOptions({
 definePage({
   style: {
     navigationBarTitleText: '技师工作台 - 完工存证',
-    navigationBarBackgroundColor: '#0f172a',
-    navigationBarTextStyle: 'white',
+    navigationBarBackgroundColor: '#f8fafc',
+    navigationBarTextStyle: 'black',
   },
 })
 
@@ -75,19 +75,19 @@ function submitCompletion() {
 </script>
 
 <template>
-  <view class="tech-complete-page min-h-screen bg-[#0f172a] text-slate-100 pb-28 flex flex-col justify-between">
+  <view class="tech-complete-page min-h-screen bg-[#f8fafc] text-slate-800 pb-28 flex flex-col justify-between">
     <view>
-      <!-- 1. 顶部完工指引 (工业刚性顶栏) -->
-      <view class="bg-[#1e293b] border-b border-slate-700/80 p-4">
+      <!-- 1. 顶部完工指引 (工业高可视顶栏) -->
+      <view class="bg-white border-b border-slate-200 p-4 shadow-sm">
         <view class="flex items-center gap-2.5">
-          <view class="w-8 h-8 rounded-md bg-slate-900 border border-slate-700 flex items-center justify-center text-lg text-[#0284c7]">
+          <view class="w-8 h-8 rounded-md bg-sky-50 border border-sky-200 flex items-center justify-center text-lg text-[#0284c7]">
             <text class="i-carbon-camera" />
           </view>
           <view>
-            <view class="text-sm font-bold text-slate-100">
+            <view class="text-sm font-bold text-slate-900">
               现场作业标准化拍照存证
             </view>
-            <view class="text-[20rpx] text-slate-400 mt-0.5">
+            <view class="text-[20rpx] text-slate-500 mt-0.5">
               请务必上传：损坏旧件对比照、原厂新件包装防伪标、装配完工细节照
             </view>
           </view>
@@ -95,37 +95,37 @@ function submitCompletion() {
       </view>
 
       <!-- 2. 工单信息提示 -->
-      <view class="mx-4 mt-3 bg-[#1e293b] rounded-lg p-3.5 border border-slate-700/80 flex items-center justify-between text-xs">
+      <view class="mx-4 mt-3 bg-white rounded-lg p-3.5 border border-slate-200/90 shadow-sm flex items-center justify-between text-xs">
         <view>
-          <text class="text-slate-400">求援车辆：</text>
-          <text class="font-bold text-slate-100 font-mono">{{ currentTicket?.plateNo }}</text>
+          <text class="text-slate-500">求援车辆：</text>
+          <text class="font-bold text-slate-900 font-mono">{{ currentTicket?.plateNo }}</text>
         </view>
-        <view class="font-bold text-rose-400 font-mono">
+        <view class="font-bold text-rose-600 font-mono">
           应结总额：¥{{ currentTicket?.paidAmount || 1000 }}.00
         </view>
       </view>
 
       <!-- 3. 照片上传区域 -->
-      <view class="mx-4 mt-3 bg-[#1e293b] rounded-lg p-4 border border-slate-700/80">
-        <view class="text-xs font-bold text-slate-200 mb-3 flex items-center justify-between">
+      <view class="mx-4 mt-3 bg-white rounded-lg p-4 border border-slate-200/90 shadow-sm">
+        <view class="text-xs font-bold text-slate-900 mb-3 flex items-center justify-between">
           <text>作业照片存证 (最多4张)</text>
-          <text class="text-[20rpx] text-slate-400 font-mono">{{ workPhotos.length }}/4</text>
+          <text class="text-[20rpx] text-slate-500 font-mono">{{ workPhotos.length }}/4</text>
         </view>
 
         <view class="grid grid-cols-2 gap-3">
           <view
             v-for="(photo, idx) in workPhotos"
             :key="idx"
-            class="relative h-32 rounded-md overflow-hidden border border-slate-700 bg-slate-900"
+            class="relative h-32 rounded-md overflow-hidden border border-slate-200 bg-slate-100 shadow-xs"
           >
             <image :src="photo" mode="aspectFill" class="w-full h-full" />
             <view
-              class="absolute top-1.5 right-1.5 w-6 h-6 rounded-sm bg-black/75 text-white flex items-center justify-center cursor-pointer"
+              class="absolute top-1.5 right-1.5 w-6 h-6 rounded-sm bg-black/60 text-white flex items-center justify-center cursor-pointer"
               @click="removePhoto(idx)"
             >
               <text class="i-carbon-close text-xs" />
             </view>
-            <view class="absolute bottom-0 inset-x-0 bg-slate-900/90 border-t border-slate-800 text-slate-200 text-[18rpx] py-0.5 text-center font-medium">
+            <view class="absolute bottom-0 inset-x-0 bg-white/95 border-t border-slate-200 text-slate-700 text-[18rpx] py-0.5 text-center font-medium">
               {{ idx === 0 ? '损坏节温器旧件' : '原厂新件装配完成' }}
             </view>
           </view>
@@ -133,38 +133,38 @@ function submitCompletion() {
           <!-- 添加照片按钮 -->
           <view
             v-if="workPhotos.length < 4"
-            class="h-32 rounded-md border-2 border-dashed border-slate-700 flex flex-col items-center justify-center text-slate-400 bg-slate-900/60 cursor-pointer active:bg-slate-900 transition-colors"
+            class="h-32 rounded-md border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400 bg-slate-50 cursor-pointer active:bg-slate-100 transition-colors"
             @click="takePhoto"
           >
             <text class="i-carbon-camera text-2xl text-[#0284c7]" />
-            <text class="text-xs font-medium text-slate-300 mt-1.5">拍摄存证照片</text>
-            <text class="text-[18rpx] text-slate-500">支持相机拍摄/相册选择</text>
+            <text class="text-xs font-medium text-slate-700 mt-1.5">拍摄存证照片</text>
+            <text class="text-[18rpx] text-slate-400">支持相机拍摄/相册选择</text>
           </view>
         </view>
       </view>
 
       <!-- 4. 维修总结说明文本框 -->
-      <view class="mx-4 mt-3 bg-[#1e293b] rounded-lg p-4 border border-slate-700/80">
-        <view class="text-xs font-bold text-slate-200 mb-2">
+      <view class="mx-4 mt-3 bg-white rounded-lg p-4 border border-slate-200/90 shadow-sm">
+        <view class="text-xs font-bold text-slate-900 mb-2">
           现场检修总结说明
         </view>
         <textarea
           v-model="remark"
           :maxlength="200"
-          class="w-full h-24 p-2.5 bg-slate-900 rounded-md text-xs text-slate-200 border border-slate-700 outline-none leading-relaxed"
+          class="w-full h-24 p-2.5 bg-slate-50 rounded-md text-xs text-slate-900 border border-slate-300 outline-none leading-relaxed"
           placeholder="请填写本次换件与检修自检情况"
-          placeholder-class="text-slate-500"
+          placeholder-class="text-slate-400"
         />
-        <view class="text-right text-[20rpx] text-slate-400 font-mono mt-1">
+        <view class="text-right text-[20rpx] text-slate-500 font-mono mt-1">
           {{ remark.length }}/200字
         </view>
       </view>
     </view>
 
     <!-- 5. 底部提交按钮 (手套防误触 ≥ 44px) -->
-    <view class="fixed bottom-0 left-0 right-0 p-4 bg-[#1e293b]/95 border-t border-slate-700 z-30">
+    <view class="fixed bottom-0 left-0 right-0 p-4 bg-white/95 border-t border-slate-200 z-30 shadow-md">
       <button
-        class="w-full bg-[#0284c7] active:bg-[#0369a1] text-white min-h-[88rpx] rounded-lg font-bold text-sm flex items-center justify-center gap-2 border-none transition-colors"
+        class="w-full bg-[#0284c7] active:bg-[#0369a1] text-white min-h-[88rpx] rounded-lg font-bold text-sm flex items-center justify-center gap-2 border-none transition-colors shadow-sm"
         @click="submitCompletion"
       >
         <text class="i-carbon-checkmark-filled text-base" />
