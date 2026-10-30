@@ -124,12 +124,12 @@ function handleToggleOnline() {
 </script>
 
 <template>
-  <view class="min-h-screen bg-[#0f172a] text-slate-100 pb-8">
+  <view class="min-h-screen bg-[#0f172a] pb-8 text-slate-100">
     <!-- 技师状态统计面板（深碳机能工业风格） -->
-    <view class="bg-[#1e293b] border-b border-slate-700/80 p-4">
+    <view class="border-b border-slate-700/80 bg-[#1e293b] p-4">
       <view class="mb-3.5 flex items-center justify-between">
         <view>
-          <view class="text-sm font-bold text-slate-100 flex items-center gap-1.5">
+          <view class="flex items-center gap-1.5 text-sm text-slate-100 font-bold">
             <text class="i-carbon-user-avatar-filled text-lg text-[#0284c7]" />
             <text>张建军 (高级清障抢修技师)</text>
           </view>
@@ -138,18 +138,18 @@ function handleToggleOnline() {
           </view>
         </view>
         <view
-          class="cursor-pointer border rounded-sm px-2.5 py-1 text-xs font-bold transition active:opacity-80 flex items-center gap-1"
+          class="flex cursor-pointer items-center gap-1 border rounded-sm px-2.5 py-1 text-xs font-bold transition active:opacity-80"
           :class="rescueTaskStore.isOnline ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400' : 'bg-slate-800 border-slate-700 text-slate-400'"
           @click="handleToggleOnline"
         >
-          <view class="w-1.5 h-1.5 rounded-full" :class="rescueTaskStore.isOnline ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'" />
+          <view class="h-1.5 w-1.5 rounded-full" :class="rescueTaskStore.isOnline ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'" />
           <text>{{ rescueTaskStore.isOnline ? '在勤值班中' : '暂停派工' }}</text>
         </view>
       </view>
 
-      <view class="grid grid-cols-3 gap-2 rounded-lg bg-slate-900 border border-slate-700 p-3 text-center">
+      <view class="grid grid-cols-3 gap-2 border border-slate-700 rounded-lg bg-slate-900 p-3 text-center">
         <view>
-          <view class="text-xl font-bold font-mono text-amber-400">
+          <view class="text-xl text-amber-400 font-bold font-mono">
             {{ taskStats.pendingCount }}
           </view>
           <view class="mt-0.5 text-[20rpx] text-slate-400">
@@ -157,7 +157,7 @@ function handleToggleOnline() {
           </view>
         </view>
         <view>
-          <view class="text-xl font-bold font-mono text-sky-400">
+          <view class="text-xl text-sky-400 font-bold font-mono">
             {{ taskStats.ongoingCount }}
           </view>
           <view class="mt-0.5 text-[20rpx] text-slate-400">
@@ -165,7 +165,7 @@ function handleToggleOnline() {
           </view>
         </view>
         <view>
-          <view class="text-xl font-bold font-mono text-emerald-400">
+          <view class="text-xl text-emerald-400 font-bold font-mono">
             {{ taskStats.todayFinishedCount }}
           </view>
           <view class="mt-0.5 text-[20rpx] text-slate-400">
@@ -178,21 +178,21 @@ function handleToggleOnline() {
     <!-- 状态切换 Tab（工业实线下划线） -->
     <view class="flex border-b border-slate-700 bg-[#1e293b] text-xs font-bold">
       <view
-        class="flex-1 py-3 text-center transition border-b-2"
+        class="flex-1 border-b-2 py-3 text-center transition"
         :class="activeTab === 'pending' ? 'text-sky-400 border-[#0284c7]' : 'text-slate-400 border-transparent'"
         @click="activeTab === 'pending'"
       >
         待出警 ({{ taskStats.pendingCount }})
       </view>
       <view
-        class="flex-1 py-3 text-center transition border-b-2"
+        class="flex-1 border-b-2 py-3 text-center transition"
         :class="activeTab === 'ongoing' ? 'text-sky-400 border-[#0284c7]' : 'text-slate-400 border-transparent'"
         @click="activeTab === 'ongoing'"
       >
         作业中 ({{ taskStats.ongoingCount }})
       </view>
       <view
-        class="flex-1 py-3 text-center transition border-b-2"
+        class="flex-1 border-b-2 py-3 text-center transition"
         :class="activeTab === 'finished' ? 'text-sky-400 border-[#0284c7]' : 'text-slate-400 border-transparent'"
         @click="activeTab === 'finished'"
       >
@@ -206,16 +206,16 @@ function handleToggleOnline() {
         <view
           v-for="order in filteredList"
           :key="order.orderNo"
-          class="bg-[#1e293b] rounded-lg p-4 border border-slate-700/80 space-y-3"
+          class="border border-slate-700/80 rounded-lg bg-[#1e293b] p-4 space-y-3"
         >
           <!-- 头部: 单号与状态 -->
           <view class="flex items-center justify-between border-b border-slate-700 pb-2.5">
-            <view class="text-xs font-mono font-bold text-slate-100 flex items-center gap-1.5">
+            <view class="flex items-center gap-1.5 text-xs text-slate-100 font-bold font-mono">
               <text class="i-carbon-ticket text-[#0284c7]" />
               <text>{{ order.orderNo }}</text>
             </view>
             <view
-              class="text-[20rpx] px-2 py-0.5 rounded-sm font-bold border"
+              class="border rounded-sm px-2 py-0.5 text-[20rpx] font-bold"
               :class="{
                 'bg-sky-500/20 text-sky-400 border-sky-500/40': order.orderStatus === 'ACCEPTED',
                 'bg-amber-500/20 text-amber-400 border-amber-500/40': order.orderStatus === 'DEPARTED',
@@ -223,37 +223,37 @@ function handleToggleOnline() {
                 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40': order.orderStatus === 'COMPLETED',
               }"
             >
-              {{ order.orderStatus === 'ACCEPTED' ? '已指派待出警' :
-                order.orderStatus === 'DEPARTED' ? '奔赴现场中' :
-                order.orderStatus === 'ARRIVED' ? '现场抢修中' : '已完工交付' }}
+              {{ order.orderStatus === 'ACCEPTED' ? '已指派待出警'
+                : order.orderStatus === 'DEPARTED' ? '奔赴现场中'
+                  : order.orderStatus === 'ARRIVED' ? '现场抢修中' : '已完工交付' }}
             </view>
           </view>
 
           <!-- 车辆与故障信息 -->
-          <view class="text-xs space-y-1.5 text-slate-300">
+          <view class="text-xs text-slate-300 space-y-1.5">
             <view class="flex items-center justify-between">
-              <text class="font-bold text-sm text-slate-100 font-mono">{{ order.plateNo }}</text>
+              <text class="text-sm text-slate-100 font-bold font-mono">{{ order.plateNo }}</text>
               <text class="text-slate-400">{{ order.vehicleModel || '重卡商用车' }}</text>
             </view>
             <view class="flex items-start gap-1 text-slate-300">
-              <text class="i-carbon-warning text-amber-400 mt-0.5 shrink-0" />
+              <text class="i-carbon-warning mt-0.5 shrink-0 text-amber-400" />
               <text class="line-clamp-2">{{ order.faultDescription || '车辆突发故障急需救援' }}</text>
             </view>
             <view class="flex items-start gap-1 text-slate-400 font-mono">
-              <text class="i-carbon-location-filled text-rose-400 mt-0.5 shrink-0" />
+              <text class="i-carbon-location-filled mt-0.5 shrink-0 text-rose-400" />
               <text class="line-clamp-1">{{ order.rescueAddress }}</text>
             </view>
           </view>
 
           <!-- 司机联系人卡片 -->
-          <view class="bg-slate-900 p-2.5 rounded-md flex items-center justify-between text-xs text-slate-200 border border-slate-800">
+          <view class="flex items-center justify-between border border-slate-800 rounded-md bg-slate-900 p-2.5 text-xs text-slate-200">
             <view class="flex items-center gap-1.5">
               <text class="i-carbon-user-filled text-slate-400" />
               <text class="font-medium">{{ order.driverName }}</text>
-              <text class="font-mono text-slate-400 ml-1">({{ order.driverPhone }})</text>
+              <text class="ml-1 text-slate-400 font-mono">({{ order.driverPhone }})</text>
             </view>
             <view
-              class="w-7 h-7 rounded-md bg-slate-800 border border-slate-700 text-[#0284c7] flex items-center justify-center cursor-pointer active:bg-slate-700 transition-colors"
+              class="h-7 w-7 flex cursor-pointer items-center justify-center border border-slate-700 rounded-md bg-slate-800 text-[#0284c7] transition-colors active:bg-slate-700"
               @click="handleCallDriver(order.driverPhone)"
             >
               <text class="i-carbon-phone-filled text-sm" />
@@ -264,7 +264,7 @@ function handleToggleOnline() {
           <view class="flex items-center gap-2 pt-1">
             <button
               v-if="order.orderStatus === 'ACCEPTED'"
-              class="flex-1 bg-[#0284c7] active:bg-[#0369a1] text-white min-h-[88rpx] rounded-lg text-xs font-bold flex items-center justify-center gap-1 border-none transition-colors"
+              class="min-h-[88rpx] flex flex-1 items-center justify-center gap-1 rounded-lg border-none bg-[#0284c7] text-xs text-white font-bold transition-colors active:bg-[#0369a1]"
               @click="handleDepart(order)"
             >
               <text class="i-carbon-direction-straight-filled" />
@@ -272,14 +272,14 @@ function handleToggleOnline() {
             </button>
             <button
               v-else-if="order.orderStatus === 'DEPARTED'"
-              class="flex-1 bg-amber-500 active:bg-amber-600 text-slate-950 min-h-[88rpx] rounded-lg text-xs font-bold flex items-center justify-center gap-1 border-none transition-colors"
+              class="min-h-[88rpx] flex flex-1 items-center justify-center gap-1 rounded-lg border-none bg-amber-500 text-xs text-slate-950 font-bold transition-colors active:bg-amber-600"
               @click="handleOrderDetail(order)"
             >
               <text class="i-carbon-location-current" />
               <text>已抵达现场打卡</text>
             </button>
             <button
-              class="px-4 bg-slate-800 border border-slate-700 text-slate-200 min-h-[88rpx] rounded-lg text-xs font-medium active:bg-slate-700 transition-colors flex items-center justify-center"
+              class="min-h-[88rpx] flex items-center justify-center border border-slate-700 rounded-lg bg-slate-800 px-4 text-xs text-slate-200 font-medium transition-colors active:bg-slate-700"
               @click="handleOrderDetail(order)"
             >
               导航详情
@@ -289,7 +289,7 @@ function handleToggleOnline() {
       </view>
 
       <view v-else class="py-16 text-center text-xs text-slate-500">
-        <view class="w-12 h-12 rounded-lg bg-slate-900 border border-slate-800 text-slate-600 flex items-center justify-center mx-auto text-2xl mb-2">
+        <view class="mx-auto mb-2 h-12 w-12 flex items-center justify-center border border-slate-800 rounded-lg bg-slate-900 text-2xl text-slate-600">
           <text class="i-carbon-checkmark-outline" />
         </view>
         <text>当前没有指派给您的救援任务</text>

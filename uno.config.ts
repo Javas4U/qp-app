@@ -94,7 +94,7 @@ export default defineConfig({
   theme: {
     colors: {
       /** 主题色，用法如: text-primary */
-      primary: 'var(--wot-color-theme,#0957DE)',
+      'primary': 'var(--wot-color-theme,#0957DE)',
       // The Highway Crucible 设计系统令牌 (源自 DESIGN.md)
       'beacon-sky-core': '#0284c7',
       'beacon-sky-glow': '#38bdf8',

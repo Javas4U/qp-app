@@ -1,10 +1,13 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, vi } from 'vitest'
 
+const storageMap = new Map<string, any>()
+
 // 每个测试前重置 Pinia 实例，避免状态在测试间泄漏
 beforeEach(() => {
   // 不注册 pinia-plugin-persistedstate，测试只验证 store 逻辑，不验证持久化行为
   setActivePinia(createPinia())
+  storageMap.clear()
   // 重置所有 mock 的调用记录（保留实现，仅清空 .mock.calls 等）
   vi.clearAllMocks()
 })
@@ -22,9 +25,13 @@ const uniMock = {
   switchTab: vi.fn(),
   reLaunch: vi.fn(),
   // tabbar/store.ts 在模块初始化时调用 getStorageSync，返回 null 确保不影响初始状态
-  getStorageSync: vi.fn().mockReturnValue(null),
-  setStorageSync: vi.fn(),
-  removeStorageSync: vi.fn(),
+  getStorageSync: vi.fn((key: string) => storageMap.get(key) ?? null),
+  setStorageSync: vi.fn((key: string, val: any) => {
+    storageMap.set(key, val)
+  }),
+  removeStorageSync: vi.fn((key: string) => {
+    storageMap.delete(key)
+  }),
   getStorage: vi.fn(),
   setStorage: vi.fn(),
   removeStorage: vi.fn(),

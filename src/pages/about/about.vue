@@ -24,25 +24,25 @@ function callService() {
 <template>
   <view class="about-page min-h-screen bg-[#f8fafc] pb-16">
     <!-- 1. 顶部品牌展示区 (深碳沥青工业风) -->
-    <view class="bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#1e293b] text-white px-5 pt-8 pb-12 text-center rounded-b-2xl border-b border-slate-700/60">
-      <view class="w-16 h-16 mx-auto rounded-lg bg-[#0284c7] border-2 border-sky-400/50 flex items-center justify-center text-3xl shadow-sm">
+    <view class="border-b border-slate-700/60 rounded-b-2xl from-[#0f172a] via-[#1e293b] to-[#1e293b] bg-gradient-to-b px-5 pb-12 pt-8 text-center text-white">
+      <view class="mx-auto h-16 w-16 flex items-center justify-center border-2 border-sky-400/50 rounded-lg bg-[#0284c7] text-3xl shadow-sm">
         <text class="i-carbon-delivery-truck text-white" />
       </view>
-      <view class="text-lg font-black tracking-tight mt-3 text-white">
+      <view class="mt-3 text-lg text-white font-black tracking-tight">
         卡车汇 Truck Hub
       </view>
-      <view class="text-xs text-slate-300 mt-1 font-mono">
+      <view class="mt-1 text-xs text-slate-300 font-mono">
         Version 1.2.0 (Build 2026.10)
       </view>
-      <view class="mt-2 inline-block bg-black/25 border border-white/20 text-sky-400 text-[20rpx] px-2.5 py-0.5 rounded-sm font-bold">
+      <view class="mt-2 inline-block border border-white/20 rounded-sm bg-black/25 px-2.5 py-0.5 text-[20rpx] text-sky-400 font-bold">
         全国公路商用车应急保障枢纽
       </view>
     </view>
 
     <!-- 2. 平台核心介绍卡片 -->
-    <view class="mx-4 -mt-6 bg-white rounded-lg p-5 border border-slate-200/90 space-y-3">
-      <view class="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-        <text class="w-1 h-3.5 bg-[#0284c7] rounded-sm" />
+    <view class="mx-4 border border-slate-200/90 rounded-lg bg-white p-5 -mt-6 space-y-3">
+      <view class="flex items-center gap-1.5 text-xs text-slate-900 font-bold">
+        <text class="h-3.5 w-1 rounded-sm bg-[#0284c7]" />
         <text>关于我们</text>
       </view>
       <view class="text-xs text-slate-600 leading-relaxed">
@@ -51,26 +51,26 @@ function callService() {
     </view>
 
     <!-- 3. 服务信息与功能列表 -->
-    <view class="mx-4 mt-4 bg-white rounded-lg overflow-hidden border border-slate-200/80 divide-y divide-slate-100">
-      <view class="p-4 flex items-center justify-between text-xs">
+    <view class="mx-4 mt-4 overflow-hidden border border-slate-200/80 rounded-lg bg-white divide-y divide-slate-100">
+      <view class="flex items-center justify-between p-4 text-xs">
         <text class="text-slate-500 font-medium">客服电话</text>
-        <view class="flex items-center gap-1 text-[#0284c7] font-bold cursor-pointer" @click="callService">
+        <view class="flex cursor-pointer items-center gap-1 text-[#0284c7] font-bold" @click="callService">
           <text>400-888-9999</text>
           <text class="i-carbon-phone text-xs" />
         </view>
       </view>
 
-      <view class="p-4 flex items-center justify-between text-xs">
+      <view class="flex items-center justify-between p-4 text-xs">
         <text class="text-slate-500 font-medium">服务时间</text>
         <text class="text-slate-900 font-bold">7 × 24 小时全国道路紧急响应</text>
       </view>
 
-      <view class="p-4 flex items-center justify-between text-xs">
+      <view class="flex items-center justify-between p-4 text-xs">
         <text class="text-slate-500 font-medium">官方主体</text>
         <text class="text-slate-900 font-bold">卡车汇（北京）数字化供应链服务有限公司</text>
       </view>
 
-      <view class="p-4 flex items-center justify-between text-xs">
+      <view class="flex items-center justify-between p-4 text-xs">
         <text class="text-slate-500 font-medium">服务协议与隐私条款</text>
         <text class="text-[#0284c7] font-bold">查看详情</text>
       </view>

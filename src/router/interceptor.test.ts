@@ -1,5 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+vi.mock('@/tabbar/config', () => ({
+  TABBAR_STRATEGY_MAP: { NO_TABBAR: 0, NATIVE_TABBAR: 1, CUSTOM_TABBAR: 2 },
+  selectedTabbarStrategy: 2,
+  tabbarList: [
+    { text: '首页', pagePath: 'pages/index/index', iconType: 'unocss', icon: 'i-carbon-home' },
+    { text: '我的', pagePath: 'pages/me/me', iconType: 'unocss', icon: 'i-carbon-user' },
+    { text: '关于', pagePath: 'pages/about/about', iconType: 'unocss', icon: 'i-carbon-info', roles: ['admin'] },
+  ],
+}))
+
 /**
  * store.ts 的 userRoles 是模块级 computed，会缓存对某个 pinia 实例的依赖；
  * test-setup 每个用例都会换一个新的 pinia，所以这里必须一起重置模块，

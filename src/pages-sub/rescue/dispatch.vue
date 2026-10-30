@@ -60,7 +60,8 @@ onLoad((query) => {
   if (query?.orderNo) {
     currentOrderNo.value = query.orderNo
     uni.setStorageSync('current_rescue_order_no', query.orderNo)
-  } else {
+  }
+  else {
     const cachedNo = uni.getStorageSync('current_rescue_order_no')
     if (cachedNo) {
       currentOrderNo.value = cachedNo
@@ -112,7 +113,8 @@ function clearAllTimers() {
 }
 
 async function fetchOrderDetail() {
-  if (!currentOrderNo.value) return
+  if (!currentOrderNo.value)
+    return
   try {
     const res = await getRescueOrderDetail(currentOrderNo.value)
     if (res) {
@@ -128,7 +130,8 @@ async function fetchOrderDetail() {
 }
 
 async function pollOrderStatus() {
-  if (!currentOrderNo.value) return
+  if (!currentOrderNo.value)
+    return
   try {
     const res = await getRescueOrderDetail(currentOrderNo.value)
     if (res) {
@@ -164,7 +167,8 @@ function handleOrderAccepted(detail?: RescueOrderVo) {
 
 // 客户指定网点超时一键转平台智能就近调度
 async function handleTransferToBroadcast() {
-  if (!currentOrderNo.value) return
+  if (!currentOrderNo.value)
+    return
   transferring.value = true
   uni.showLoading({ title: '转入平台调度中...' })
 
@@ -219,32 +223,32 @@ function handleCancel() {
 </script>
 
 <template>
-  <view class="dispatch-page min-h-screen bg-[#0f172a] text-slate-100 flex flex-col justify-between pb-8">
+  <view class="dispatch-page min-h-screen flex flex-col justify-between bg-[#0f172a] pb-8 text-slate-100">
     <!-- 1. 顶部工单简报（刚性实线+深碳机能卡片） -->
-    <view class="pt-3 px-4 z-10">
-      <view class="bg-[#1e293b] rounded-lg p-3 flex items-center justify-between border border-slate-700/80">
+    <view class="z-10 px-4 pt-3">
+      <view class="flex items-center justify-between border border-slate-700/80 rounded-lg bg-[#1e293b] p-3">
         <view class="flex items-center gap-2">
-          <view class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
+          <view class="h-2.5 w-2.5 animate-ping rounded-full bg-amber-400" />
           <view class="text-xs">
-            <text class="font-bold font-mono text-slate-100">工单 {{ displayOrderNo }}</text>
-            <text v-if="orderDetail?.dispatchMode === 'ASSIGNED_STATION'" class="text-amber-400 ml-1.5 font-bold">
+            <text class="text-slate-100 font-bold font-mono">工单 {{ displayOrderNo }}</text>
+            <text v-if="orderDetail?.dispatchMode === 'ASSIGNED_STATION'" class="ml-1.5 text-amber-400 font-bold">
               [客户指定网点]
             </text>
-            <text v-else class="text-sky-400 ml-1.5 font-bold">
+            <text v-else class="ml-1.5 text-sky-400 font-bold">
               [智能广播调度]
             </text>
           </view>
         </view>
-        <view class="px-2 py-0.5 rounded-sm bg-slate-900 border border-slate-700 text-[20rpx] text-amber-400 font-mono font-bold">
+        <view class="border border-slate-700 rounded-sm bg-slate-900 px-2 py-0.5 text-[20rpx] text-amber-400 font-bold font-mono">
           {{ displayPlateNo }}
         </view>
       </view>
     </view>
 
     <!-- 2. 中间：轻量矢量仿真地图 + 雷达脉冲扩散层 (工业硬派风) -->
-    <view class="relative flex-1 my-3 flex items-center justify-center overflow-hidden">
+    <view class="relative my-3 flex flex-1 items-center justify-center overflow-hidden">
       <!-- 底图仿真路网 -->
-      <view class="absolute inset-x-4 inset-y-0 rounded-lg overflow-hidden opacity-75 border border-slate-700/80 bg-slate-900">
+      <view class="absolute inset-x-4 inset-y-0 overflow-hidden border border-slate-700/80 rounded-lg bg-slate-900 opacity-75">
         <SimulatedMap
           height="100%"
           :truck-pos="{ x: 50, y: 50 }"
@@ -253,17 +257,17 @@ function handleCancel() {
       </view>
 
       <!-- 雷达波纹动画与中心倒计时 -->
-      <view class="relative z-10 flex flex-col items-center justify-center pointer-events-none">
+      <view class="pointer-events-none relative z-10 flex flex-col items-center justify-center">
         <RadarScanPulse size="240px" pulse-color="rgba(2, 132, 199, 0.45)" />
 
         <!-- 倒计时数字卡片 -->
         <view class="absolute flex flex-col items-center justify-center text-center">
-          <text class="text-[20rpx] uppercase tracking-widest text-sky-300 font-bold">全网极速智能调度中</text>
-          <text class="text-3xl font-black font-mono tracking-tight text-white mt-0.5">
+          <text class="text-[20rpx] text-sky-300 font-bold tracking-widest uppercase">全网极速智能调度中</text>
+          <text class="mt-0.5 text-3xl text-white font-black tracking-tight font-mono">
             {{ formattedCountdown }}
           </text>
-          <view class="mt-2 flex items-center gap-1.5 bg-slate-900/90 border border-slate-700 px-2.5 py-1 rounded-sm">
-            <view class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <view class="mt-2 flex items-center gap-1.5 border border-slate-700 rounded-sm bg-slate-900/90 px-2.5 py-1">
+            <view class="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
             <text class="text-[18rpx] text-slate-300 font-medium">已扫测周边 {{ scannedStationsCount }} 家认证特约站</text>
           </view>
         </view>
@@ -271,10 +275,10 @@ function handleCancel() {
     </view>
 
     <!-- 3. 底部操作区与调度说明卡片 -->
-    <view class="px-4 space-y-3 z-10">
-      <view class="bg-[#1e293b] rounded-lg p-3.5 border border-slate-700/80 text-xs">
-        <view class="flex items-center gap-2 font-bold text-sky-400 mb-1">
-          <text class="i-carbon-radar text-base animate-spin" />
+    <view class="z-10 px-4 space-y-3">
+      <view class="border border-slate-700/80 rounded-lg bg-[#1e293b] p-3.5 text-xs">
+        <view class="mb-1 flex items-center gap-2 text-sky-400 font-bold">
+          <text class="i-carbon-radar animate-spin text-base" />
           <text>{{ orderDetail?.dispatchMode === 'ASSIGNED_STATION' ? '已定向指派至指定合作站调度中枢' : '智能就近派工机制全速匹配中' }}</text>
         </view>
         <view class="text-[22rpx] text-slate-400 leading-relaxed">
@@ -286,7 +290,7 @@ function handleCancel() {
 
       <!-- 原型快速演示：模拟技师立即接单 (保留供随时演练) -->
       <button
-        class="w-full bg-[#0284c7] active:bg-[#0369a1] text-white font-bold text-sm min-h-[88rpx] rounded-lg flex items-center justify-center gap-2 border-none transition-colors"
+        class="min-h-[88rpx] w-full flex items-center justify-center gap-2 rounded-lg border-none bg-[#0284c7] text-sm text-white font-bold transition-colors active:bg-[#0369a1]"
         @click="handleOrderAccepted()"
       >
         <text class="i-carbon-checkmark-filled text-base" />
@@ -295,7 +299,7 @@ function handleCancel() {
 
       <!-- 取消救援 -->
       <button
-        class="w-full bg-slate-800 active:bg-slate-700 text-slate-300 font-medium text-xs min-h-[80rpx] rounded-lg border border-slate-700 transition-colors flex items-center justify-center"
+        class="min-h-[80rpx] w-full flex items-center justify-center border border-slate-700 rounded-lg bg-slate-800 text-xs text-slate-300 font-medium transition-colors active:bg-slate-700"
         @click="handleCancel"
       >
         取消本次呼救
@@ -305,25 +309,27 @@ function handleCancel() {
     <!-- 4. 10分钟超时转平台智能调度提示对话框 (工业机能硬核弹窗) -->
     <view
       v-if="showTimeoutDialog"
-      class="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-6"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-6"
     >
-      <view class="bg-[#1e293b] rounded-lg p-5 border border-slate-600 shadow-2xl w-full max-w-xs text-center space-y-3">
-        <view class="w-12 h-12 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto text-2xl border border-amber-500/30">
+      <view class="max-w-xs w-full border border-slate-600 rounded-lg bg-[#1e293b] p-5 text-center shadow-2xl space-y-3">
+        <view class="mx-auto h-12 w-12 flex items-center justify-center border border-amber-500/30 rounded-lg bg-amber-500/20 text-2xl text-amber-400">
           <text class="i-carbon-warning-alt-filled" />
         </view>
-        <view class="text-sm font-bold text-white">指定网点响应超时提示</view>
-        <view class="text-xs text-slate-300 leading-relaxed text-left bg-slate-900 p-3 rounded-md border border-slate-700">
+        <view class="text-sm text-white font-bold">
+          指定网点响应超时提示
+        </view>
+        <view class="border border-slate-700 rounded-md bg-slate-900 p-3 text-left text-xs text-slate-300 leading-relaxed">
           您指定的特约服务站超过 10 分钟未接单响应，可能正处于抢险繁忙状态。为保障您的行车安全，建议立即转为【平台就近智能极速调度】向周边其他认证服务商广播。
         </view>
         <button
-          class="w-full bg-[#0284c7] active:bg-[#0369a1] text-white font-bold min-h-[80rpx] rounded-lg text-xs border-none flex items-center justify-center"
+          class="min-h-[80rpx] w-full flex items-center justify-center rounded-lg border-none bg-[#0284c7] text-xs text-white font-bold active:bg-[#0369a1]"
           :disabled="transferring"
           @click="handleTransferToBroadcast"
         >
           {{ transferring ? '正在转单...' : '立即转为平台智能调度' }}
         </button>
         <button
-          class="w-full bg-transparent text-slate-400 font-medium min-h-[72rpx] text-xs border-none flex items-center justify-center active:text-slate-200"
+          class="min-h-[72rpx] w-full flex items-center justify-center border-none bg-transparent text-xs text-slate-400 font-medium active:text-slate-200"
           @click="showTimeoutDialog = false"
         >
           继续等待该网点

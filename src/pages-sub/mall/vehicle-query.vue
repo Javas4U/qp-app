@@ -1,8 +1,12 @@
 <script lang="ts" setup>
 import type { FuelType, VehicleModelItem } from '@/types/mall'
 import { useMallSessionStore } from '@/store/mallSession'
+import { useTokenStore } from '@/store/token'
+import { useUserSessionStore } from '@/store/userSession'
+import { toLoginPage } from '@/utils/toLoginPage'
+import { onShow } from '@dcloudio/uni-app'
 import { storeToRefs } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 defineOptions({
   name: 'VehicleQueryPage',
@@ -13,11 +17,38 @@ definePage({
     navigationBarTitleText: '车型精准查询',
     navigationBarBackgroundColor: '#0f172a',
     navigationBarTextStyle: 'white',
+    backgroundColor: '#0f172a',
+    backgroundColorTop: '#0f172a',
+    backgroundColorBottom: '#0f172a',
   },
 })
 
+const tokenStore = useTokenStore()
+const userStore = useUserSessionStore()
 const mallStore = useMallSessionStore()
 const { brands, vehicleModels, selectedModel } = storeToRefs(mallStore)
+
+// 缓存自愈检测：若真机本地残留了旧版少量车型或历史失效图片，进入页面即刻自动重置为最新真实图片矩阵
+function ensureVehicleModelsReady() {
+  const hasBroken = mallStore.vehicleModels.some(m => !m.image || m.image.includes('photo-1586191582056'))
+  if (mallStore.vehicleModels.length < 20 || hasBroken) {
+    mallStore.forceRefreshVehicleModels()
+  }
+}
+
+function handleImageError(model: VehicleModelItem) {
+  model.image = 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=500&auto=format&fit=crop&q=80'
+}
+
+onMounted(() => {
+  ensureVehicleModelsReady()
+})
+
+onShow(() => {
+  ensureVehicleModelsReady()
+})
+
+const hasLogin = computed(() => tokenStore.updateNowTime().hasLogin)
 
 // 动力类型过滤
 const fuelOptions: { type: FuelType, label: string }[] = [
@@ -39,10 +70,52 @@ const filteredModels = computed(() => {
 
 function selectModel(model: VehicleModelItem) {
   mallStore.selectVehicleModel(model)
+  if (hasLogin.value) {
+    userStore.userInfo.defaultVehicleName = model.name
+  }
   uni.showToast({
-    title: `已锁定: ${model.name.slice(0, 12)}`,
-    icon: 'none',
+    title: `已选定爱车: ${model.name.slice(0, 8)}`,
+    icon: 'success',
+    duration: 1500,
   })
+  setTimeout(() => {
+    uni.navigateBack({
+      fail: () => {
+        uni.switchTab({ url: '/pages/index/index' })
+      },
+    })
+  }, 300)
+}
+
+function handleSetDefaultVehicle() {
+  if (!hasLogin.value) {
+    toLoginPage({
+      redirectUrl: '/pages-sub/mall/vehicle-query',
+      noticeMessage: '请先登录以绑定爱车',
+    })
+    return
+  }
+
+  if (!selectedModel.value?.id) {
+    uni.showToast({
+      title: '请先在列表选择一款车型',
+      icon: 'none',
+    })
+    return
+  }
+
+  userStore.userInfo.defaultVehicleName = selectedModel.value.name
+  uni.showToast({
+    title: '已设为常用爱车',
+    icon: 'success',
+  })
+  setTimeout(() => {
+    uni.navigateBack({
+      fail: () => {
+        uni.switchTab({ url: '/pages/index/index' })
+      },
+    })
+  }, 500)
 }
 
 function confirmAndGoCatalog() {
@@ -53,14 +126,14 @@ function confirmAndGoCatalog() {
 </script>
 
 <template>
-  <view class="vehicle-query-page min-h-screen bg-[#0f172a] text-slate-100 flex flex-col justify-between pb-24">
+  <view class="vehicle-query-page min-h-screen flex flex-col justify-between bg-[#0f172a] pb-24 text-slate-100">
     <!-- 1. 顶部动力类型筛选 Tabs (信标蓝高辨识工业条) -->
-    <view class="bg-[#1e293b] border-b border-slate-700/80 px-3 py-2.5">
-      <view class="grid grid-cols-4 gap-1.5 p-1 bg-[#090d16] border border-slate-800 rounded-md">
+    <view class="border-b border-slate-700/80 bg-[#1e293b] px-3 py-2.5">
+      <view class="grid grid-cols-4 gap-1.5 border border-slate-800 rounded-md bg-[#090d16] p-1">
         <view
           v-for="item in fuelOptions"
           :key="item.type"
-          class="text-center py-2 rounded-sm text-xs font-semibold cursor-pointer transition-all flex items-center justify-center"
+          class="flex cursor-pointer items-center justify-center rounded-sm py-2 text-center text-xs font-semibold transition-all"
           :class="activeFuel === item.type
             ? 'bg-[#0284c7] text-white font-bold border border-sky-400/40'
             : 'text-slate-400 hover:text-slate-200 border border-transparent'"
@@ -72,19 +145,19 @@ function confirmAndGoCatalog() {
     </view>
 
     <!-- 2. 主体左右分栏布局 (深碳工业机能) -->
-    <view class="flex-1 flex overflow-hidden">
+    <view class="flex flex-1 overflow-hidden">
       <!-- 左侧品牌列表 -->
-      <scroll-view scroll-y class="w-24 bg-[#090d16] border-r border-slate-700/80 shrink-0">
+      <scroll-view scroll-y class="w-24 shrink-0 border-r border-slate-700/80 bg-[#090d16]">
         <view
           v-for="brand in brands"
           :key="brand.id"
-          class="py-3.5 px-2 text-center text-xs font-medium cursor-pointer border-l-4 transition-all"
+          class="cursor-pointer border-l-4 px-2 py-3.5 text-center text-xs font-medium transition-all"
           :class="activeBrandId === brand.id
             ? 'bg-[#1e293b] border-[#0284c7] text-[#38bdf8] font-bold'
             : 'border-transparent text-slate-400 hover:text-slate-200'"
           @click="activeBrandId = brand.id"
         >
-          <view class="text-lg mb-1">
+          <view class="mb-1 text-lg">
             {{ brand.logo }}
           </view>
           <view class="truncate font-sans">
@@ -94,20 +167,20 @@ function confirmAndGoCatalog() {
       </scroll-view>
 
       <!-- 右侧车型网格列表 -->
-      <scroll-view scroll-y class="flex-1 p-3 bg-[#0f172a]">
-        <view class="text-xs font-bold text-slate-300 mb-2.5 flex items-center justify-between">
+      <scroll-view scroll-y class="flex-1 bg-[#0f172a] p-3">
+        <view class="mb-2.5 flex items-center justify-between text-xs text-slate-300 font-bold">
           <text class="flex items-center gap-1.5">
-            <text class="w-1.5 h-3 bg-[#0284c7] rounded-sm" />
+            <text class="h-3 w-1.5 rounded-sm bg-[#0284c7]" />
             <text>适配车型库 ({{ filteredModels.length }} 款)</text>
           </text>
-          <text class="text-[20rpx] text-slate-400 font-mono">点击卡片锁定</text>
+          <text class="text-[20rpx] text-sky-400 font-mono">点击卡片选定并返回</text>
         </view>
 
         <view class="space-y-2.5">
           <view
             v-for="model in filteredModels"
             :key="model.id"
-            class="bg-[#1e293b] rounded-lg p-3 border flex items-center gap-3 cursor-pointer transition-all"
+            class="flex cursor-pointer items-center gap-3 border rounded-lg bg-[#1e293b] p-3 transition-all"
             :class="selectedModel.id === model.id
               ? 'border-[#0284c7] bg-sky-950/20'
               : 'border-slate-700/80 hover:border-slate-600'"
@@ -116,17 +189,18 @@ function confirmAndGoCatalog() {
             <image
               :src="model.image"
               mode="aspectFill"
-              class="w-20 h-16 rounded-md bg-[#090d16] border border-slate-700/80 shrink-0"
+              class="h-16 w-20 shrink-0 border border-slate-700/80 rounded-md bg-[#090d16]"
+              @error="handleImageError(model)"
             />
             <view class="flex-1 overflow-hidden">
-              <view class="text-xs font-bold text-slate-100 leading-snug truncate">
+              <view class="truncate text-xs text-slate-100 font-bold leading-snug">
                 {{ model.name }}
               </view>
-              <view class="flex items-center gap-1.5 mt-2 text-[20rpx]">
-                <text class="bg-[#090d16] border border-slate-700 text-slate-300 px-1.5 py-0.5 rounded-sm font-mono">
+              <view class="mt-2 flex items-center gap-1.5 text-[20rpx]">
+                <text class="border border-slate-700 rounded-sm bg-[#090d16] px-1.5 py-0.5 text-slate-300 font-mono">
                   排量 {{ model.displacement }}
                 </text>
-                <text class="bg-sky-950/50 border border-sky-700/60 text-[#38bdf8] px-1.5 py-0.5 rounded-sm font-mono font-bold">
+                <text class="border border-sky-700/60 rounded-sm bg-sky-950/50 px-1.5 py-0.5 text-[#38bdf8] font-bold font-mono">
                   {{ model.horsepower }}
                 </text>
               </view>
@@ -134,43 +208,59 @@ function confirmAndGoCatalog() {
             <view class="shrink-0">
               <view
                 v-if="selectedModel.id === model.id"
-                class="w-6 h-6 rounded-sm bg-[#0284c7] border border-sky-400/50 text-white flex items-center justify-center text-xs"
+                class="h-6 w-6 flex items-center justify-center border border-sky-400/50 rounded-sm bg-[#0284c7] text-xs text-white"
               >
                 <text class="i-carbon-checkmark font-bold" />
               </view>
               <view
                 v-else
-                class="w-6 h-6 rounded-sm border border-slate-600 bg-[#090d16]"
+                class="h-6 w-6 border border-slate-600 rounded-sm bg-[#090d16]"
               />
             </view>
           </view>
 
           <!-- 空数据状态 -->
-          <view v-if="filteredModels.length === 0" class="py-14 text-center text-xs text-slate-400 border border-dashed border-slate-700/80 rounded-lg p-4 bg-[#1e293b]/50">
-            <text class="i-carbon-information-square text-2xl text-slate-500 block mx-auto mb-2" />
-            <text>暂无该动力类型车型，请切换其他动力类别</text>
+          <view v-if="filteredModels.length === 0" class="border border-slate-700/80 rounded-lg border-dashed bg-[#1e293b]/50 p-4 py-12 text-center text-xs text-slate-400">
+            <text class="i-carbon-information-square mx-auto mb-2 block text-2xl text-slate-500" />
+            <text class="mb-3 block">暂无该动力类型车型，请切换其他动力类别</text>
+            <button
+              class="mx-auto inline-flex items-center gap-1.5 border border-sky-400/40 rounded-md bg-[#0284c7] px-3.5 py-1.5 text-xs text-white active:bg-sky-700"
+              @click="mallStore.forceRefreshVehicleModels()"
+            >
+              <text class="i-carbon-renew" />
+              重新同步车型库
+            </button>
           </view>
         </view>
       </scroll-view>
     </view>
 
-    <!-- 3. 底部刚性操作栏 (手套防误触) -->
-    <view class="fixed bottom-0 left-0 right-0 px-4 py-3 bg-[#1e293b] border-t border-slate-700/80 flex items-center justify-between z-30">
-      <view class="flex items-center gap-2 max-w-[62%]">
-        <text class="i-carbon-delivery-truck text-2xl text-[#0284c7] shrink-0" />
+    <!-- 3. 底部刚性操作栏 (手套防误触，触控热区 >= 88rpx / h-11) -->
+    <view class="fixed bottom-0 left-0 right-0 z-30 flex items-center justify-between border-t border-slate-700/80 bg-[#1e293b] px-4 py-3">
+      <view class="max-w-[46%] flex items-center gap-2">
+        <text class="i-carbon-delivery-truck shrink-0 text-2xl text-[#0284c7]" />
         <view class="overflow-hidden">
-          <text class="text-[20rpx] text-slate-400 block font-mono">当前锁定车型：</text>
-          <text class="text-xs font-bold text-slate-100 truncate block">{{ selectedModel.name }}</text>
+          <text class="block text-[20rpx] text-slate-400 font-mono">当前车型：</text>
+          <text class="block truncate text-xs text-slate-100 font-bold">{{ selectedModel.name }}</text>
         </view>
       </view>
 
-      <button
-        class="min-h-[88rpx] h-[88rpx] bg-[#0284c7] hover:bg-sky-500 text-white text-xs px-5 rounded-lg font-bold border border-sky-400/40 active:translate-y-0.5 flex items-center justify-center m-0 shrink-0"
-        @click="confirmAndGoCatalog"
-      >
-        <text class="i-carbon-shopping-catalog mr-1 text-sm" />
-        确认锁定并选配
-      </button>
+      <view class="flex items-center gap-2">
+        <button
+          class="h-11 min-h-[88rpx] flex shrink-0 items-center justify-center border border-amber-400/30 rounded-lg bg-slate-800 px-3.5 text-xs text-amber-300 font-bold active:translate-y-0.5 active:bg-slate-700"
+          @click="handleSetDefaultVehicle"
+        >
+          <text class="i-carbon-star mr-1 text-sm text-amber-400" />
+          设为常用爱车
+        </button>
+        <button
+          class="h-11 min-h-[88rpx] flex shrink-0 items-center justify-center border border-sky-400/40 rounded-lg bg-[#0284c7] px-4 text-xs text-white font-bold active:translate-y-0.5 active:bg-[#0369a1]"
+          @click="confirmAndGoCatalog"
+        >
+          <text class="i-carbon-shopping-catalog mr-1 text-sm" />
+          选配
+        </button>
+      </view>
     </view>
   </view>
 </template>

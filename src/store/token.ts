@@ -13,7 +13,10 @@ import {
 } from '@/api/login'
 import { isDoubleTokenRes, isSingleTokenRes } from '@/api/types/login'
 import { isDoubleTokenMode } from '@/utils'
+import { useMallSessionStore } from './mallSession'
+import { useRescueSessionStore } from './rescueSession'
 import { useUserStore } from './user'
+import { useUserSessionStore } from './userSession'
 
 // 初始化状态
 const tokenInfoState = isDoubleTokenMode
@@ -181,9 +184,25 @@ export const useTokenStore = defineStore(
       uni.removeStorageSync('accessTokenExpireTime')
       uni.removeStorageSync('refreshTokenExpireTime')
       uni.removeStorageSync('token')
+      uni.removeStorageSync('current_rescue_order_no')
       tokenInfo.value = { ...tokenInfoState }
       const userStore = useUserStore()
       userStore.clearUserInfo()
+      try {
+        const userSessionStore = useUserSessionStore()
+        userSessionStore.resetSession()
+      }
+      catch { }
+      try {
+        const mallSessionStore = useMallSessionStore()
+        mallSessionStore.resetSelectedModel()
+      }
+      catch { }
+      try {
+        const rescueSessionStore = useRescueSessionStore()
+        rescueSessionStore.resetSession()
+      }
+      catch { }
     }
 
     /**
@@ -272,7 +291,6 @@ export const useTokenStore = defineStore(
      * 建议这样使用tokenStore.updateNowTime().hasLogin
      */
     const hasValidLogin = computed(() => {
-      console.log('hasValidLogin', hasLoginInfo.value, !isTokenExpired.value)
       return hasLoginInfo.value && !isTokenExpired.value
     })
 

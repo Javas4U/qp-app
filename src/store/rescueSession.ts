@@ -63,31 +63,8 @@ export const useRescueSessionStore = defineStore(
       paidAmount: 1000,
     }
 
-    const currentTicket = ref<RescueTicket | null>(defaultTicket)
-    const historyTickets = ref<RescueTicket[]>([
-      {
-        ticketId: 'RC202610080088',
-        driverId: 'D10001',
-        driverName: '李师傅',
-        driverPhone: '13800138000',
-        plateNo: '鄂A·88888',
-        rescueType: 'TIRE',
-        rescueTypeName: '轮胎爆胎',
-        status: 'PAID',
-        location: {
-          address: '京港澳高速蔡甸服务区',
-          lat: 30.58,
-          lng: 114.05,
-        },
-        faultImages: [],
-        faultDescription: '右后导向轮突发爆胎',
-        estimatedFee: 800,
-        createTime: '2026-10-08 09:15:00',
-        technicianName: '王建师傅',
-        technicianPhone: '13788990011',
-        paidAmount: 850,
-      },
-    ])
+    const currentTicket = ref<RescueTicket | null>(null)
+    const historyTickets = ref<RescueTicket[]>([])
 
     const dispatchCountdownSeconds = ref<number>(118)
     const isDispatching = computed(() => currentTicket.value?.status === 'DISPATCHING')
@@ -209,6 +186,13 @@ export const useRescueSessionStore = defineStore(
       currentTicket.value = null
     }
 
+    // 重置为纯净访客态（清空在途与历史工单）
+    function resetSession() {
+      activeOrderDetail.value = null
+      currentTicket.value = null
+      historyTickets.value = []
+    }
+
     // 重置或恢复初始演示工单
     function resetToDemo() {
       currentTicket.value = { ...defaultTicket }
@@ -231,6 +215,7 @@ export const useRescueSessionStore = defineStore(
       payTicket,
       cancelTicket,
       resetToDemo,
+      resetSession,
     }
   },
   {

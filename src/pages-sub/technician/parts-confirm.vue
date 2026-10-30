@@ -80,14 +80,14 @@ function handleNext() {
 </script>
 
 <template>
-  <view class="tech-parts-page min-h-screen bg-[#0f172a] text-slate-100 pb-28 flex flex-col justify-between">
+  <view class="tech-parts-page min-h-screen flex flex-col justify-between bg-[#0f172a] pb-28 text-slate-100">
     <view>
       <!-- 1. 顶部非平台配件无质保醒目警示横幅 (工业合规安全条) -->
-      <view class="bg-rose-950/80 border-b border-rose-500/40 text-rose-200 p-3.5">
+      <view class="border-b border-rose-500/40 bg-rose-950/80 p-3.5 text-rose-200">
         <view class="flex items-start gap-2">
-          <text class="i-carbon-warning-filled text-lg shrink-0 mt-0.5 text-amber-400" />
+          <text class="i-carbon-warning-filled mt-0.5 shrink-0 text-lg text-amber-400" />
           <view class="text-xs leading-relaxed">
-            <view class="font-bold text-slate-100">
+            <view class="text-slate-100 font-bold">
               质保合规重要声明
             </view>
             <view class="mt-0.5 text-slate-300">
@@ -98,19 +98,19 @@ function handleNext() {
       </view>
 
       <!-- 2. 工单与求援信息简报 -->
-      <view class="mx-4 mt-3 bg-[#1e293b] rounded-lg p-3.5 border border-slate-700/80 flex items-center justify-between text-xs">
+      <view class="mx-4 mt-3 flex items-center justify-between border border-slate-700/80 rounded-lg bg-[#1e293b] p-3.5 text-xs">
         <view>
           <text class="text-slate-400">求援重卡：</text>
-          <text class="font-bold text-slate-100 font-mono">{{ currentTicket?.plateNo }} ({{ currentTicket?.driverName }})</text>
+          <text class="text-slate-100 font-bold font-mono">{{ currentTicket?.plateNo }} ({{ currentTicket?.driverName }})</text>
         </view>
-        <view class="bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[20rpx] px-2 py-0.5 rounded-sm font-bold">
+        <view class="border border-emerald-500/40 rounded-sm bg-emerald-500/20 px-2 py-0.5 text-[20rpx] text-emerald-400 font-bold">
           原厂质保 2 年
         </view>
       </view>
 
       <!-- 3. 配件清单勾选列表 -->
       <view class="mx-4 mt-3 space-y-3">
-        <view class="text-xs font-bold text-slate-200 flex items-center justify-between">
+        <view class="flex items-center justify-between text-xs text-slate-200 font-bold">
           <text>现场调配原厂配件明细</text>
           <text class="text-[20rpx] text-slate-400">点击勾选核销入单</text>
         </view>
@@ -118,7 +118,7 @@ function handleNext() {
         <view
           v-for="(part, idx) in partsList"
           :key="part.partCode"
-          class="bg-[#1e293b] rounded-lg p-4 border transition-colors cursor-pointer"
+          class="cursor-pointer border rounded-lg bg-[#1e293b] p-4 transition-colors"
           :class="part.selected ? 'border-[#0284c7] bg-sky-950/30' : 'border-slate-700/80'"
           @click="togglePart(idx)"
         >
@@ -126,17 +126,17 @@ function handleNext() {
             <view class="flex items-start gap-2.5">
               <view class="mt-0.5">
                 <view
-                  class="w-5 h-5 rounded-sm flex items-center justify-center text-xs transition-colors"
+                  class="h-5 w-5 flex items-center justify-center rounded-sm text-xs transition-colors"
                   :class="part.selected ? 'bg-[#0284c7] text-white' : 'border border-slate-600 bg-slate-900'"
                 >
                   <text v-if="part.selected" class="i-carbon-checkmark" />
                 </view>
               </view>
               <view>
-                <view class="text-xs font-bold text-slate-100 leading-snug">
+                <view class="text-xs text-slate-100 font-bold leading-snug">
                   {{ part.partName }}
                 </view>
-                <view class="text-[20rpx] text-slate-400 font-mono mt-0.5">
+                <view class="mt-0.5 text-[20rpx] text-slate-400 font-mono">
                   OE: {{ part.partCode }} · 100%原厂正品
                 </view>
               </view>
@@ -144,24 +144,24 @@ function handleNext() {
           </view>
 
           <!-- 价格与工时费分拆 -->
-          <view class="mt-3 pt-2.5 border-t border-slate-700/80 flex items-center justify-between text-xs text-slate-300">
+          <view class="mt-3 flex items-center justify-between border-t border-slate-700/80 pt-2.5 text-xs text-slate-300">
             <text class="text-slate-400">配件费 ¥{{ part.price }} + 安装工时 ¥{{ part.laborFee }}</text>
-            <text class="font-bold text-rose-400 font-mono">小计 ¥{{ part.price + part.laborFee }}</text>
+            <text class="text-rose-400 font-bold font-mono">小计 ¥{{ part.price + part.laborFee }}</text>
           </view>
         </view>
       </view>
 
       <!-- 4. 结算合计清单 -->
-      <view class="mx-4 mt-3 bg-[#1e293b] rounded-lg p-4 border border-slate-700/80 text-xs space-y-2">
+      <view class="mx-4 mt-3 border border-slate-700/80 rounded-lg bg-[#1e293b] p-4 text-xs space-y-2">
         <view class="flex items-center justify-between text-slate-400">
           <text>原厂备件费合计</text>
-          <text class="font-bold text-slate-200 font-mono">¥{{ totalPartCost }}.00</text>
+          <text class="text-slate-200 font-bold font-mono">¥{{ totalPartCost }}.00</text>
         </view>
         <view class="flex items-center justify-between text-slate-400">
           <text>现场标准工时费</text>
-          <text class="font-bold text-slate-200 font-mono">¥{{ totalLaborCost }}.00</text>
+          <text class="text-slate-200 font-bold font-mono">¥{{ totalLaborCost }}.00</text>
         </view>
-        <view class="flex items-center justify-between pt-2 border-t border-slate-700 text-sm font-bold text-slate-100">
+        <view class="flex items-center justify-between border-t border-slate-700 pt-2 text-sm text-slate-100 font-bold">
           <text>维修应付总额</text>
           <text class="text-base text-rose-400 font-black font-mono">¥{{ grandTotal }}.00</text>
         </view>
@@ -169,9 +169,9 @@ function handleNext() {
     </view>
 
     <!-- 5. 底部确认按钮 (手套防误触 ≥ 44px) -->
-    <view class="fixed bottom-0 left-0 right-0 p-4 bg-[#1e293b]/95 border-t border-slate-700 z-30">
+    <view class="fixed bottom-0 left-0 right-0 z-30 border-t border-slate-700 bg-[#1e293b]/95 p-4">
       <button
-        class="w-full bg-[#0284c7] active:bg-[#0369a1] text-white min-h-[88rpx] rounded-lg font-bold text-sm flex items-center justify-center gap-2 border-none transition-colors"
+        class="min-h-[88rpx] w-full flex items-center justify-center gap-2 rounded-lg border-none bg-[#0284c7] text-sm text-white font-bold transition-colors active:bg-[#0369a1]"
         @click="handleNext"
       >
         <text class="i-carbon-camera text-base" />

@@ -120,7 +120,8 @@ function getStatusBadge(status?: string) {
 }
 
 function gotoActiveTracking() {
-  if (!activeOrder.value?.orderNo) return
+  if (!activeOrder.value?.orderNo)
+    return
   uni.navigateTo({
     url: `/pages-sub/rescue/tracking?orderNo=${activeOrder.value.orderNo}`,
   })
@@ -261,33 +262,33 @@ async function submitRescue() {
 <template>
   <view class="rescue-create-page min-h-screen bg-[#f8fafc] pb-28">
     <!-- 0. 存在进行中的救援订单时，置顶态势机能卡片 (FR-016) -->
-    <view v-if="activeOrder" class="mx-4 mt-3 mb-3 bg-[#0f172a] text-white rounded-lg p-4 border-2 border-red-500">
-      <view class="flex items-center justify-between pb-2.5 border-b border-slate-700">
-        <view class="flex items-center gap-1.5 font-bold text-sm text-red-400">
-          <text class="i-carbon-warning-alt text-amber-400 text-base animate-pulse" />
+    <view v-if="activeOrder" class="mx-4 mb-3 mt-3 border-2 border-red-500 rounded-lg bg-[#0f172a] p-4 text-white">
+      <view class="flex items-center justify-between border-b border-slate-700 pb-2.5">
+        <view class="flex items-center gap-1.5 text-sm text-red-400 font-bold">
+          <text class="i-carbon-warning-alt animate-pulse text-base text-amber-400" />
           <text>您有 1 笔进行中的救援服务</text>
         </view>
-        <view :class="getStatusBadge(activeOrder.orderStatus).bg" class="text-[20rpx] text-white px-2 py-0.5 rounded-sm font-bold flex items-center gap-1">
+        <view :class="getStatusBadge(activeOrder.orderStatus).bg" class="flex items-center gap-1 rounded-sm px-2 py-0.5 text-[20rpx] text-white font-bold">
           <text :class="getStatusBadge(activeOrder.orderStatus).icon" class="text-xs" />
           <text>{{ getStatusBadge(activeOrder.orderStatus).text }}</text>
         </view>
       </view>
 
-      <view class="mt-3 grid grid-cols-2 gap-2 text-xs">
-        <view class="bg-slate-800 border border-slate-700 rounded-md p-2.5">
-          <text class="text-slate-400 text-[20rpx] block">救援工单号</text>
-          <text class="font-mono font-bold text-white text-xs mt-0.5 block truncate">{{ activeOrder.orderNo }}</text>
+      <view class="grid grid-cols-2 mt-3 gap-2 text-xs">
+        <view class="border border-slate-700 rounded-md bg-slate-800 p-2.5">
+          <text class="block text-[20rpx] text-slate-400">救援工单号</text>
+          <text class="mt-0.5 block truncate text-xs text-white font-bold font-mono">{{ activeOrder.orderNo }}</text>
         </view>
-        <view class="bg-slate-800 border border-slate-700 rounded-md p-2.5">
-          <text class="text-slate-400 text-[20rpx] block">出警救援车辆</text>
-          <text class="font-mono font-bold text-emerald-400 text-xs mt-0.5 block truncate">{{ activeOrder.technicianPlateNo || '专车整备中' }}</text>
+        <view class="border border-slate-700 rounded-md bg-slate-800 p-2.5">
+          <text class="block text-[20rpx] text-slate-400">出警救援车辆</text>
+          <text class="mt-0.5 block truncate text-xs text-emerald-400 font-bold font-mono">{{ activeOrder.technicianPlateNo || '专车整备中' }}</text>
         </view>
       </view>
 
       <view class="mt-2.5 flex items-center justify-between text-xs text-slate-300">
-        <view class="flex items-center gap-1.5 truncate max-w-56">
+        <view class="max-w-56 flex items-center gap-1.5 truncate">
           <text class="i-carbon-user-avatar text-sm text-slate-400" />
-          <text class="font-medium truncate">{{ activeOrder.technicianName ? `出警技师：${activeOrder.technicianName}（${activeOrder.technicianPhone || '已指派'}）` : '调度指派技师中...' }}</text>
+          <text class="truncate font-medium">{{ activeOrder.technicianName ? `出警技师：${activeOrder.technicianName}（${activeOrder.technicianPhone || '已指派'}）` : '调度指派技师中...' }}</text>
         </view>
         <text class="text-[20rpx] text-slate-400 font-mono">{{ activeOrder.createTime ? activeOrder.createTime.slice(11, 16) : '' }} 报案</text>
       </view>
@@ -295,7 +296,7 @@ async function submitRescue() {
       <!-- 核心行动按钮: 直达实时跟踪页 -->
       <view class="mt-3">
         <button
-          class="w-full bg-emerald-600 text-white font-bold text-xs h-10 rounded-md active:bg-emerald-700 m-0 border-none flex items-center justify-center gap-1.5"
+          class="m-0 h-10 w-full flex items-center justify-center gap-1.5 rounded-md border-none bg-emerald-600 text-xs text-white font-bold active:bg-emerald-700"
           @click="gotoActiveTracking"
         >
           <text class="i-carbon-map text-sm" />
@@ -305,7 +306,7 @@ async function submitRescue() {
       </view>
 
       <view class="mt-2.5 text-center">
-        <text class="text-[20rpx] text-sky-400 underline cursor-pointer" @click="showNewForm = !showNewForm">
+        <text class="cursor-pointer text-[20rpx] text-sky-400 underline" @click="showNewForm = !showNewForm">
           {{ showNewForm ? '▲ 收起新呼救填报表单' : '如需为其他车辆报案，点击展开新呼救表单 ▼' }}
         </text>
       </view>
@@ -314,15 +315,15 @@ async function submitRescue() {
     <!-- 表单主容器 (若无活跃单，或用户主动展开，则展示) -->
     <view v-if="!activeOrder || showNewForm">
       <!-- 1. 救援类型宫格单选 -->
-      <view class="mx-4 mt-3 bg-white rounded-lg p-4 border border-slate-200/80">
-        <view class="text-xs font-bold text-slate-900 mb-2.5">
+      <view class="mx-4 mt-3 border border-slate-200/80 rounded-lg bg-white p-4">
+        <view class="mb-2.5 text-xs text-slate-900 font-bold">
           选择救援类型 <text class="text-red-500">*</text>
         </view>
         <view class="grid grid-cols-3 gap-2">
           <view
             v-for="item in typeOptions"
             :key="item.code"
-            class="py-2.5 px-2 rounded-md text-center text-xs font-medium cursor-pointer border transition-all"
+            class="cursor-pointer border rounded-md px-2 py-2.5 text-center text-xs font-medium transition-all"
             :class="selectedType === item.code
               ? 'bg-sky-50 border-[#0284c7] text-[#0284c7] font-bold'
               : 'bg-slate-50 border-slate-200/80 text-slate-700'"
@@ -334,13 +335,13 @@ async function submitRescue() {
       </view>
 
       <!-- 2. 调度方式与服务商选择 -->
-      <view class="mx-4 mt-3 bg-white rounded-lg p-4 border border-slate-200/80">
-        <view class="text-xs font-bold text-slate-900 mb-2.5">
+      <view class="mx-4 mt-3 border border-slate-200/80 rounded-lg bg-white p-4">
+        <view class="mb-2.5 text-xs text-slate-900 font-bold">
           救援调度方式
         </view>
         <view class="grid grid-cols-2 gap-2">
           <view
-            class="py-2.5 px-3 rounded-md border text-xs text-center cursor-pointer transition-all"
+            class="cursor-pointer border rounded-md px-3 py-2.5 text-center text-xs transition-all"
             :class="dispatchMode === 'BROADCAST'
               ? 'bg-sky-50 border-[#0284c7] text-[#0284c7] font-bold'
               : 'bg-slate-50 border-slate-200/80 text-slate-600'"
@@ -350,11 +351,13 @@ async function submitRescue() {
               <text class="i-carbon-radar" />
               <text>平台就近极速调度</text>
             </view>
-            <view class="text-[18rpx] text-slate-400 mt-0.5">周边合作商快速响应</view>
+            <view class="mt-0.5 text-[18rpx] text-slate-400">
+              周边合作商快速响应
+            </view>
           </view>
 
           <view
-            class="py-2.5 px-3 rounded-md border text-xs text-center cursor-pointer transition-all"
+            class="cursor-pointer border rounded-md px-3 py-2.5 text-center text-xs transition-all"
             :class="dispatchMode === 'ASSIGNED'
               ? 'bg-sky-50 border-[#0284c7] text-[#0284c7] font-bold'
               : 'bg-slate-50 border-slate-200/80 text-slate-600'"
@@ -364,13 +367,15 @@ async function submitRescue() {
               <text class="i-carbon-badge" />
               <text>指定特约服务站</text>
             </view>
-            <view class="text-[18rpx] text-slate-400 mt-0.5">定向通知心仪网点</view>
+            <view class="mt-0.5 text-[18rpx] text-slate-400">
+              定向通知心仪网点
+            </view>
           </view>
         </view>
 
         <!-- 指定网点下拉选择框 -->
-        <view v-if="dispatchMode === 'ASSIGNED'" class="mt-3 p-3 bg-sky-50/60 rounded-md border border-sky-100">
-          <view class="text-[20rpx] text-sky-900 font-bold mb-1.5 flex items-center gap-1">
+        <view v-if="dispatchMode === 'ASSIGNED'" class="mt-3 border border-sky-100 rounded-md bg-sky-50/60 p-3">
+          <view class="mb-1.5 flex items-center gap-1 text-[20rpx] text-sky-900 font-bold">
             <text class="i-carbon-location-current text-[#0284c7]" />
             <text>选择目标合作服务站 (网点PC端专属调度):</text>
           </view>
@@ -378,7 +383,7 @@ async function submitRescue() {
             <view
               v-for="st in stationOptions"
               :key="st.id"
-              class="p-2.5 rounded-md text-xs cursor-pointer flex items-center justify-between border"
+              class="flex cursor-pointer items-center justify-between border rounded-md p-2.5 text-xs"
               :class="selectedStationId === st.id
                 ? 'bg-white border-[#0284c7] text-[#0284c7] font-bold'
                 : 'bg-white border-slate-200 text-slate-700'"
@@ -392,21 +397,21 @@ async function submitRescue() {
       </view>
 
       <!-- 3. 停靠位置卡片 -->
-      <view class="mx-4 mt-3 bg-white rounded-lg p-4 border border-slate-200/80">
-        <view class="flex items-center justify-between mb-2">
-          <view class="text-xs font-bold text-slate-900 flex items-center gap-1">
+      <view class="mx-4 mt-3 border border-slate-200/80 rounded-lg bg-white p-4">
+        <view class="mb-2 flex items-center justify-between">
+          <view class="flex items-center gap-1 text-xs text-slate-900 font-bold">
             <text class="i-carbon-location-filled text-red-600" />
             <text>当前停靠故障地点 (高德GCJ-02)</text>
           </view>
           <view
-            class="text-xs text-[#0284c7] font-bold flex items-center gap-0.5 cursor-pointer active:opacity-80"
+            class="flex cursor-pointer items-center gap-0.5 text-xs text-[#0284c7] font-bold active:opacity-80"
             @click="reLocate"
           >
             <text class="i-carbon-renew text-xs" />
             <text>重新定位</text>
           </view>
         </view>
-        <view class="bg-slate-50 p-2.5 rounded-md border border-slate-200 text-xs font-medium text-slate-900">
+        <view class="border border-slate-200 rounded-md bg-slate-50 p-2.5 text-xs text-slate-900 font-medium">
           <input
             v-model="address"
             type="text"
@@ -417,16 +422,16 @@ async function submitRescue() {
       </view>
 
       <!-- 4. 问题描述与现场拍照 -->
-      <view class="mx-4 mt-3 bg-white rounded-lg p-4 border border-slate-200/80">
-        <view class="text-xs font-bold text-slate-900 mb-2">
+      <view class="mx-4 mt-3 border border-slate-200/80 rounded-lg bg-white p-4">
+        <view class="mb-2 text-xs text-slate-900 font-bold">
           故障描述与现场拍照
         </view>
-        <view class="bg-slate-50 rounded-md p-3 border border-slate-200">
+        <view class="border border-slate-200 rounded-md bg-slate-50 p-3">
           <textarea
             v-model="faultDescription"
             :maxlength="200"
             placeholder="请简要描述车辆故障现象（如异响、仪表盘报错代码、漏水漏油等）"
-            class="w-full h-20 text-xs text-slate-900 bg-transparent outline-none"
+            class="h-20 w-full bg-transparent text-xs text-slate-900 outline-none"
           />
           <view class="text-right text-[20rpx] text-slate-400">
             {{ faultDescription.length }}/200字
@@ -434,15 +439,15 @@ async function submitRescue() {
         </view>
 
         <!-- 照片列表 -->
-        <view class="mt-3 flex items-center gap-2 flex-wrap">
+        <view class="mt-3 flex flex-wrap items-center gap-2">
           <view
             v-for="(img, idx) in photos"
             :key="idx"
-            class="w-20 h-20 rounded-md overflow-hidden relative border border-slate-200"
+            class="relative h-20 w-20 overflow-hidden border border-slate-200 rounded-md"
           >
-            <image :src="img" mode="aspectFill" class="w-full h-full" />
+            <image :src="img" mode="aspectFill" class="h-full w-full" />
             <view
-              class="absolute top-1 right-1 w-5 h-5 rounded-sm bg-black/60 text-white flex items-center justify-center cursor-pointer"
+              class="absolute right-1 top-1 h-5 w-5 flex cursor-pointer items-center justify-center rounded-sm bg-black/60 text-white"
               @click="removePhoto(idx)"
             >
               <text class="i-carbon-close text-[18rpx]" />
@@ -450,33 +455,33 @@ async function submitRescue() {
           </view>
           <view
             v-if="photos.length < 4"
-            class="w-20 h-20 rounded-md border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400 bg-slate-50 cursor-pointer active:bg-slate-100"
+            class="h-20 w-20 flex flex-col cursor-pointer items-center justify-center border-2 border-slate-300 rounded-md border-dashed bg-slate-50 text-slate-400 active:bg-slate-100"
             @click="chooseImage"
           >
             <text class="i-carbon-camera text-xl" />
-            <text class="text-[18rpx] mt-1 font-medium">上传照片</text>
+            <text class="mt-1 text-[18rpx] font-medium">上传照片</text>
           </view>
         </view>
       </view>
 
       <!-- 5. 联系人与车辆信息表单 -->
-      <view class="mx-4 mt-3 bg-white rounded-lg p-4 space-y-3 border border-slate-200/80">
-        <view class="text-xs font-bold text-slate-900">
+      <view class="mx-4 mt-3 border border-slate-200/80 rounded-lg bg-white p-4 space-y-3">
+        <view class="text-xs text-slate-900 font-bold">
           车辆与联系信息
         </view>
 
-        <view class="flex items-center justify-between py-2 border-b border-slate-100 text-xs">
-          <text class="text-slate-500 w-20">车牌号码</text>
+        <view class="flex items-center justify-between border-b border-slate-100 py-2 text-xs">
+          <text class="w-20 text-slate-500">车牌号码</text>
           <input
             v-model="plateNo"
             type="text"
             placeholder="例如：鄂A·88888"
-            class="flex-1 text-right font-bold text-slate-900 uppercase"
+            class="flex-1 text-right text-slate-900 font-bold uppercase"
           >
         </view>
 
-        <view class="flex items-center justify-between py-2 border-b border-slate-100 text-xs">
-          <text class="text-slate-500 w-20">联系人</text>
+        <view class="flex items-center justify-between border-b border-slate-100 py-2 text-xs">
+          <text class="w-20 text-slate-500">联系人</text>
           <input
             v-model="contactName"
             type="text"
@@ -485,35 +490,35 @@ async function submitRescue() {
           >
         </view>
 
-        <view class="flex items-center justify-between py-2 border-b border-slate-100 text-xs">
-          <text class="text-slate-500 w-20">联系手机</text>
+        <view class="flex items-center justify-between border-b border-slate-100 py-2 text-xs">
+          <text class="w-20 text-slate-500">联系手机</text>
           <input
             v-model="contactPhone"
             type="number"
             placeholder="请输入接收调度的手机号"
-            class="flex-1 text-right text-slate-900 font-mono font-bold"
+            class="flex-1 text-right text-slate-900 font-bold font-mono"
           >
         </view>
       </view>
 
       <!-- 6. 费用预估提示卡片 -->
-      <view class="mx-4 mt-3 bg-sky-50/70 p-3.5 rounded-lg border border-sky-200 text-xs text-sky-950 flex items-center justify-between">
+      <view class="mx-4 mt-3 flex items-center justify-between border border-sky-200 rounded-lg bg-sky-50/70 p-3.5 text-xs text-sky-950">
         <view>
-          <view class="font-bold flex items-center gap-1">
+          <view class="flex items-center gap-1 font-bold">
             <text class="i-carbon-information-filled text-[#0284c7]" />
             <text>基础出车检测费预估</text>
           </view>
-          <view class="text-[20rpx] text-sky-700 mt-0.5 font-medium">
+          <view class="mt-0.5 text-[20rpx] text-sky-700 font-medium">
             含周边15km内出车费与现场勘测排查；若更换原厂配件另行确认。
           </view>
         </view>
-        <text class="text-base font-extrabold text-red-600 font-mono">¥300~600</text>
+        <text class="text-base text-red-600 font-extrabold font-mono">¥300~600</text>
       </view>
 
       <!-- 7. 底部固定提交按钮：The Glove-First 规范 (h-11 / 44px) -->
-      <view class="fixed bottom-0 left-0 right-0 p-4 bg-white/95 border-t border-slate-200/90 z-20">
+      <view class="fixed bottom-0 left-0 right-0 z-20 border-t border-slate-200/90 bg-white/95 p-4">
         <button
-          class="w-full bg-[#0284c7] text-white h-11 rounded-md font-extrabold text-sm active:bg-[#0369a1] flex items-center justify-center gap-2 border-none"
+          class="h-11 w-full flex items-center justify-center gap-2 rounded-md border-none bg-[#0284c7] text-sm text-white font-extrabold active:bg-[#0369a1]"
           :disabled="submitting"
           @click="submitRescue"
         >

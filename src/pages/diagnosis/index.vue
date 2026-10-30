@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import DiagnosisExpertChatModal from '@/components/DiagnosisExpertChatModal.vue'
+import DiagnosisGuideModal from '@/components/DiagnosisGuideModal.vue'
 import { useMallSessionStore } from '@/store/mallSession'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
@@ -10,8 +12,11 @@ defineOptions({
 definePage({
   style: {
     navigationBarTitleText: '智能诊断',
-    navigationBarBackgroundColor: '#0284c7',
+    navigationBarBackgroundColor: '#0f172a',
     navigationBarTextStyle: 'white',
+    backgroundColor: '#0f172a',
+    backgroundColorTop: '#0f172a',
+    backgroundColorBottom: '#0f172a',
   },
 })
 
@@ -21,7 +26,7 @@ const { brands, selectedModel } = storeToRefs(mallStore)
 // 当前选中的品牌索引
 const activeBrandId = ref('DFCV')
 
-// 专家推荐列表（对标智能诊断详情图）
+// 专家推荐列表
 const expertList = ref([
   {
     id: 'EXP-01',
@@ -109,57 +114,61 @@ const faultCategories = ref([
 const showModal = ref(false)
 const selectedFault = ref<any>(null)
 
+// 专家在线问诊弹窗状态
+const showExpertChat = ref(false)
+const selectedExpert = ref<any>(null)
+
 function openFaultGuide(symptom: any) {
   selectedFault.value = symptom
   showModal.value = true
 }
 
 function consultExpert(expert: any) {
-  uni.showModal({
-    title: `连线 ${expert.name}`,
-    content: `即将发起与【${expert.title}】的 1v1 故障远程音视频指导，是否继续？`,
-    confirmColor: '#0284c7',
-    confirmText: '立即连线',
-    success: (res) => {
-      if (res.confirm) {
-        uni.showToast({ title: '已接通专家客服坐席', icon: 'success' })
-      }
-    },
-  })
+  selectedExpert.value = expert
+  showExpertChat.value = true
 }
 
-function gotoPartDetail() {
+function gotoPartDetail(partId?: string) {
   showModal.value = false
-  uni.navigateTo({ url: '/pages-sub/mall/parts-detail' })
+  if (partId) {
+    uni.navigateTo({ url: `/pages-sub/mall/parts-detail?partId=${partId}` })
+  }
+  else {
+    uni.navigateTo({ url: '/pages-sub/mall/parts-detail' })
+  }
 }
 
 function callRescue() {
   showModal.value = false
   uni.navigateTo({ url: '/pages-sub/rescue/create?type=ENGINE' })
 }
+
+function handleChatNavigate(url: string) {
+  uni.navigateTo({ url })
+}
 </script>
 
 <template>
-  <view class="diagnosis-page min-h-screen bg-[#f8fafc] pb-24">
-    <!-- 1. 顶部品牌滑动栏：深碳与信标蓝交融机能顶栏 -->
-    <view class="bg-gradient-to-b from-[#0f172a] via-[#0369a1] to-[#0284c7] pt-3.5 pb-5 px-4 text-white rounded-b-2xl border-b border-sky-400/20">
+  <view class="diagnosis-page min-h-screen bg-[#0f172a] pb-24 text-slate-100">
+    <!-- 1. 顶部品牌滑动栏：深碳工业风顶栏 -->
+    <view class="border-b border-slate-700/80 rounded-b-2xl bg-[#1e293b] px-4 pb-5 pt-3.5 text-white">
       <view class="flex items-center justify-between">
-        <view class="text-base font-extrabold tracking-tight text-white">
+        <view class="text-base text-white font-extrabold tracking-tight">
           重卡全生命周期智能诊断
         </view>
-        <view class="text-[20rpx] bg-black/25 border border-white/20 px-2 py-0.5 rounded-sm font-bold">
-          当前车型: {{ selectedModel.name.slice(0, 10) }}
+        <view class="border border-slate-600 rounded-sm bg-slate-900/80 px-2 py-0.5 text-[20rpx] text-amber-300 font-bold font-mono">
+          {{ selectedModel.name.slice(0, 10) }}
         </view>
       </view>
 
       <!-- 品牌横滑 -->
-      <scroll-view scroll-x class="whitespace-nowrap mt-3 -mx-2">
+      <scroll-view scroll-x class="mt-3 whitespace-nowrap -mx-2">
         <view class="flex items-center gap-2 px-2">
           <view
             v-for="brand in brands"
             :key="brand.id"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold cursor-pointer transition-all border"
-            :class="activeBrandId === brand.id ? 'bg-white text-[#0284c7] border-white' : 'bg-black/20 text-slate-100 border-white/10 active:opacity-80'"
+            class="inline-flex cursor-pointer items-center gap-1.5 border rounded-md px-3 py-1.5 text-xs font-bold transition-all"
+            :class="activeBrandId === brand.id ? 'bg-[#0284c7] text-white border-sky-400' : 'bg-slate-900/80 text-slate-300 border-slate-700 active:opacity-80'"
             @click="activeBrandId = brand.id"
           >
             <text class="text-xs">{{ brand.logo }}</text>
@@ -171,11 +180,11 @@ function callRescue() {
 
     <!-- 2. 在线技术专家推荐卡片横滑 -->
     <view class="mx-4 mt-3">
-      <view class="flex items-center justify-between mb-2">
+      <view class="mb-2 flex items-center justify-between">
         <view class="flex items-center gap-1.5">
-          <view class="w-1 h-3.5 bg-[#0284c7] rounded-sm" />
-          <text class="text-sm font-bold text-slate-900">原厂特邀技术专家</text>
-          <text class="text-[20rpx] text-[#0284c7] bg-sky-50 border border-sky-200/80 px-1.5 py-0.2 rounded-sm font-bold">1对1解答</text>
+          <view class="h-3.5 w-1 rounded-sm bg-[#0284c7]" />
+          <text class="text-sm text-slate-100 font-bold">原厂特邀技术专家</text>
+          <text class="border border-sky-400/40 rounded-sm bg-sky-500/20 px-1.5 py-0.2 text-[20rpx] text-sky-400 font-bold">1对1解答</text>
         </view>
         <text class="text-xs text-slate-400 font-medium">平均1分钟响应</text>
       </view>
@@ -185,38 +194,38 @@ function callRescue() {
           <view
             v-for="expert in expertList"
             :key="expert.id"
-            class="inline-block w-64 bg-white rounded-lg p-3 border border-slate-200/80 align-top"
+            class="inline-block w-64 border border-slate-700/80 rounded-lg bg-[#1e293b] p-3 align-top"
           >
             <view class="flex items-center gap-2.5">
               <view class="relative">
                 <image
                   :src="expert.avatar"
-                  class="w-11 h-11 rounded-md object-cover bg-slate-100 border border-slate-200"
+                  class="h-11 w-11 border border-slate-600 rounded-md bg-slate-800 object-cover"
                 />
                 <view
                   v-if="expert.online"
-                  class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-white rounded-sm"
+                  class="absolute h-3 w-3 border-2 border-[#1e293b] rounded-sm bg-emerald-400 -bottom-0.5 -right-0.5"
                 />
               </view>
               <view class="flex-1 overflow-hidden">
                 <view class="flex items-center gap-1">
-                  <text class="text-xs font-bold text-slate-900">{{ expert.name }}</text>
-                  <text class="text-[18rpx] bg-sky-50 text-[#0284c7] border border-sky-200/80 px-1 py-0.2 rounded-sm font-bold">{{ expert.experience }}</text>
+                  <text class="text-xs text-slate-100 font-bold">{{ expert.name }}</text>
+                  <text class="border border-sky-400/30 rounded-sm bg-sky-500/15 px-1 py-0.2 text-[18rpx] text-sky-400 font-bold">{{ expert.experience }}</text>
                 </view>
-                <view class="text-[20rpx] text-slate-500 truncate mt-0.5 font-medium">
+                <view class="mt-0.5 truncate text-[20rpx] text-slate-400 font-medium">
                   {{ expert.title }}
                 </view>
               </view>
             </view>
 
-            <view class="mt-2 text-[20rpx] text-slate-700 bg-slate-50 border border-slate-100 p-1.5 rounded-md font-medium">
-              擅长领域：{{ expert.tag }}
+            <view class="mt-2 border border-slate-700/60 rounded-md bg-[#0f172a] p-1.5 text-[20rpx] text-slate-300 font-medium">
+              擅长：{{ expert.tag }}
             </view>
 
-            <view class="mt-2.5 flex items-center justify-between pt-2 border-t border-slate-100">
-              <text class="text-[20rpx] text-slate-400 font-medium">已排查解决 {{ expert.solvedCount }} 例</text>
+            <view class="mt-2.5 flex items-center justify-between border-t border-slate-700/80 pt-2">
+              <text class="text-[20rpx] text-slate-400 font-mono">排查 {{ expert.solvedCount }} 例</text>
               <button
-                class="bg-[#0284c7] text-white text-xs px-3.5 h-7 rounded-md font-bold active:bg-[#0369a1] m-0 flex items-center justify-center border-none"
+                class="m-0 h-8 flex items-center justify-center rounded-md border-none bg-[#0284c7] px-3.5 text-xs text-white font-bold active:bg-[#0369a1]"
                 @click="consultExpert(expert)"
               >
                 立即咨询
@@ -229,10 +238,10 @@ function callRescue() {
 
     <!-- 3. 常见故障诊断矩阵 -->
     <view class="mx-4 mt-4">
-      <view class="flex items-center justify-between mb-2.5">
+      <view class="mb-2.5 flex items-center justify-between">
         <view class="flex items-center gap-1.5">
-          <view class="w-1 h-3.5 bg-red-600 rounded-sm" />
-          <text class="text-sm font-bold text-slate-900">故障自查诊断库</text>
+          <view class="h-3.5 w-1 rounded-sm bg-red-600" />
+          <text class="text-sm text-slate-100 font-bold">故障自查诊断库</text>
         </view>
         <text class="text-[20rpx] text-slate-400 font-medium">点击诊断症状查看推荐对策</text>
       </view>
@@ -241,20 +250,20 @@ function callRescue() {
         <view
           v-for="cat in faultCategories"
           :key="cat.id"
-          class="bg-white rounded-lg p-3.5 border border-slate-200/80"
+          class="border border-slate-700/80 rounded-lg bg-[#1e293b] p-3.5"
         >
-          <view class="flex items-center gap-2 mb-2.5 pb-2 border-b border-slate-100">
+          <view class="mb-2.5 flex items-center gap-2 border-b border-slate-700/80 pb-2">
             <view
-              class="w-7 h-7 rounded-md flex items-center justify-center text-sm border"
+              class="h-7 w-7 flex items-center justify-center border rounded-md text-sm"
               :style="{
-                backgroundColor: `${cat.color}12`,
-                borderColor: `${cat.color}30`,
+                backgroundColor: `${cat.color}15`,
+                borderColor: `${cat.color}40`,
                 color: cat.color,
               }"
             >
               <text :class="cat.icon" />
             </view>
-            <text class="text-xs font-bold text-slate-900">{{ cat.name }}</text>
+            <text class="text-xs text-slate-100 font-bold">{{ cat.name }}</text>
           </view>
 
           <!-- 故障现象芯片：中圆角与 1px 细边框 -->
@@ -262,11 +271,11 @@ function callRescue() {
             <view
               v-for="symptom in cat.symptoms"
               :key="symptom.name"
-              class="p-2 rounded-md bg-slate-50 border border-slate-200/80 flex items-center justify-between cursor-pointer active:bg-sky-50 active:border-sky-300 transition-all"
+              class="min-h-[88rpx] flex cursor-pointer items-center justify-between border border-slate-700/70 rounded-md bg-[#0f172a] p-2.5 transition-all active:border-sky-400 active:bg-slate-800"
               @click="openFaultGuide(symptom)"
             >
-              <text class="text-xs text-slate-800 font-medium truncate pr-1">{{ symptom.name }}</text>
-              <text class="i-carbon-chevron-right text-slate-400 text-xs shrink-0" />
+              <text class="truncate pr-1 text-xs text-slate-200 font-medium">{{ symptom.name }}</text>
+              <text class="i-carbon-chevron-right shrink-0 text-xs text-slate-400" />
             </view>
           </view>
         </view>
@@ -279,6 +288,13 @@ function callRescue() {
       :fault-data="selectedFault"
       @buy-part="gotoPartDetail"
       @call-rescue="callRescue"
+    />
+
+    <!-- 5. 专家在线问诊 1v1 模拟对话弹窗组件 -->
+    <DiagnosisExpertChatModal
+      v-model:visible="showExpertChat"
+      :expert="selectedExpert"
+      @navigate="handleChatNavigate"
     />
   </view>
 </template>

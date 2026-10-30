@@ -86,4 +86,3 @@ export function mockPayRescueOrder(orderNo: string, data: MockPayRescueOrderDto)
 export function evaluateRescueOrder(orderNo: string, data: RescueOrderEvaluationDto) {
   return http.post<void>(`/rescue/orders/${orderNo}/evaluate`, data)
 }
-

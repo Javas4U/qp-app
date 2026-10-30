@@ -1,8 +1,8 @@
 <script setup lang="ts">
 interface Props {
   height?: string
-  truckPosition?: { top: number; left: number }
-  technicianPosition?: { top: number; left: number }
+  truckPosition?: { top: number, left: number }
+  technicianPosition?: { top: number, left: number }
   showRoute?: boolean
   showPulse?: boolean
 }
@@ -25,9 +25,15 @@ withDefaults(defineProps<Props>(), {
       <view class="main-road road-h-2" />
       <view class="main-road road-v-1" />
       <view class="main-road road-diag-1" />
-      <view class="block b-1"><text class="poi-label">物流港区</text></view>
-      <view class="block b-2"><text class="poi-label">服务区</text></view>
-      <view class="block b-3"><text class="poi-label">收费站</text></view>
+      <view class="block b-1">
+        <text class="poi-label">物流港区</text>
+      </view>
+      <view class="block b-2">
+        <text class="poi-label">服务区</text>
+      </view>
+      <view class="block b-3">
+        <text class="poi-label">收费站</text>
+      </view>
     </view>
 
     <!-- 动态行车路线轨迹 (若开启) -->
@@ -76,8 +82,12 @@ withDefaults(defineProps<Props>(), {
 
     <!-- 地图右侧缩放与定位悬浮小控件 -->
     <view class="map-controls">
-      <view class="ctrl-btn"><text class="text-sm font-bold">+</text></view>
-      <view class="ctrl-btn"><text class="text-sm font-bold">-</text></view>
+      <view class="ctrl-btn">
+        <text class="text-sm font-bold">+</text>
+      </view>
+      <view class="ctrl-btn">
+        <text class="text-sm font-bold">-</text>
+      </view>
     </view>
 
     <!-- 默认内容插槽 (可放置状态卡片) -->

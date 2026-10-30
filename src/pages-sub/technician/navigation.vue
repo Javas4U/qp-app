@@ -48,16 +48,16 @@ function switchToDriverView() {
 </script>
 
 <template>
-  <view class="tech-nav-page min-h-screen bg-[#0f172a] text-slate-100 flex flex-col justify-between pb-6">
+  <view class="tech-nav-page min-h-screen flex flex-col justify-between bg-[#0f172a] pb-6 text-slate-100">
     <!-- 1. 顶部技师状态条 (工业刚性顶栏) -->
-    <view class="bg-[#1e293b] border-b border-slate-700/80 px-4 pt-3 pb-4">
+    <view class="border-b border-slate-700/80 bg-[#1e293b] px-4 pb-4 pt-3">
       <view class="flex items-center justify-between">
         <view class="flex items-center gap-2">
-          <view class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-          <text class="text-xs font-bold text-slate-100">{{ technicianInfo.name }} · {{ technicianInfo.stationName }}</text>
+          <view class="h-2.5 w-2.5 animate-pulse rounded-full bg-emerald-400" />
+          <text class="text-xs text-slate-100 font-bold">{{ technicianInfo.name }} · {{ technicianInfo.stationName }}</text>
         </view>
         <view
-          class="bg-slate-800 border border-slate-700 text-slate-300 text-[20rpx] px-2.5 py-1 rounded-sm cursor-pointer active:bg-slate-700 transition-colors"
+          class="cursor-pointer border border-slate-700 rounded-sm bg-slate-800 px-2.5 py-1 text-[20rpx] text-slate-300 transition-colors active:bg-slate-700"
           @click="switchToDriverView"
         >
           切回司机端
@@ -66,38 +66,38 @@ function switchToDriverView() {
     </view>
 
     <!-- 2. 工单机能卡片 -->
-    <view class="mx-4 mt-3 bg-[#1e293b] rounded-lg p-4 border border-slate-700/80 z-10 text-xs">
-      <view class="flex items-center justify-between pb-2.5 border-b border-slate-700">
-        <view class="flex items-center gap-1.5 font-bold text-slate-100 font-mono">
+    <view class="z-10 mx-4 mt-3 border border-slate-700/80 rounded-lg bg-[#1e293b] p-4 text-xs">
+      <view class="flex items-center justify-between border-b border-slate-700 pb-2.5">
+        <view class="flex items-center gap-1.5 text-slate-100 font-bold font-mono">
           <text class="i-carbon-ticket text-[#0284c7]" />
           <text>工单 {{ currentTicket?.ticketId || 'RC202610120001' }}</text>
         </view>
-        <text class="bg-rose-500/20 text-rose-400 border border-rose-500/40 text-[20rpx] px-2 py-0.5 rounded-sm font-bold">紧急救援</text>
+        <text class="border border-rose-500/40 rounded-sm bg-rose-500/20 px-2 py-0.5 text-[20rpx] text-rose-400 font-bold">紧急救援</text>
       </view>
 
-      <view class="py-2.5 space-y-1.5 text-slate-300">
+      <view class="py-2.5 text-slate-300 space-y-1.5">
         <view class="flex items-center justify-between">
           <text class="text-slate-400">求援司机</text>
-          <text class="font-bold text-slate-100 font-mono">{{ currentTicket?.driverName }} ({{ currentTicket?.plateNo }})</text>
+          <text class="text-slate-100 font-bold font-mono">{{ currentTicket?.driverName }} ({{ currentTicket?.plateNo }})</text>
         </view>
         <view class="flex items-center justify-between">
           <text class="text-slate-400">报案故障</text>
-          <text class="font-bold text-amber-400">{{ currentTicket?.rescueTypeName }}</text>
+          <text class="text-amber-400 font-bold">{{ currentTicket?.rescueTypeName }}</text>
         </view>
         <view class="flex items-start justify-between">
-          <text class="text-slate-400 shrink-0">现场位置</text>
-          <text class="text-right text-slate-200 font-medium pl-3 line-clamp-2 font-mono">
+          <text class="shrink-0 text-slate-400">现场位置</text>
+          <text class="line-clamp-2 pl-3 text-right text-slate-200 font-medium font-mono">
             {{ currentTicket?.location.address }}
           </text>
         </view>
       </view>
 
-      <view class="pt-2 border-t border-slate-700 flex items-center justify-between">
+      <view class="flex items-center justify-between border-t border-slate-700 pt-2">
         <view class="text-[20rpx] text-slate-400">
           直线距离约 12.6km · 预计耗时 18分钟
         </view>
         <button
-          class="bg-slate-800 border border-slate-700 text-emerald-400 text-xs px-3 min-h-[64rpx] rounded-md font-bold m-0 flex items-center gap-1 active:bg-slate-700 transition-colors"
+          class="m-0 min-h-[64rpx] flex items-center gap-1 border border-slate-700 rounded-md bg-slate-800 px-3 text-xs text-emerald-400 font-bold transition-colors active:bg-slate-700"
           @click="callDriver"
         >
           <text class="i-carbon-phone-filled text-xs" />
@@ -107,7 +107,7 @@ function switchToDriverView() {
     </view>
 
     <!-- 3. 中间路网仿真地图 (深碳工业边框) -->
-    <view class="mx-4 my-3 flex-1 rounded-lg overflow-hidden border border-slate-700/80 min-h-[360rpx] bg-slate-900">
+    <view class="mx-4 my-3 min-h-[360rpx] flex-1 overflow-hidden border border-slate-700/80 rounded-lg bg-slate-900">
       <SimulatedMap
         height="100%"
         :truck-pos="{ x: 30, y: 70 }"
@@ -118,7 +118,7 @@ function switchToDriverView() {
     <!-- 4. 底部开始导航按钮（手套防误触 ≥ 44px） -->
     <view class="px-4">
       <button
-        class="w-full bg-[#0284c7] active:bg-[#0369a1] text-white min-h-[88rpx] rounded-lg font-bold text-sm flex items-center justify-center gap-2 border-none transition-colors"
+        class="min-h-[88rpx] w-full flex items-center justify-center gap-2 rounded-lg border-none bg-[#0284c7] text-sm text-white font-bold transition-colors active:bg-[#0369a1]"
         @click="startNavigation"
       >
         <text class="i-carbon-navigation text-base" />

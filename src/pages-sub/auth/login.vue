@@ -2,6 +2,7 @@
 import { getCurrentLoginUserApi, quickLoginApi } from '@/api/auth'
 import { useTokenStore } from '@/store/token'
 import { useUserSessionStore } from '@/store/userSession'
+import { onLoad } from '@dcloudio/uni-app'
 import { reactive, ref } from 'vue'
 
 definePage({
@@ -9,17 +10,27 @@ definePage({
     navigationBarTitleText: '用户登录',
     navigationBarBackgroundColor: '#0f172a',
     navigationBarTextStyle: 'white',
+    backgroundColor: '#0f172a',
+    backgroundColorTop: '#0f172a',
+    backgroundColorBottom: '#0f172a',
   },
 })
 
-// 登录模式：wechat(微信一键登录) | account(账号密码登录)
-const loginMode = ref<'wechat' | 'account'>('wechat')
-const isAgree = ref(false)
+// 登录模式：wechat(微信一键登录) | account(账号密码登录)；默认采用账号密码直显模式
+const loginMode = ref<'wechat' | 'account'>('account')
+const isAgree = ref(true)
 const loggingIn = ref(false)
+const redirectUrl = ref<string>('')
+
+onLoad((query?: Record<string, string>) => {
+  if (query?.redirect) {
+    redirectUrl.value = decodeURIComponent(query.redirect)
+  }
+})
 
 const accountForm = reactive({
-  account: '',
-  password: '',
+  account: '16622223333',
+  password: 'hunter123.a',
 })
 
 const tokenStore = useTokenStore()
@@ -61,10 +72,10 @@ async function handleAccountLogin() {
 
 // 快捷填入测试账号并登录
 function handleFillTestAccount() {
-  accountForm.account = '13800138000'
-  accountForm.password = '123456'
+  accountForm.account = '16622223333'
+  accountForm.password = 'hunter123.a'
   isAgree.value = true
-  doLogin('13800138000', '卡车司机老李')
+  doLogin('16622223333', '司机用户')
 }
 
 async function doLogin(phone: string, nickname: string) {
@@ -109,7 +120,7 @@ async function doLogin(phone: string, nickname: string) {
       icon: 'success',
     })
     setTimeout(() => {
-      uni.navigateBack()
+      handlePostLoginResume()
     }, 600)
   }
   catch (err: any) {
@@ -119,6 +130,48 @@ async function doLogin(phone: string, nickname: string) {
       title: err?.message || '登录失败，请确认后端服务已启动',
       icon: 'none',
       duration: 2500,
+    })
+  }
+}
+
+const TAB_BAR_PATHS = [
+  '/pages/index/index',
+  '/pages/rescue/index',
+  '/pages/diagnosis/index',
+  '/pages/order/index',
+  '/pages/me/me',
+]
+
+function handlePostLoginResume() {
+  const target = redirectUrl.value.trim()
+  if (!target || target === '/pages-sub/auth/login') {
+    const pages = getCurrentPages()
+    if (pages.length > 1) {
+      uni.navigateBack()
+    }
+    else {
+      uni.switchTab({ url: '/pages/index/index' })
+    }
+    return
+  }
+
+  const cleanPath = target.split('?')[0]
+  const isTabBar = TAB_BAR_PATHS.includes(cleanPath)
+
+  if (isTabBar) {
+    uni.switchTab({
+      url: cleanPath,
+      fail: () => {
+        uni.switchTab({ url: '/pages/index/index' })
+      },
+    })
+  }
+  else {
+    uni.redirectTo({
+      url: target,
+      fail: () => {
+        uni.switchTab({ url: '/pages/index/index' })
+      },
     })
   }
 }
@@ -134,18 +187,18 @@ function showProtocol(name: string) {
 </script>
 
 <template>
-  <view class="h-screen flex flex-col justify-between bg-[#0f172a] text-slate-100 px-6 pt-6 pb-6 box-border overflow-hidden">
+  <view class="box-border h-screen flex flex-col justify-between overflow-hidden bg-[#0f172a] px-6 pb-6 pt-6 text-slate-100">
     <!-- 上半区：Logo 与 工业登录卡片 -->
-    <view class="flex-1 flex flex-col justify-center">
+    <view class="flex flex-1 flex-col justify-center">
       <!-- 1. Logo 与 标题 (硬派工业风格) -->
       <view class="mb-8 text-center">
-        <view class="mx-auto mb-4 h-16 w-16 flex items-center justify-center rounded-lg bg-[#0284c7] border border-sky-400/40 text-2xl text-white font-black tracking-wider">
+        <view class="mx-auto mb-4 h-16 w-16 flex items-center justify-center border border-sky-400/40 rounded-lg bg-[#0284c7] text-2xl text-white font-black tracking-wider">
           QP
         </view>
         <view class="text-xl text-slate-100 font-bold tracking-tight">
           卡车汇一体化协同平台
         </view>
-        <view class="mt-1.5 text-[22rpx] text-slate-400 flex items-center justify-center gap-2">
+        <view class="mt-1.5 flex items-center justify-center gap-2 text-[22rpx] text-slate-400">
           <text>连接车主</text>
           <text class="text-slate-600">·</text>
           <text>赋能技师</text>
@@ -155,47 +208,27 @@ function showProtocol(name: string) {
       </view>
 
       <!-- 登录面板 (刚性深碳卡片) -->
-      <view class="bg-[#1e293b] border border-slate-700/80 rounded-lg p-5">
-        <!-- 2. 微信快捷登录模式 -->
-        <view v-if="loginMode === 'wechat'" class="space-y-3.5">
-          <button
-            class="w-full min-h-[88rpx] h-[88rpx] flex items-center justify-center rounded-lg bg-[#0284c7] hover:bg-sky-500 text-sm text-white font-bold border border-sky-400/40 active:translate-y-0.5 transition-all"
-            :disabled="loggingIn"
-            @click="handleQuickLogin"
-          >
-            <text class="i-carbon-logo-wechat mr-2 text-xl" />
-            <text>{{ loggingIn ? '正在登录...' : '微信手机号一键安全登录' }}</text>
-          </button>
-
-          <button
-            class="w-full min-h-[80rpx] h-[80rpx] border border-slate-700 rounded-lg bg-[#090d16] text-xs text-slate-300 font-medium active:translate-y-0.5 transition-all flex items-center justify-center"
-            @click="loginMode = 'account'"
-          >
-            <text class="i-carbon-password mr-1 text-sm text-slate-400" />
-            账号密码 / 手机号登录
-          </button>
-        </view>
-
-        <!-- 3. 账号密码 / 验证码登录模式 -->
-        <view v-else class="space-y-3">
+      <view class="border border-slate-700/80 rounded-lg bg-[#1e293b] p-5">
+        <!-- 账号密码 / 手机号直接登录面板 (隐藏微信一键登录主按钮及切换键) -->
+        <view class="space-y-3">
           <view class="space-y-2.5">
-            <view class="flex items-center rounded-md bg-[#090d16] px-3.5 py-2.5 border border-slate-700 text-xs">
-              <text class="i-carbon-phone text-slate-400 mr-2 text-base shrink-0" />
+            <view class="flex items-center border border-slate-700 rounded-md bg-[#090d16] px-3.5 py-2.5 text-xs">
+              <text class="i-carbon-phone mr-2 shrink-0 text-base text-slate-400" />
               <input
                 v-model="accountForm.account"
                 type="number"
-                placeholder="请输入手机号码 (如 13800138000)"
+                placeholder="请输入手机号码 (如 16622223333)"
                 placeholder-class="text-slate-500"
                 class="flex-1 text-slate-100"
               >
             </view>
 
-            <view class="flex items-center rounded-md bg-[#090d16] px-3.5 py-2.5 border border-slate-700 text-xs">
-              <text class="i-carbon-password text-slate-400 mr-2 text-base shrink-0" />
+            <view class="flex items-center border border-slate-700 rounded-md bg-[#090d16] px-3.5 py-2.5 text-xs">
+              <text class="i-carbon-password mr-2 shrink-0 text-base text-slate-400" />
               <input
                 v-model="accountForm.password"
                 :password="true"
-                placeholder="请输入密码 (免密模式直接登录)"
+                placeholder="请输入密码"
                 placeholder-class="text-slate-500"
                 class="flex-1 text-slate-100"
               >
@@ -203,26 +236,23 @@ function showProtocol(name: string) {
           </view>
 
           <button
-            class="w-full min-h-[88rpx] h-[88rpx] flex items-center justify-center rounded-lg bg-[#0284c7] hover:bg-sky-500 text-sm text-white font-bold border border-sky-400/40 active:translate-y-0.5 transition-all"
+            class="h-[88rpx] min-h-[88rpx] w-full flex items-center justify-center border border-sky-400/40 rounded-lg bg-[#0284c7] text-sm text-white font-bold transition-all active:translate-y-0.5 hover:bg-sky-500"
             :disabled="loggingIn"
             @click="handleAccountLogin"
           >
             <text>{{ loggingIn ? '正在登录...' : '立即登录 / 快捷注册' }}</text>
           </button>
 
-          <view class="flex items-center justify-between text-xs pt-1.5">
+          <view class="flex items-center justify-between pt-1.5 text-xs">
             <text
-              class="text-[#38bdf8] font-medium cursor-pointer hover:underline flex items-center gap-1"
+              class="flex cursor-pointer items-center gap-1 text-[#38bdf8] font-medium hover:underline"
               @click="handleFillTestAccount"
             >
               <text class="i-carbon-flash text-xs" />
-              一键填入测试账号
+              一键重填默认账号
             </text>
-            <text
-              class="text-slate-400 cursor-pointer hover:text-slate-200"
-              @click="loginMode = 'wechat'"
-            >
-              切回微信快捷登录
+            <text class="text-[20rpx] text-slate-500">
+              免密极速验证通道
             </text>
           </view>
         </view>
@@ -230,7 +260,7 @@ function showProtocol(name: string) {
     </view>
 
     <!-- 下半区：隐私协议 (单屏底部自然锚定，深碳高对比) -->
-    <view class="pt-4 pb-2">
+    <view class="pb-2 pt-4">
       <view class="flex items-center justify-center text-[22rpx] text-slate-400">
         <checkbox-group @change="isAgree = !isAgree">
           <label class="flex items-center">
@@ -238,11 +268,11 @@ function showProtocol(name: string) {
             <text>已阅读并同意</text>
           </label>
         </checkbox-group>
-        <text class="text-[#38bdf8] ml-0.5 cursor-pointer hover:underline" @click="showProtocol('卡车汇服务条款')">
+        <text class="ml-0.5 cursor-pointer text-[#38bdf8] hover:underline" @click="showProtocol('卡车汇服务条款')">
           《卡车汇服务条款》
         </text>
         与
-        <text class="text-[#38bdf8] cursor-pointer hover:underline" @click="showProtocol('隐私政策')">
+        <text class="cursor-pointer text-[#38bdf8] hover:underline" @click="showProtocol('隐私政策')">
           《隐私政策》
         </text>
       </view>

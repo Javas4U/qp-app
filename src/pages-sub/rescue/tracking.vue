@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { RescueOrderStatus, RescueOrderVo } from '@/types/rescue'
+import type { RescueOrderVo } from '@/types/rescue'
 import {
   evaluateRescueOrder,
   getActiveRescueOrder,
@@ -69,17 +69,18 @@ const statusDesc = computed(() => {
 
 // 时间轴标准友好格式化: 当日输出 HH:mm，跨天输出 MM-DD HH:mm
 function formatTimelineTime(timeStr?: string | null): string {
-  if (!timeStr) return ''
+  if (!timeStr)
+    return ''
   try {
     const normalized = timeStr.replace(' ', 'T')
     const date = new Date(normalized)
-    if (isNaN(date.getTime())) {
+    if (Number.isNaN(date.getTime())) {
       return timeStr
     }
     const now = new Date()
-    const isToday = date.getFullYear() === now.getFullYear() &&
-      date.getMonth() === now.getMonth() &&
-      date.getDate() === now.getDate()
+    const isToday = date.getFullYear() === now.getFullYear()
+      && date.getMonth() === now.getMonth()
+      && date.getDate() === now.getDate()
     const pad = (n: number) => n < 10 ? `0${n}` : `${n}`
     const hhmm = `${pad(date.getHours())}:${pad(date.getMinutes())}`
     if (isToday) {
@@ -250,7 +251,8 @@ function gotoHome() {
 
 // 原型/联调快捷操作: 技师到场打卡
 async function handleMockArrived() {
-  if (!orderNo.value) return
+  if (!orderNo.value)
+    return
   uni.showLoading({ title: '到场打卡中...' })
   try {
     await reportRescueProgress(orderNo.value, { action: 'ARRIVE' })
@@ -295,7 +297,8 @@ function closePayModal() {
 }
 
 async function handleConfirmPay() {
-  if (!orderNo.value) return
+  if (!orderNo.value)
+    return
   // 1. 立即关闭模拟支付模态窗，彻底消除全屏 Loading 遮罩死锁
   showPayModal.value = false
   paying.value = false
@@ -332,7 +335,8 @@ function toggleTag(tag: string) {
 }
 
 async function handleSubmitEvaluation() {
-  if (!orderNo.value) return
+  if (!orderNo.value)
+    return
   if (!evalForm.value.overallScore) {
     uni.showToast({ title: '请给出总体满意度评分', icon: 'none' })
     return
@@ -376,7 +380,8 @@ async function handleSubmitEvaluation() {
 
 // 原型/联调快捷操作: 技师完工
 async function handleMockComplete() {
-  if (!orderNo.value) return
+  if (!orderNo.value)
+    return
   uni.showLoading({ title: '完工提交中...' })
   try {
     await reportRescueProgress(orderNo.value, { action: 'COMPLETE' })
@@ -405,7 +410,8 @@ function gotoTechnicianDesk() {
 
 function gotoVoucher() {
   const targetNo = orderNo.value || uni.getStorageSync('current_rescue_order_no') || ''
-  if (!targetNo) return
+  if (!targetNo)
+    return
   uni.navigateTo({
     url: `/pages-sub/rescue/voucher?orderNo=${targetNo}`,
   })
@@ -413,29 +419,31 @@ function gotoVoucher() {
 </script>
 
 <template>
-  <view class="tracking-page min-h-screen bg-[#0f172a] text-slate-100 pb-24">
+  <view class="tracking-page min-h-screen bg-[#0f172a] pb-24 text-slate-100">
     <!-- 0. 兜底探测态：仅在未传递单号且正在探测最新活跃工单时轻量呈现 -->
-    <view v-if="!hasActiveOrder && initializing" class="p-12 text-center text-slate-400 text-xs">
-      <view class="inline-block animate-spin i-carbon-progress-bar-round text-2xl text-[#0284c7] mb-2" />
+    <view v-if="!hasActiveOrder && initializing" class="p-12 text-center text-xs text-slate-400">
+      <view class="i-carbon-progress-bar-round mb-2 inline-block animate-spin text-2xl text-[#0284c7]" />
       <view>正在获取救援订单最新进展...</view>
     </view>
 
     <!-- 0. 空状态引导 (若当前司机名下确无活跃救援工单) -->
     <view
       v-else-if="!hasActiveOrder"
-      class="mx-4 mt-8 bg-[#1e293b] rounded-lg p-8 border border-slate-700/80 text-center flex flex-col items-center justify-center"
+      class="mx-4 mt-8 flex flex-col items-center justify-center border border-slate-700/80 rounded-lg bg-[#1e293b] p-8 text-center"
     >
-      <view class="w-16 h-16 rounded-lg bg-slate-900 border border-slate-700 text-[#0284c7] flex items-center justify-center mb-4">
+      <view class="mb-4 h-16 w-16 flex items-center justify-center border border-slate-700 rounded-lg bg-slate-900 text-[#0284c7]">
         <text class="i-carbon-radar text-3xl" />
       </view>
-      <view class="text-base font-bold text-slate-100">当前暂无进行中的道路救援</view>
-      <view class="text-xs text-slate-400 mt-1.5 max-w-64 leading-relaxed">
+      <view class="text-base text-slate-100 font-bold">
+        当前暂无进行中的道路救援
+      </view>
+      <view class="mt-1.5 max-w-64 text-xs text-slate-400 leading-relaxed">
         如果您正处于高速公路或国道路段车辆突发故障，请立即发起一键极速呼叫
       </view>
 
       <view class="mt-6 w-full space-y-3">
         <button
-          class="w-full bg-[#0284c7] active:bg-[#0369a1] text-white text-sm min-h-[88rpx] rounded-lg font-bold flex items-center justify-center gap-1.5 border-none transition-colors"
+          class="min-h-[88rpx] w-full flex items-center justify-center gap-1.5 rounded-lg border-none bg-[#0284c7] text-sm text-white font-bold transition-colors active:bg-[#0369a1]"
           @click="gotoCallRescue"
         >
           <text class="i-carbon-phone-filled text-base" />
@@ -443,7 +451,7 @@ function gotoVoucher() {
         </button>
 
         <button
-          class="w-full bg-slate-800 active:bg-slate-700 border border-slate-700 text-slate-300 text-xs min-h-[80rpx] rounded-lg font-medium flex items-center justify-center transition-colors"
+          class="min-h-[80rpx] w-full flex items-center justify-center border border-slate-700 rounded-lg bg-slate-800 text-xs text-slate-300 font-medium transition-colors active:bg-slate-700"
           @click="gotoHome"
         >
           返回首页
@@ -454,27 +462,27 @@ function gotoVoucher() {
     <!-- 正常履约跟踪内容 -->
     <template v-else>
       <!-- 1. 顶部责任技师信息卡片 -->
-      <view class="bg-[#1e293b] border-b border-slate-700/80 px-4 pt-3 pb-4">
-        <view class="bg-slate-900 rounded-lg p-3.5 border border-slate-700 flex items-center justify-between">
+      <view class="border-b border-slate-700/80 bg-[#1e293b] px-4 pb-4 pt-3">
+        <view class="flex items-center justify-between border border-slate-700 rounded-lg bg-slate-900 p-3.5">
           <view class="flex items-center gap-3">
             <image
               :src="orderDetail?.technicianAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80'"
-              class="w-13 h-13 rounded-lg border border-emerald-500 bg-slate-800 object-cover"
+              class="h-13 w-13 border border-emerald-500 rounded-lg bg-slate-800 object-cover"
             />
             <view>
               <view class="flex items-center gap-1.5">
-                <text class="text-sm font-bold text-slate-100">
+                <text class="text-sm text-slate-100 font-bold">
                   {{ orderDetail?.technicianName || '出警技师指派中...' }}
                 </text>
-                <view v-if="orderDetail?.technicianName" class="bg-amber-400/20 border border-amber-400/40 text-amber-400 text-[18rpx] px-1.5 py-0.5 rounded-sm font-bold flex items-center gap-0.5">
+                <view v-if="orderDetail?.technicianName" class="flex items-center gap-0.5 border border-amber-400/40 rounded-sm bg-amber-400/20 px-1.5 py-0.5 text-[18rpx] text-amber-400 font-bold">
                   <text class="i-carbon-star-filled text-xs text-amber-400" />
                   <text>4.9 分</text>
                 </view>
               </view>
-              <view class="text-[20rpx] text-slate-400 mt-0.5 truncate max-w-44">
+              <view class="mt-0.5 max-w-44 truncate text-[20rpx] text-slate-400">
                 {{ orderDetail?.stationName || orderDetail?.assignedStationName || '服务商特约救援站' }}
               </view>
-              <view class="text-[18rpx] text-emerald-400 font-medium mt-1">
+              <view class="mt-1 text-[18rpx] text-emerald-400 font-medium">
                 ✓ 官方认证技师 · 携专业工具备件
               </view>
             </view>
@@ -483,14 +491,14 @@ function gotoVoucher() {
           <!-- 右侧操作: 刷新与电话联系 -->
           <view class="flex items-center gap-2">
             <button
-              class="w-9 h-9 rounded-md bg-slate-800 border border-slate-700 text-slate-300 flex items-center justify-center active:bg-slate-700 m-0"
+              class="m-0 h-9 w-9 flex items-center justify-center border border-slate-700 rounded-md bg-slate-800 text-slate-300 active:bg-slate-700"
               title="刷新"
               @click="handleRefresh"
             >
               <text class="i-carbon-renew text-sm" />
             </button>
             <button
-              class="w-9 h-9 rounded-md bg-emerald-600 active:bg-emerald-700 text-white flex items-center justify-center m-0 border-none"
+              class="m-0 h-9 w-9 flex items-center justify-center rounded-md border-none bg-emerald-600 text-white active:bg-emerald-700"
               :class="!orderDetail?.technicianPhone ? 'opacity-50' : ''"
               @click="callTechnician"
             >
@@ -500,42 +508,42 @@ function gotoVoucher() {
         </view>
 
         <!-- 车辆与救援状态卡片 (出警车辆、工单号、履约状态) -->
-        <view class="mt-3 grid grid-cols-3 bg-slate-900 rounded-lg p-2.5 text-center text-xs border border-slate-700 divide-x divide-slate-800">
+        <view class="grid grid-cols-3 mt-3 border border-slate-700 rounded-lg bg-slate-900 p-2.5 text-center text-xs divide-x divide-slate-800">
           <view class="px-1">
-            <text class="text-slate-400 block text-[20rpx]">出警车辆</text>
-            <text class="text-xs font-black font-mono text-emerald-400 mt-0.5 block truncate">
+            <text class="block text-[20rpx] text-slate-400">出警车辆</text>
+            <text class="mt-0.5 block truncate text-xs text-emerald-400 font-black font-mono">
               {{ orderDetail?.technicianPlateNo || '专车整备中' }}
             </text>
           </view>
           <view class="px-1">
-            <text class="text-slate-400 block text-[20rpx]">工单号</text>
-            <text class="text-xs font-bold font-mono text-slate-200 mt-0.5 block truncate">{{ orderDetail?.orderNo || orderNo || '--' }}</text>
+            <text class="block text-[20rpx] text-slate-400">工单号</text>
+            <text class="mt-0.5 block truncate text-xs text-slate-200 font-bold font-mono">{{ orderDetail?.orderNo || orderNo || '--' }}</text>
           </view>
           <view class="px-1">
-            <text class="text-slate-400 block text-[20rpx]">履约状态</text>
-            <text class="text-xs font-bold text-amber-400 mt-0.5 block truncate">
-              {{ orderDetail?.orderStatus === 'ACCEPTED' ? '已接单待出发' :
-                orderDetail?.orderStatus === 'DEPARTED' ? '全速赶赴中' :
-                orderDetail?.orderStatus === 'ARRIVED' || orderDetail?.orderStatus === 'IN_PROGRESS' ? '已抵达抢修中' :
-                orderDetail?.orderStatus === 'COMPLETED' ? '救援已完工' : '快速调度中' }}
+            <text class="block text-[20rpx] text-slate-400">履约状态</text>
+            <text class="mt-0.5 block truncate text-xs text-amber-400 font-bold">
+              {{ orderDetail?.orderStatus === 'ACCEPTED' ? '已接单待出发'
+                : orderDetail?.orderStatus === 'DEPARTED' ? '全速赶赴中'
+                  : orderDetail?.orderStatus === 'ARRIVED' || orderDetail?.orderStatus === 'IN_PROGRESS' ? '已抵达抢修中'
+                    : orderDetail?.orderStatus === 'COMPLETED' ? '救援已完工' : '快速调度中' }}
             </text>
           </view>
         </view>
       </view>
 
       <!-- 2. 中间：轻量矢量仿真地图与路线轨迹 -->
-      <view class="mx-4 mt-3 rounded-lg overflow-hidden border border-slate-700/80 bg-[#1e293b]">
-        <view class="p-3 border-b border-slate-700 flex items-center justify-between text-xs bg-slate-900/60">
-          <view class="flex items-center gap-1.5 font-bold text-slate-200">
+      <view class="mx-4 mt-3 overflow-hidden border border-slate-700/80 rounded-lg bg-[#1e293b]">
+        <view class="flex items-center justify-between border-b border-slate-700 bg-slate-900/60 p-3 text-xs">
+          <view class="flex items-center gap-1.5 text-slate-200 font-bold">
             <text class="i-carbon-map text-[#0284c7]" />
             <text>实时路网轨迹监控</text>
           </view>
-          <text class="text-[20rpx] text-slate-400 truncate max-w-48 font-mono">
+          <text class="max-w-48 truncate text-[20rpx] text-slate-400 font-mono">
             {{ orderDetail?.rescueAddress || '现场救援路段' }}
           </text>
         </view>
 
-        <view class="h-64 relative bg-slate-900">
+        <view class="relative h-64 bg-slate-900">
           <SimulatedMap
             height="100%"
             :truck-pos="truckPosition"
@@ -545,24 +553,24 @@ function gotoVoucher() {
       </view>
 
       <!-- 3. 救援全流程进度时间轴 (FR-015 标准时间格式与刚性节点点亮) -->
-      <view class="mx-4 mt-3 bg-[#1e293b] rounded-lg p-4 border border-slate-700/80">
-        <view class="text-xs font-bold text-slate-200 mb-3 flex items-center gap-1.5">
+      <view class="mx-4 mt-3 border border-slate-700/80 rounded-lg bg-[#1e293b] p-4">
+        <view class="mb-3 flex items-center gap-1.5 text-xs text-slate-200 font-bold">
           <text class="i-carbon-time text-[#0284c7]" />
           <text>救援进度全息时间轴</text>
         </view>
 
-        <view class="space-y-3.5 pl-1 text-xs">
+        <view class="pl-1 text-xs space-y-3.5">
           <!-- 节点 1: 报案发布 -->
           <view class="flex items-start gap-2.5">
-            <view class="w-2.5 h-2.5 rounded-sm bg-emerald-500 mt-1 shrink-0" />
+            <view class="mt-1 h-2.5 w-2.5 shrink-0 rounded-sm bg-emerald-500" />
             <view class="flex-1">
-              <view class="font-bold text-slate-200 flex items-center justify-between">
+              <view class="flex items-center justify-between text-slate-200 font-bold">
                 <text>司机报案呼叫成功</text>
                 <text class="text-[20rpx] text-slate-400 font-mono">
                   {{ formatTimelineTime(orderDetail?.createTime) || '已受理' }}
                 </text>
               </view>
-              <view class="text-[20rpx] text-slate-400 mt-0.5">
+              <view class="mt-0.5 text-[20rpx] text-slate-400">
                 现场：{{ orderDetail?.rescueAddress || '已上报GPS坐标' }}
               </view>
             </view>
@@ -571,17 +579,17 @@ function gotoVoucher() {
           <!-- 节点 2: 网点接单派工 -->
           <view class="flex items-start gap-2.5">
             <view
-              class="w-2.5 h-2.5 rounded-sm mt-1 shrink-0"
+              class="mt-1 h-2.5 w-2.5 shrink-0 rounded-sm"
               :class="orderDetail?.orderStatus !== 'PENDING_DISPATCH' && orderDetail?.orderStatus !== 'DISPATCHING' ? 'bg-emerald-500' : 'bg-slate-700'"
             />
             <view class="flex-1">
-              <view class="font-bold text-slate-200 flex items-center justify-between">
+              <view class="flex items-center justify-between text-slate-200 font-bold">
                 <text>服务网点响应并派工</text>
                 <text class="text-[20rpx] text-slate-400 font-mono">
                   {{ formatTimelineTime(orderDetail?.acceptTime) || (orderDetail?.orderStatus !== 'PENDING_DISPATCH' && orderDetail?.orderStatus !== 'DISPATCHING' ? '已派工' : '调度中') }}
                 </text>
               </view>
-              <view class="text-[20rpx] text-slate-400 mt-0.5">
+              <view class="mt-0.5 text-[20rpx] text-slate-400">
                 <template v-if="orderDetail?.technicianName">
                   已指派责任技师：{{ orderDetail.technicianName }}（{{ orderDetail.technicianPhone || '已分配' }}）· 出警车辆：{{ orderDetail.technicianPlateNo || '专车整备中' }}
                 </template>
@@ -595,17 +603,17 @@ function gotoVoucher() {
           <!-- 节点 3: 技师出警赶赴 -->
           <view class="flex items-start gap-2.5">
             <view
-              class="w-2.5 h-2.5 rounded-sm mt-1 shrink-0"
+              class="mt-1 h-2.5 w-2.5 shrink-0 rounded-sm"
               :class="['DEPARTED', 'ARRIVED', 'IN_PROGRESS', 'COMPLETED'].includes(orderDetail?.orderStatus || '') ? 'bg-emerald-500' : 'bg-slate-700'"
             />
             <view class="flex-1">
-              <view class="font-bold text-slate-200 flex items-center justify-between">
+              <view class="flex items-center justify-between text-slate-200 font-bold">
                 <text>技师接单出发，全速赶赴现场</text>
                 <text class="text-[20rpx] text-slate-400 font-mono">
                   {{ formatTimelineTime(orderDetail?.departTime) || '等待出发' }}
                 </text>
               </view>
-              <view class="text-[20rpx] text-slate-400 mt-0.5">
+              <view class="mt-0.5 text-[20rpx] text-slate-400">
                 携专业故障诊断仪与原厂纯正备件
               </view>
             </view>
@@ -614,17 +622,17 @@ function gotoVoucher() {
           <!-- 节点 4: 到场打卡 -->
           <view class="flex items-start gap-2.5">
             <view
-              class="w-2.5 h-2.5 rounded-sm mt-1 shrink-0"
+              class="mt-1 h-2.5 w-2.5 shrink-0 rounded-sm"
               :class="['ARRIVED', 'IN_PROGRESS', 'COMPLETED'].includes(orderDetail?.orderStatus || '') ? 'bg-emerald-500' : 'bg-slate-700'"
             />
             <view class="flex-1">
-              <view class="font-bold text-slate-200 flex items-center justify-between">
+              <view class="flex items-center justify-between text-slate-200 font-bold">
                 <text>技师到达现场打卡抢修</text>
                 <text class="text-[20rpx] text-slate-400 font-mono">
                   {{ formatTimelineTime(orderDetail?.arriveTime) || '途中' }}
                 </text>
               </view>
-              <view class="text-[20rpx] text-slate-400 mt-0.5">
+              <view class="mt-0.5 text-[20rpx] text-slate-400">
                 现场故障排除与维修作业
               </view>
             </view>
@@ -633,17 +641,17 @@ function gotoVoucher() {
           <!-- 节点 5: 完工交付 -->
           <view class="flex items-start gap-2.5">
             <view
-              class="w-2.5 h-2.5 rounded-sm mt-1 shrink-0"
+              class="mt-1 h-2.5 w-2.5 shrink-0 rounded-sm"
               :class="orderDetail?.orderStatus === 'COMPLETED' ? 'bg-emerald-500' : 'bg-slate-700'"
             />
             <view class="flex-1">
-              <view class="font-bold text-slate-200 flex items-center justify-between">
+              <view class="flex items-center justify-between text-slate-200 font-bold">
                 <text>抢修完工交付与确认</text>
                 <text class="text-[20rpx] text-slate-400 font-mono">
                   {{ formatTimelineTime(orderDetail?.finishTime) || '进行中' }}
                 </text>
               </view>
-              <view class="text-[20rpx] text-slate-400 mt-0.5">
+              <view class="mt-0.5 text-[20rpx] text-slate-400">
                 车辆故障排除，恢复正常干线运行
               </view>
             </view>
@@ -654,15 +662,15 @@ function gotoVoucher() {
       <!-- 4. 完工费用结算账单卡片 (FR-017) -->
       <view
         v-if="orderDetail?.orderStatus === 'COMPLETED'"
-        class="mx-4 mt-3 bg-[#1e293b] rounded-lg p-4 border border-slate-700/80"
+        class="mx-4 mt-3 border border-slate-700/80 rounded-lg bg-[#1e293b] p-4"
       >
-        <view class="flex items-center justify-between pb-3 border-b border-slate-700">
-          <view class="flex items-center gap-1.5 font-bold text-slate-200 text-sm">
+        <view class="flex items-center justify-between border-b border-slate-700 pb-3">
+          <view class="flex items-center gap-1.5 text-sm text-slate-200 font-bold">
             <text class="i-carbon-receipt text-[#0284c7]" />
             <text>救援费用结算账单</text>
           </view>
           <view
-            class="text-[20rpx] px-2 py-0.5 rounded-sm font-bold border"
+            class="border rounded-sm px-2 py-0.5 text-[20rpx] font-bold"
             :class="orderDetail?.paymentStatus === 1 ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40' : 'bg-amber-500/20 text-amber-400 border-amber-500/40'"
           >
             {{ orderDetail?.paymentStatus === 1 ? '✓ 已完成支付' : '待司机确认支付' }}
@@ -670,21 +678,21 @@ function gotoVoucher() {
         </view>
 
         <!-- 费用明细清单 -->
-        <view class="py-3 space-y-2 text-xs border-b border-slate-700 text-slate-300">
-          <view class="flex justify-between items-center">
+        <view class="border-b border-slate-700 py-3 text-xs text-slate-300 space-y-2">
+          <view class="flex items-center justify-between">
             <text class="text-slate-400">基础救援服务费</text>
-            <text class="font-mono font-medium text-slate-200">¥{{ orderDetail?.estimatedAmount || '400.00' }}</text>
+            <text class="text-slate-200 font-medium font-mono">¥{{ orderDetail?.estimatedAmount || '400.00' }}</text>
           </view>
-          <view class="flex justify-between items-center">
+          <view class="flex items-center justify-between">
             <text class="text-slate-400">现场维修/换件增项费</text>
-            <text class="font-mono font-medium text-slate-200">¥{{ orderDetail?.extraAmount || '0.00' }}</text>
+            <text class="text-slate-200 font-medium font-mono">¥{{ orderDetail?.extraAmount || '0.00' }}</text>
           </view>
-          <view v-if="orderDetail?.finishRemark" class="text-[20rpx] text-slate-400 bg-slate-900 p-2 rounded-md border border-slate-800">
+          <view v-if="orderDetail?.finishRemark" class="border border-slate-800 rounded-md bg-slate-900 p-2 text-[20rpx] text-slate-400">
             检修说明：{{ orderDetail.finishRemark }}
           </view>
-          <view class="flex justify-between items-baseline pt-1">
-            <text class="font-bold text-slate-100 text-sm">应付总计金额</text>
-            <view class="text-rose-400 font-mono font-black text-lg">
+          <view class="flex items-baseline justify-between pt-1">
+            <text class="text-sm text-slate-100 font-bold">应付总计金额</text>
+            <view class="text-lg text-rose-400 font-black font-mono">
               ¥{{ orderDetail?.finalAmount || '400.00' }}
             </view>
           </view>
@@ -692,12 +700,12 @@ function gotoVoucher() {
 
         <!-- 支付操作或已支付提示 -->
         <view class="mt-3">
-          <view v-if="orderDetail?.paymentStatus === 1" class="text-center text-[22rpx] text-emerald-400 font-medium py-1">
+          <view v-if="orderDetail?.paymentStatus === 1" class="py-1 text-center text-[22rpx] text-emerald-400 font-medium">
             已于 {{ formatTimelineTime(orderDetail?.paymentTime) || '刚刚' }} 支付成功
           </view>
           <button
             v-else
-            class="w-full bg-[#0284c7] active:bg-[#0369a1] text-white text-xs min-h-[88rpx] rounded-lg font-bold flex items-center justify-center gap-1.5 border-none transition-colors"
+            class="min-h-[88rpx] w-full flex items-center justify-center gap-1.5 rounded-lg border-none bg-[#0284c7] text-xs text-white font-bold transition-colors active:bg-[#0369a1]"
             @click="openPayModal"
           >
             <text class="i-carbon-wallet" />
@@ -709,12 +717,12 @@ function gotoVoucher() {
       <!-- 5. 司机服务满意度评价卡片 (FR-018) -->
       <view
         v-if="orderDetail?.orderStatus === 'COMPLETED' && orderDetail?.paymentStatus === 1"
-        class="mx-4 mt-3 bg-[#1e293b] rounded-lg p-4 border border-slate-700/80"
+        class="mx-4 mt-3 border border-slate-700/80 rounded-lg bg-[#1e293b] p-4"
       >
         <!-- 5.1 已经评价过：只读展示态 -->
         <view v-if="orderDetail?.evaluation || orderDetail?.evaluationStatus === 1" class="space-y-3">
-          <view class="flex items-center justify-between pb-2 border-b border-slate-700">
-            <view class="flex items-center gap-1.5 font-bold text-emerald-400 text-sm">
+          <view class="flex items-center justify-between border-b border-slate-700 pb-2">
+            <view class="flex items-center gap-1.5 text-sm text-emerald-400 font-bold">
               <text class="i-carbon-checkmark-filled text-emerald-400" />
               <text>服务评价已完成</text>
             </view>
@@ -726,14 +734,14 @@ function gotoVoucher() {
           <!-- 评价星级与得分 -->
           <view class="flex items-center gap-2">
             <text class="text-xs text-slate-400">综合满意度:</text>
-            <view class="flex text-amber-400 text-base">
+            <view class="flex text-base text-amber-400">
               <text
                 v-for="i in 5"
                 :key="i"
                 :class="i <= (orderDetail?.evaluation?.overallScore || 5) ? 'i-carbon-star-filled' : 'i-carbon-star text-slate-600'"
               />
             </view>
-            <text class="text-xs font-bold text-amber-400">
+            <text class="text-xs text-amber-400 font-bold">
               {{ (orderDetail?.evaluation?.overallScore || 5) }} 星
             </text>
           </view>
@@ -743,20 +751,20 @@ function gotoVoucher() {
             <text
               v-for="(tag, idx) in orderDetail.evaluation.tags"
               :key="idx"
-              class="text-[20rpx] bg-slate-900 text-sky-400 border border-slate-700 px-2 py-0.5 rounded-sm font-medium"
+              class="border border-slate-700 rounded-sm bg-slate-900 px-2 py-0.5 text-[20rpx] text-sky-400 font-medium"
             >
               # {{ tag }}
             </text>
           </view>
 
           <!-- 评语内容 -->
-          <view class="text-xs text-slate-300 bg-slate-900 p-2.5 rounded-md border border-slate-800 leading-relaxed">
+          <view class="border border-slate-800 rounded-md bg-slate-900 p-2.5 text-xs text-slate-300 leading-relaxed">
             “{{ orderDetail?.evaluation?.commentContent || '师傅服务态度好，技术专业，响应神速，非常满意！' }}”
           </view>
 
           <!-- 查看官方全息电子凭证按钮 -->
           <button
-            class="w-full bg-emerald-600 active:bg-emerald-700 text-white text-xs min-h-[88rpx] rounded-lg font-bold border-none flex items-center justify-center gap-1.5 transition-colors"
+            class="min-h-[88rpx] w-full flex items-center justify-center gap-1.5 rounded-lg border-none bg-emerald-600 text-xs text-white font-bold transition-colors active:bg-emerald-700"
             @click="gotoVoucher"
           >
             <text class="i-carbon-certificate-check text-sm" />
@@ -765,13 +773,13 @@ function gotoVoucher() {
 
           <view class="grid grid-cols-2 gap-2 pt-1">
             <button
-              class="bg-slate-800 active:bg-slate-700 text-slate-200 border border-slate-700 text-xs min-h-[80rpx] rounded-lg font-bold flex items-center justify-center transition-colors"
+              class="min-h-[80rpx] flex items-center justify-center border border-slate-700 rounded-lg bg-slate-800 text-xs text-slate-200 font-bold transition-colors active:bg-slate-700"
               @click="gotoHome"
             >
               返回首页
             </button>
             <button
-              class="bg-[#0284c7] active:bg-[#0369a1] text-white text-xs min-h-[80rpx] rounded-lg font-bold border-none flex items-center justify-center transition-colors"
+              class="min-h-[80rpx] flex items-center justify-center rounded-lg border-none bg-[#0284c7] text-xs text-white font-bold transition-colors active:bg-[#0369a1]"
               @click="gotoCallRescue"
             >
               再次呼叫救援
@@ -781,8 +789,8 @@ function gotoVoucher() {
 
         <!-- 5.2 尚未评价：交互表单态 -->
         <view v-else class="space-y-3.5">
-          <view class="flex items-center justify-between pb-2 border-b border-slate-700">
-            <view class="flex items-center gap-1.5 font-bold text-slate-200 text-sm">
+          <view class="flex items-center justify-between border-b border-slate-700 pb-2">
+            <view class="flex items-center gap-1.5 text-sm text-slate-200 font-bold">
               <text class="i-carbon-thumbs-up text-[#0284c7]" />
               <text>服务满意度评价</text>
             </view>
@@ -790,30 +798,30 @@ function gotoVoucher() {
           </view>
 
           <!-- 总体星级打分 -->
-          <view class="text-center py-1">
-            <text class="text-xs text-slate-400 block mb-2">点击星星为本次救援打分</text>
+          <view class="py-1 text-center">
+            <text class="mb-2 block text-xs text-slate-400">点击星星为本次救援打分</text>
             <view class="flex items-center justify-center gap-2 text-3xl">
               <text
                 v-for="star in 5"
                 :key="star"
-                class="cursor-pointer active:scale-125 transition-transform"
+                class="cursor-pointer transition-transform active:scale-125"
                 :class="star <= evalForm.overallScore ? 'i-carbon-star-filled text-amber-400' : 'i-carbon-star text-slate-600'"
                 @click="setScore('overallScore', star)"
               />
             </view>
-            <text class="text-xs font-bold text-amber-400 mt-1 block">
+            <text class="mt-1 block text-xs text-amber-400 font-bold">
               {{ evalForm.overallScore === 5 ? '非常满意 (5星)' : evalForm.overallScore === 4 ? '比较满意 (4星)' : evalForm.overallScore === 3 ? '一般 (3星)' : '不满意' }}
             </text>
           </view>
 
           <!-- 快捷服务标签 -->
           <view>
-            <text class="text-[20rpx] text-slate-400 block mb-1.5">快捷服务标签</text>
+            <text class="mb-1.5 block text-[20rpx] text-slate-400">快捷服务标签</text>
             <view class="flex flex-wrap gap-1.5">
               <view
                 v-for="tag in quickTags"
                 :key="tag"
-                class="text-[20rpx] px-2.5 py-1 rounded-sm cursor-pointer transition-colors border"
+                class="cursor-pointer border rounded-sm px-2.5 py-1 text-[20rpx] transition-colors"
                 :class="evalForm.tags.includes(tag) ? 'bg-[#0284c7] text-white border-[#0284c7] font-bold' : 'bg-slate-900 text-slate-300 border-slate-700'"
                 @click="toggleTag(tag)"
               >
@@ -823,10 +831,10 @@ function gotoVoucher() {
           </view>
 
           <!-- 评语心得多行输入 -->
-          <view class="bg-slate-900 rounded-md p-2.5 border border-slate-700">
+          <view class="border border-slate-700 rounded-md bg-slate-900 p-2.5">
             <textarea
               v-model="evalForm.commentContent"
-              class="w-full text-xs text-slate-200 h-16 leading-relaxed"
+              class="h-16 w-full text-xs text-slate-200 leading-relaxed"
               placeholder="请写下您对出警技师服务态度、抢修效率的评价与建议（选填）..."
               placeholder-class="text-slate-500"
               :maxlength="200"
@@ -836,14 +844,14 @@ function gotoVoucher() {
           <!-- 匿名选项与提交按钮 -->
           <view class="flex items-center justify-between pt-1">
             <view
-              class="flex items-center gap-1.5 text-xs text-slate-400 cursor-pointer"
+              class="flex cursor-pointer items-center gap-1.5 text-xs text-slate-400"
               @click="evalForm.anonymous = evalForm.anonymous ? 0 : 1"
             >
               <text :class="evalForm.anonymous ? 'i-carbon-checkbox-checked text-[#0284c7]' : 'i-carbon-checkbox text-slate-500'" />
               <text>匿名评价</text>
             </view>
             <button
-              class="bg-emerald-600 active:bg-emerald-700 text-white text-xs px-5 min-h-[72rpx] rounded-lg font-bold border-none flex items-center justify-center transition-colors"
+              class="min-h-[72rpx] flex items-center justify-center rounded-lg border-none bg-emerald-600 px-5 text-xs text-white font-bold transition-colors active:bg-emerald-700"
               :disabled="submittingEval"
               @click="handleSubmitEvaluation"
             >
@@ -854,27 +862,27 @@ function gotoVoucher() {
       </view>
 
       <!-- 6. 双端联调辅助操作区 -->
-      <view class="mx-4 mt-4 bg-slate-900/90 p-3.5 rounded-lg border border-slate-700 space-y-2">
-        <view class="text-xs font-bold text-sky-400 flex items-center gap-1">
+      <view class="mx-4 mt-4 border border-slate-700 rounded-lg bg-slate-900/90 p-3.5 space-y-2">
+        <view class="flex items-center gap-1 text-xs text-sky-400 font-bold">
           <text class="i-carbon-play-filled-alt text-[#0284c7]" />
           <text>双端协同与联调测试控制台</text>
         </view>
         <view class="grid grid-cols-2 gap-2">
           <button
-            class="bg-slate-800 border border-slate-700 text-slate-200 text-xs min-h-[72rpx] rounded-lg font-bold active:bg-slate-700 flex items-center justify-center transition-colors"
+            class="min-h-[72rpx] flex items-center justify-center border border-slate-700 rounded-lg bg-slate-800 text-xs text-slate-200 font-bold transition-colors active:bg-slate-700"
             @click="handleMockArrived"
           >
             模拟技师到场打卡
           </button>
           <button
-            class="bg-[#0284c7] active:bg-[#0369a1] text-white text-xs min-h-[72rpx] rounded-lg font-bold border-none flex items-center justify-center transition-colors"
+            class="min-h-[72rpx] flex items-center justify-center rounded-lg border-none bg-[#0284c7] text-xs text-white font-bold transition-colors active:bg-[#0369a1]"
             @click="handleMockComplete"
           >
             模拟完工流转结算
           </button>
         </view>
         <button
-          class="w-full bg-slate-800 border border-slate-700 text-emerald-400 text-xs min-h-[72rpx] rounded-lg font-bold active:bg-slate-700 border-none flex items-center justify-center transition-colors"
+          class="min-h-[72rpx] w-full flex items-center justify-center border border-slate-700 rounded-lg border-none bg-slate-800 text-xs text-emerald-400 font-bold transition-colors active:bg-slate-700"
           @click="gotoTechnicianDesk"
         >
           进入技师工作台（接收任务/出发打卡）
@@ -888,48 +896,60 @@ function gotoVoucher() {
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/75 px-6"
       @click.self="closePayModal"
     >
-      <view class="bg-[#1e293b] rounded-lg p-5 w-full max-w-sm border border-slate-700 shadow-2xl space-y-4">
-        <view class="text-center pb-2 border-b border-slate-700">
-          <view class="text-sm font-bold text-slate-100">救援费用结算确认</view>
-          <view class="text-[20rpx] text-slate-400 mt-0.5 font-mono">工单号: {{ orderNo }}</view>
+      <view class="max-w-sm w-full border border-slate-700 rounded-lg bg-[#1e293b] p-5 shadow-2xl space-y-4">
+        <view class="border-b border-slate-700 pb-2 text-center">
+          <view class="text-sm text-slate-100 font-bold">
+            救援费用结算确认
+          </view>
+          <view class="mt-0.5 text-[20rpx] text-slate-400 font-mono">
+            工单号: {{ orderNo }}
+          </view>
         </view>
 
         <!-- 应付金额大字展示 -->
-        <view class="text-center py-2 bg-slate-900 rounded-md border border-slate-700">
-          <text class="text-xs text-slate-400 block">待付总金额</text>
-          <text class="text-2xl font-black font-mono text-rose-400 mt-1 block">
+        <view class="border border-slate-700 rounded-md bg-slate-900 py-2 text-center">
+          <text class="block text-xs text-slate-400">待付总金额</text>
+          <text class="mt-1 block text-2xl text-rose-400 font-black font-mono">
             ¥{{ orderDetail?.finalAmount || '400.00' }}
           </text>
         </view>
 
         <!-- 模拟支付通道选择 -->
-        <view class="space-y-2 text-xs">
-          <text class="text-[20rpx] text-slate-400 block font-bold">请选择模拟支付通道</text>
+        <view class="text-xs space-y-2">
+          <text class="block text-[20rpx] text-slate-400 font-bold">请选择模拟支付通道</text>
           <view
-            class="p-3 rounded-md border flex items-center justify-between cursor-pointer transition-colors"
+            class="flex cursor-pointer items-center justify-between border rounded-md p-3 transition-colors"
             :class="payChannel === 'MOCK_WECHAT' ? 'border-[#0284c7] bg-sky-950/40 text-slate-100' : 'border-slate-700 bg-slate-900 text-slate-300'"
             @click="payChannel = 'MOCK_WECHAT'"
           >
             <view class="flex items-center gap-2">
-              <text class="i-carbon-logo-wechat text-emerald-400 text-lg" />
+              <text class="i-carbon-logo-wechat text-lg text-emerald-400" />
               <view>
-                <view class="font-bold">微信支付 (沙箱模拟通道)</view>
-                <view class="text-[20rpx] text-slate-400">推荐公路运输司机使用</view>
+                <view class="font-bold">
+                  微信支付 (沙箱模拟通道)
+                </view>
+                <view class="text-[20rpx] text-slate-400">
+                  推荐公路运输司机使用
+                </view>
               </view>
             </view>
             <text :class="payChannel === 'MOCK_WECHAT' ? 'i-carbon-radio-button-checked text-[#0284c7]' : 'i-carbon-radio-button text-slate-600'" />
           </view>
 
           <view
-            class="p-3 rounded-md border flex items-center justify-between cursor-pointer transition-colors"
+            class="flex cursor-pointer items-center justify-between border rounded-md p-3 transition-colors"
             :class="payChannel === 'ACCOUNT_BALANCE' ? 'border-[#0284c7] bg-sky-950/40 text-slate-100' : 'border-slate-700 bg-slate-900 text-slate-300'"
             @click="payChannel = 'ACCOUNT_BALANCE'"
           >
             <view class="flex items-center gap-2">
-              <text class="i-carbon-wallet text-amber-400 text-lg" />
+              <text class="i-carbon-wallet text-lg text-amber-400" />
               <view>
-                <view class="font-bold">卡车汇司机钱包记账</view>
-                <view class="text-[20rpx] text-slate-400">大客户与熟客月结通道</view>
+                <view class="font-bold">
+                  卡车汇司机钱包记账
+                </view>
+                <view class="text-[20rpx] text-slate-400">
+                  大客户与熟客月结通道
+                </view>
               </view>
             </view>
             <text :class="payChannel === 'ACCOUNT_BALANCE' ? 'i-carbon-radio-button-checked text-[#0284c7]' : 'i-carbon-radio-button text-slate-600'" />
@@ -939,18 +959,18 @@ function gotoVoucher() {
         <!-- 弹窗操作按钮 -->
         <view class="grid grid-cols-2 gap-2 pt-2">
           <button
-            class="bg-slate-800 border border-slate-700 text-slate-300 text-xs min-h-[80rpx] rounded-lg font-bold flex items-center justify-center active:bg-slate-700 transition-colors"
+            class="min-h-[80rpx] flex items-center justify-center border border-slate-700 rounded-lg bg-slate-800 text-xs text-slate-300 font-bold transition-colors active:bg-slate-700"
             :disabled="paying"
             @click="closePayModal"
           >
             取消
           </button>
           <button
-            class="bg-[#0284c7] active:bg-[#0369a1] text-white text-xs min-h-[80rpx] rounded-lg font-bold border-none flex items-center justify-center gap-1 transition-colors"
+            class="min-h-[80rpx] flex items-center justify-center gap-1 rounded-lg border-none bg-[#0284c7] text-xs text-white font-bold transition-colors active:bg-[#0369a1]"
             :disabled="paying"
             @click="handleConfirmPay"
           >
-            <text v-if="paying" class="inline-block animate-spin i-carbon-progress-bar-round" />
+            <text v-if="paying" class="i-carbon-progress-bar-round inline-block animate-spin" />
             <text>确认模拟支付</text>
           </button>
         </view>
